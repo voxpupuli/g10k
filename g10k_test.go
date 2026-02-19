@@ -3114,6 +3114,60 @@ func TestPurgeControlRepoExceptModuledir(t *testing.T) {
 	}
 }
 
+func TestPurgeControlRepoExceptModuledirWithAllowList(t *testing.T) {
+	// Create a temporary directory structure to test purge_allowlist behavior
+	baseDir := "/tmp/TestPurgeControlRepoExceptModuledirWithAllowList"
+	purgeDir(baseDir, "TestPurgeControlRepoExceptModuledirWithAllowList setup")
+
+	envDir := filepath.Join(baseDir, "env")
+	moduleDir := "modules"
+	modulePath := filepath.Join(envDir, moduleDir)
+	allowedDir := filepath.Join(envDir, ".resource_types")
+	allowedFile := filepath.Join(envDir, "custom.json")
+	staleDir := filepath.Join(envDir, "stale_dir")
+	staleFile := filepath.Join(envDir, "stale_file.txt")
+
+	// Create the directory structure
+	createOrPurgeDir(modulePath, "test setup")
+	createOrPurgeDir(allowedDir, "test setup")
+	createOrPurgeDir(staleDir, "test setup")
+	os.WriteFile(allowedFile, []byte("{}"), 0644)
+	os.WriteFile(staleFile, []byte("stale"), 0644)
+	os.WriteFile(filepath.Join(modulePath, "module_file.rb"), []byte("module"), 0644)
+
+	// Set up config with purge_allowlist
+	config.PurgeAllowList = []string{".resource_types", "custom.json"}
+	debug = true
+
+	purgeControlRepoExceptModuledir(envDir, moduleDir)
+
+	debug = false
+
+	// The .resource_types and custom.json should be preserved
+	if !fileExists(allowedDir) {
+		t.Error(".resource_types directory was purged but should have been preserved due to purge_allowlist")
+	}
+	if !fileExists(allowedFile) {
+		t.Error("custom.json file was purged but should have been preserved due to purge_allowlist")
+	}
+
+	// The stale items should be deleted
+	if fileExists(staleDir) {
+		t.Error("stale_dir was preserved but should have been purged")
+	}
+	if fileExists(staleFile) {
+		t.Error("stale_file.txt was preserved but should have been purged")
+	}
+
+	// The module dir should be preserved
+	if !fileExists(modulePath) {
+		t.Error("modules directory was purged but should have been preserved as moduleDir")
+	}
+
+	purgeDir(baseDir, "TestPurgeControlRepoExceptModuledirWithAllowList cleanup")
+	config.PurgeAllowList = nil
+}
+
 func TestStripComponentString(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	config = readConfigfile(filepath.Join("tests", "TestConfigStripComponentString.yaml"))
