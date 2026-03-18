@@ -204,6 +204,10 @@ func syncToModuleDir(gitModule GitModule, srcDir string, targetDir string, corre
 				dr := readDeployResultFile(deployFile)
 				if dr.Signature == strings.TrimSuffix(er.output, "\n") && dr.DeploySuccess {
 					needToSync = false
+					mutex.Lock()
+					Debugf("Setting PuppetfileMatch for env: " + correspondingPuppetEnvironment + " because it is already up-to-date")
+					needSyncEnvs[correspondingPuppetEnvironment+":PuppetfileMatch"] = empty
+					mutex.Unlock()
 				}
 			}
 		} else {

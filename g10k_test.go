@@ -1760,6 +1760,7 @@ func TestLastCheckedFile(t *testing.T) {
 	lastCheckedFile := "/tmp/g10k/forge/puppetlabs-inifile-latest-last-checked"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		branchParam = "single_cache"
+		force = true
 		resolvePuppetEnvironment(false, "")
 		return
 	}
@@ -1807,7 +1808,9 @@ func TestLastCheckedFile(t *testing.T) {
 	}
 
 	branchParam = "single_cache"
+	force = true
 	resolvePuppetEnvironment(false, "")
+	force = false
 	json, _ = os.ReadFile(lastCheckedFile)
 	result = parseForgeAPIResult(string(json), fm)
 	result2 = queryForgeAPI(fm)
@@ -2101,6 +2104,7 @@ func TestPurgeStalePuppetfileOnly(t *testing.T) {
 		branchParam = ""
 		resolvePuppetEnvironment(false, "")
 		createOrPurgeDir("/tmp/full/full_master/modules/stale_module_directory_that_should_be_purged", funcName)
+		needSyncEnvs = make(map[string]struct{})
 		resolvePuppetEnvironment(false, "")
 		return
 	}
@@ -2295,6 +2299,7 @@ func TestEnvironmentParameter(t *testing.T) {
 	cacheDir := "/tmp/g10k"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		debug = true
+		force = true
 		config = readConfigfile("tests/TestConfigFullworkingAndExampleDifferentPrefix.yaml")
 		environmentParam = "full_master"
 		branchParam = ""
