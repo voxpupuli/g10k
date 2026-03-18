@@ -140,18 +140,19 @@ type Source struct {
 
 // Puppetfile contains the key value pairs from the Puppetfile
 type Puppetfile struct {
-	forgeBaseURL      string
-	forgeCacheTTL     time.Duration
-	forgeModules      map[string]ForgeModule
-	gitModules        map[string]GitModule
-	privateKey        string
-	source            string
-	sourceBranch      string
-	workDir           string
-	gitDir            string
-	gitURL            string
-	moduleDirs        []string
-	controlRepoBranch string
+	forgeBaseURL              string
+	forgeCacheTTL             time.Duration
+	forgeModules              map[string]ForgeModule
+	gitModules                map[string]GitModule
+	privateKey                string
+	source                    string
+	sourceBranch              string
+	workDir                   string
+	gitDir                    string
+	gitURL                    string
+	moduleDirs                []string
+	controlRepoBranch         string
+	upstreamPuppetfileMatches bool
 }
 
 // ForgeModule contains information (Version, Name, Author, md5 checksum, file size of the tar.gz archive, Forge BaseURL if custom) about a Puppetlabs Forge module

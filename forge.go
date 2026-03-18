@@ -499,7 +499,7 @@ func resolveForgeModules(modules map[string]ForgeModule) {
 
 	// The done channel indicates when a single goroutine has
 	// finished its job.
-	done := make(chan bool)
+	done := make(chan bool, len(modules)) // Buffer the done channel to prevent deadlock
 	// The waitForAllJobs channel allows the main program
 	// to wait until we have indeed done all the jobs.
 	waitForAllJobs := make(chan bool)

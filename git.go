@@ -204,6 +204,10 @@ func syncToModuleDir(gitModule GitModule, srcDir string, targetDir string, corre
 				dr := readDeployResultFile(deployFile)
 				if dr.Signature == strings.TrimSuffix(er.output, "\n") && dr.DeploySuccess {
 					needToSync = false
+					mutex.Lock()
+					Debugf("Setting PuppetfileMatch for env: " + correspondingPuppetEnvironment + " because it is already up-to-date")
+					needSyncEnvs[correspondingPuppetEnvironment+":PuppetfileMatch"] = empty
+					mutex.Unlock()
 				}
 			}
 		} else {
@@ -240,7 +244,30 @@ func syncToModuleDir(gitModule GitModule, srcDir string, targetDir string, corre
 				purgeWholeEnvDir = true
 			} else {
 				purgeWholeEnvDir = false
+
+				// calculate the checksum of the deployed Puppetfile
+				deployedPuppetfile := filepath.Join(targetDir, "Puppetfile")
+				deployedPuppetfileChecksum := ""
+				if fileExists(deployedPuppetfile) {
+					deployedPuppetfileChecksum = getSha256sumFile(deployedPuppetfile)
+				}
+
+				// calculate the checksum of the upstream Puppetfile
+				upstreamPuppetfileChecksum := getSha256sumString(executeResult.output)
+
+				if deployedPuppetfileChecksum == upstreamPuppetfileChecksum {
+					Debugf("Puppetfile checksum match for " + targetDir)
+					// we can signal to skip module resolution if only the Puppetfile hasn't changed
+					// but we can't easily return this info from here to resolvePuppetEnvironment
+					// So we might need to store this state somewhere
+					mutex.Lock()
+					Debugf("Setting PuppetfileMatch for env: " + correspondingPuppetEnvironment)
+					needSyncEnvs[correspondingPuppetEnvironment+":PuppetfileMatch"] = empty
+					mutex.Unlock()
+				}
+
 				lines := strings.Split(executeResult.output, "\n")
+
 				for _, line := range lines {
 					if m := reModuledir.FindStringSubmatch(line); len(m) > 1 {
 						// moduledir CLI parameter override

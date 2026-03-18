@@ -168,6 +168,8 @@ func resolvePuppetEnvironment(tags bool, outputNameTag string) {
 							pf := filepath.Join(targetDir, "Puppetfile")
 							mutex.Lock()
 							allBasedirs[sa.Basedir] = true
+							// check if the Puppetfile content from the upstream repository matches the one in the deployed environment
+							_, pfMatch := needSyncEnvs[env+":PuppetfileMatch"]
 							mutex.Unlock()
 							if !fileExists(pf) {
 								Debugf("resolvePuppetEnvironment(): Skipping branch " + source + "_" + branch + " because " + pf + " does not exist")
@@ -183,6 +185,7 @@ func resolvePuppetEnvironment(tags bool, outputNameTag string) {
 								}
 							} else {
 								puppetfile := readPuppetfile(pf, sa.PrivateKey, source, branch, sa.ForceForgeVersions, false)
+								puppetfile.upstreamPuppetfileMatches = pfMatch
 								puppetfile.workDir = normalizeDir(targetDir)
 								puppetfile.controlRepoBranch = branch
 								puppetfile.gitDir = workDir
@@ -219,8 +222,6 @@ func resolvePuppetEnvironment(tags bool, outputNameTag string) {
 			Warnf("WARNING: Environment '" + environmentParam + "' cannot be found in any source and will not be deployed.")
 		}
 	}
-	//fmt.Println("allPuppetfiles: ", allPuppetfiles, len(allPuppetfiles))
-	//fmt.Println("allPuppetfiles[0]: ", allPuppetfiles["postinstall"])
 	resolvePuppetfile(allPuppetfiles)
 	// fmt.Printf("%+v\n", allEnvironments)
 	if len(moduleParam) == 0 {
@@ -245,9 +246,14 @@ func resolvePuppetfile(allPuppetfiles map[string]Puppetfile) {
 	uniqueGitModules := make(map[string]GitModule)
 	// if we made it this far initialize the global maps
 	latestForgeModules.m = make(map[string]string)
+	uniqueForgeModules = make(map[string]ForgeModule)
 	for env, pf := range allPuppetfiles {
 		Debugf("Resolving branch " + env + " of source " + pf.source)
 		//fmt.Println(pf)
+		if pf.upstreamPuppetfileMatches && !force {
+			Debugf("Skipping resolution of branch " + env + " of source " + pf.source + " because Puppetfile content has not changed")
+			continue
+		}
 		for gitName, gitModule := range pf.gitModules {
 			if len(moduleParam) > 0 {
 				if gitName != moduleParam {

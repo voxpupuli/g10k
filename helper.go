@@ -272,6 +272,13 @@ func getSha256sumFile(file string) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
+// getSha256sumString return the SHA256 hash sum of the given string
+func getSha256sumString(s string) string {
+	h := sha256.New()
+	h.Write([]byte(s))
+	return hex.EncodeToString(h.Sum(nil))
+}
+
 // moveFile uses io.Copy to create a copy of the given file https://stackoverflow.com/a/50741908/682847
 func moveFile(sourcePath, destPath string, deleteSourceFileToggle bool) error {
 	inputFile, err := os.Open(sourcePath)
