@@ -222,8 +222,6 @@ func resolvePuppetEnvironment(tags bool, outputNameTag string) {
 			Warnf("WARNING: Environment '" + environmentParam + "' cannot be found in any source and will not be deployed.")
 		}
 	}
-	//fmt.Println("allPuppetfiles: ", allPuppetfiles, len(allPuppetfiles))
-	//fmt.Println("allPuppetfiles[0]: ", allPuppetfiles["postinstall"])
 	resolvePuppetfile(allPuppetfiles)
 	// fmt.Printf("%+v\n", allEnvironments)
 	if len(moduleParam) == 0 {
@@ -248,6 +246,7 @@ func resolvePuppetfile(allPuppetfiles map[string]Puppetfile) {
 	uniqueGitModules := make(map[string]GitModule)
 	// if we made it this far initialize the global maps
 	latestForgeModules.m = make(map[string]string)
+	uniqueForgeModules = make(map[string]ForgeModule)
 	for env, pf := range allPuppetfiles {
 		Debugf("Resolving branch " + env + " of source " + pf.source)
 		//fmt.Println(pf)
