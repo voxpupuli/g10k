@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"runtime"
 	"strings"
@@ -522,4 +524,155 @@ func TestReadPuppetfileSSHKeyAlreadyLoaded(t *testing.T) {
 		spew.Dump(got)
 		t.Errorf("Expected Puppetfile: %+v, but got Puppetfile: %+v", expected, got)
 	}
+}
+
+func TestResolvePuppetfileMatch(t *testing.T) {
+	quiet = true
+	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
+
+	// Create a dummy git repo
+	repoDir := "tests/test-control-repo"
+	repoURL := "file://" + filepath.Join(os.Getenv("PWD"), repoDir)
+
+	// Ensure clean state
+	purgeDir(repoDir, funcName)
+	err := os.MkdirAll(repoDir, 0755)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Initialize git repo
+	cmd := exec.Command("git", "init", repoDir)
+	if err := cmd.Run(); err != nil {
+		t.Fatal(err)
+	}
+
+	// Use fake forge to prevent network calls and timeout
+	ts := spinUpFakeForge(t, "tests/fake-forge/latest-puppetlabs-ntp-metadata.json")
+	defer ts.Close()
+
+	// Create Puppetfile
+	pfContent := []byte(`mod 'puppetlabs/ntp', '6.0.0'`)
+	if err := os.WriteFile(filepath.Join(repoDir, "Puppetfile"), pfContent, 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	// Commit
+	cmd = exec.Command("git", "-C", repoDir, "add", "Puppetfile")
+	if err := cmd.Run(); err != nil {
+		t.Fatal(err)
+	}
+	cmd = exec.Command("git", "-C", repoDir, "config", "user.email", "you@example.com")
+	if err := cmd.Run(); err != nil {
+		t.Fatal(err)
+	}
+	cmd = exec.Command("git", "-C", repoDir, "config", "user.name", "Your Name")
+	if err := cmd.Run(); err != nil {
+		t.Fatal(err)
+	}
+
+	cmd = exec.Command("git", "-C", repoDir, "commit", "-m", "Initial commit")
+	if err := cmd.Run(); err != nil {
+		t.Fatal(err)
+	}
+
+	// Setup config
+	config = ConfigSettings{
+		CacheDir:        "/tmp/g10k-test-cache",
+		ForgeCacheDir:   "/tmp/g10k-test-cache/forge",
+		ModulesCacheDir: "/tmp/g10k-test-cache/modules",
+		EnvCacheDir:     "/tmp/g10k-test-cache/environments",
+		ForgeBaseURL:    ts.URL,
+		Sources: map[string]Source{
+			"test": {
+				Remote:  repoURL,
+				Basedir: "/tmp/g10k-test-envs",
+				Prefix:  "false",
+			},
+		},
+		MaxExtractworker: 1,
+		Maxworker:        5,
+	}
+
+	// Clean up previous runs
+	purgeDir(config.CacheDir, funcName)
+	purgeDir(config.Sources["test"].Basedir, funcName)
+	// Create cache directories that g10k expects to exist
+	if err := os.MkdirAll(config.ForgeCacheDir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(config.ModulesCacheDir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(config.EnvCacheDir, 0755); err != nil {
+		t.Fatal(err)
+	}
+
+	// First run: should deploy
+	branchParam = "master"
+	resolvePuppetEnvironment(false, "")
+
+	// Verify deployment
+	deployedPF := filepath.Join(config.Sources["test"].Basedir, "master", "Puppetfile")
+	if !fileExists(deployedPF) {
+		t.Errorf("Puppetfile not deployed")
+	}
+
+	// Verify checksum in deployed file
+	deployFile := filepath.Join(config.Sources["test"].Basedir, "master", ".g10k-deploy.json")
+	if !fileExists(deployFile) {
+		t.Errorf(".g10k-deploy.json not created")
+	}
+
+	// Second run: should detect match and skip module resolution
+	// We can't easily assert on internal log messages without capturing stdout/log,
+	// but we can check if the skipped logic is hit by ensuring no errors occur and fast execution.
+	// Ideally we would mock the module resolution to fail if called, but that's hard here.
+
+	// Let's modify the deployed Puppetfile to see if it gets overwritten (it shouldn't if skipped)
+	// Wait, if it skips resolution, it won't even read the Puppetfile to know what modules to fetch.
+	// If we were to modify the deployed Puppetfile, g10k might notice the checksum mismatch?
+	// The optimization is: upstream git content == deployed file content on disk.
+
+	// Ensure we are in a clean state for variables
+	needSyncEnvs = make(map[string]struct{})
+
+	// Capture log output
+	// var buf bytes.Buffer
+	// log.SetOutput(&buf)
+	// defer func() {
+	// 	log.SetOutput(os.Stderr)
+	// }()
+
+	// Enable debug logging
+	// debug = true
+	// defer func() { debug = false }()
+
+	// Second run: should detect match and skip module resolution
+	// Ensure we are in a clean state for variables
+	needSyncEnvs = make(map[string]struct{})
+
+	// Capture log output to verify the optimization
+	var buf strings.Builder
+	log.SetOutput(&buf)
+	debug = true
+	verbose = true
+
+	// Run the resolution again
+	resolvePuppetEnvironment(false, "")
+
+	// Restore logging
+	debug = false
+	verbose = false
+	log.SetOutput(os.Stdout)
+
+	// Verify that the optimization was triggered
+	logOutput := buf.String()
+	expectedMsg := "Skipping resolution of branch master of source test because Puppetfile content has not changed"
+	if !strings.Contains(logOutput, expectedMsg) {
+		t.Errorf("Expected optimization message not found in logs.\nExpected: %s\nGot:\n%s", expectedMsg, logOutput)
+	}
+
+	// Cleanup
+	purgeDir(repoDir, funcName)
 }
