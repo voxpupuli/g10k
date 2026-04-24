@@ -588,25 +588,26 @@ func TestInvalidSha256sumForgemodule(t *testing.T) {
 func spinUpFakeForge(t *testing.T, metadataFile string) *httptest.Server {
 	// spin up HTTP test server to serve fake/invalid Forge module metadata
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/v3/releases/puppetlabs-ntp-6.0.0" {
+		switch r.URL.Path {
+		case "/v3/releases/puppetlabs-ntp-6.0.0":
 			body, err := os.ReadFile(metadataFile)
 			if err != nil {
 				t.Error(err)
 			}
-			fmt.Fprint(w, string(body))
-		} else if r.URL.Path == "/v3/modules/puppetlabs-ntp" {
+			_, _ = fmt.Fprint(w, string(body))
+		case "/v3/modules/puppetlabs-ntp":
 			body, err := os.ReadFile("tests/fake-forge/latest-puppetlabs-ntp-metadata.json")
 			if err != nil {
 				t.Error(err)
 			}
-			fmt.Fprint(w, string(body))
-		} else if r.URL.Path == "/v3/files/puppetlabs-ntp-6.0.0.tar.gz" {
+			_, _ = fmt.Fprint(w, string(body))
+		case "/v3/files/puppetlabs-ntp-6.0.0.tar.gz":
 			body, err := os.ReadFile("tests/fake-forge/fake-puppetlabs-ntp-6.0.0.tar.gz")
 			if err != nil {
 				t.Error(err)
 			}
-			fmt.Fprint(w, string(body))
-		} else {
+			_, _ = fmt.Fprint(w, string(body))
+		default:
 			t.Error("Unexpected request URL:" + r.URL.Path)
 		}
 	}))
@@ -1078,12 +1079,12 @@ func TestResolvePuppetfileSingleModuleForge(t *testing.T) {
 		t.Errorf("error found file %s of a module that should not be there, because -module is set to %s", metadataFile, moduleParam)
 	}
 
-	if !fileExists(strings.Replace(metadataFile, "sensu", "firewall", -1)) {
-		t.Errorf("error missing file %s of a module that should be there, despite -module being set to %s", strings.Replace(metadataFile, "sensu", "firewall", -1), moduleParam)
+	if !fileExists(strings.ReplaceAll(metadataFile, "sensu", "firewall")) {
+		t.Errorf("error missing file %s of a module that should be there, despite -module being set to %s", strings.ReplaceAll(metadataFile, "sensu", "firewall"), moduleParam)
 	}
 
-	if !fileExists(strings.Replace(metadataFile, "sensu", "concat", -1)) {
-		t.Errorf("error missing file %s of a module that should be there, despite -module being set to %s", strings.Replace(metadataFile, "sensu", "concat", -1), moduleParam)
+	if !fileExists(strings.ReplaceAll(metadataFile, "sensu", "concat")) {
+		t.Errorf("error missing file %s of a module that should be there, despite -module being set to %s", strings.ReplaceAll(metadataFile, "sensu", "concat"), moduleParam)
 	}
 
 	moduleParam = ""
@@ -1132,12 +1133,12 @@ func TestResolvePuppetfileSingleModuleGit(t *testing.T) {
 		t.Errorf("error found file %s of a module that should not be there, because -module is set to %s", metadataFile, moduleParam)
 	}
 
-	if !fileExists(strings.Replace(metadataFile, "concat", "stdlib", -1)) {
-		t.Errorf("error missing file %s of a module that should be there, despite -module being set to %s", strings.Replace(metadataFile, "concat", "concat", -1), moduleParam)
+	if !fileExists(strings.ReplaceAll(metadataFile, "concat", "stdlib")) {
+		t.Errorf("error missing file %s of a module that should be there, despite -module being set to %s", strings.ReplaceAll(metadataFile, "concat", "concat"), moduleParam)
 	}
 
-	if !fileExists(strings.Replace(metadataFile, "concat", "sensu", -1)) {
-		t.Errorf("error missing file %s of a module that should be there, despite -module being set to %s", strings.Replace(metadataFile, "concat", "concat", -1), moduleParam)
+	if !fileExists(strings.ReplaceAll(metadataFile, "concat", "sensu")) {
+		t.Errorf("error missing file %s of a module that should be there, despite -module being set to %s", strings.ReplaceAll(metadataFile, "concat", "concat"), moduleParam)
 	}
 	moduleParam = ""
 
@@ -1798,9 +1799,9 @@ func TestLastCheckedFile(t *testing.T) {
 
 	// skip err as we explicitly checked for it above
 	f, _ := os.Create(lastCheckedFile)
-	f.WriteString("")
-	f.Close()
-	f.Sync()
+	_, _ = f.WriteString("")
+	_ = f.Close()
+	_ = f.Sync()
 	fi, _ := os.Stat(lastCheckedFile)
 	if fi.Size() != 0 {
 		t.Errorf("Forge cache file could not be truncated/emptied: %s", lastCheckedFile)
@@ -2161,9 +2162,9 @@ func TestPurgeStaleDeploymentOnly(t *testing.T) {
 	createOrPurgeDir("/tmp/full/full_stale/stale_directory_that_should_be_purged", funcName)
 	createOrPurgeDir("/tmp/full/full_stale/stale_dir", funcName)
 	f, _ := os.Create("/tmp/full/full_stale/stale_dir/stale_file")
-	defer f.Close()
-	f.WriteString("foobar")
-	f.Sync()
+	defer func() { _ = f.Close() }()
+	_, _ = f.WriteString("foobar")
+	_ = f.Sync()
 
 	cmd := exec.Command(os.Args[0], "-test.run="+funcName+"$")
 	cmd.Env = append(os.Environ(), "TEST_FOR_CRASH_"+funcName+"=1")
@@ -2229,9 +2230,9 @@ func TestPurgeStaleDeploymentOnlyWithAllowList(t *testing.T) {
 	createOrPurgeDir("/tmp/full/full_hiera_master/hiera_dir", funcName)
 	createOrPurgeDir("/tmp/full/full_hiera_qa/hiera_dir_qa", funcName)
 	f, _ := os.Create("/tmp/full/full_stale/stale_dir/stale_file")
-	defer f.Close()
-	f.WriteString("foobar")
-	f.Sync()
+	defer func() { _ = f.Close() }()
+	_, _ = f.WriteString("foobar")
+	_ = f.Sync() // FIXME: error should be handled
 
 	cmd := exec.Command(os.Args[0], "-test.run="+funcName+"$")
 	cmd.Env = append(os.Environ(), "TEST_FOR_CRASH_"+funcName+"=1")
@@ -2364,11 +2365,11 @@ func TestSkipPurgingWithMultipleSources(t *testing.T) {
 		// create stale sub folder with a file inside
 		checkDirAndCreate("/tmp/out/example_single_git/mymodule2/dir1", funcName)
 		f, _ := os.Create("/tmp/out/example_single_git/mymodule2/dir1/file3")
-		f.WriteString("slddkasjld")
-		f.Close()
+		_, _ = f.WriteString("slddkasjld")
+		_ = f.Close()
 		// and force another environment sync
 		purgeDir("/tmp/out/example_single_git/.g10k-deploy.json", funcName)
-		f.Sync()
+		_ = f.Sync()
 		branchParam = ""
 		resolvePuppetEnvironment(false, "")
 
@@ -2494,9 +2495,9 @@ func TestSymlink(t *testing.T) {
 		purgeDir("/tmp/out/full_symlinks/modules/testmodule/.latest_commit", "TestResolveStatic()")
 
 		f, _ := os.Create("/tmp/out/full_symlinks/modules/testmodule/.latest_commit")
-		defer f.Close()
-		f.WriteString("foobarinvalidgitcommithashthatshouldtriggeraresyncofthismodule")
-		f.Sync()
+		defer func() { _ = f.Close() }()
+		_, _ = f.WriteString("foobarinvalidgitcommithashthatshouldtriggeraresyncofthismodule")
+		_ = f.Sync()
 
 	}
 	environmentParam = ""

@@ -55,11 +55,11 @@ func Infof(s string) {
 func Validatef() {
 	if len(validationMessages) > 0 {
 		for _, message := range validationMessages {
-			color.New(color.FgRed).Fprintln(os.Stdout, message)
+			_, _ = color.New(color.FgRed).Fprintln(os.Stdout, message) // FIXME: error should be handled
 		}
 		os.Exit(1)
 	} else {
-		color.New(color.FgGreen).Fprintln(os.Stdout, "Configuration successfully parsed.")
+		_, _ = color.New(color.FgGreen).Fprintln(os.Stdout, "Configuration successfully parsed.") // FIXME: error should be handled
 		os.Exit(0)
 	}
 }
@@ -76,7 +76,7 @@ func Fatalf(s string) {
 	if validate {
 		validationMessages = append(validationMessages, s)
 	} else {
-		color.New(color.FgRed).Fprintln(os.Stderr, s)
+		_, _ = color.New(color.FgRed).Fprintln(os.Stderr, s) // FIXME: error should be handled
 		os.Exit(1)
 	}
 }
@@ -105,7 +105,7 @@ func isDir(dir string) bool {
 // normalizeDir removes from the given directory path multiple redundant slashes and removes a trailing slash
 func normalizeDir(dir string) string {
 	if strings.Count(dir, "//") > 0 {
-		dir = normalizeDir(strings.Replace(dir, "//", "/", -1))
+		dir = normalizeDir(strings.ReplaceAll(dir, "//", "/"))
 	}
 	dir = strings.TrimSuffix(dir, "/")
 	return dir
@@ -143,14 +143,14 @@ func createOrPurgeDir(dir string, callingFunction string) {
 	if !dryRun {
 		if !fileExists(dir) {
 			Debugf("Trying to create dir: " + dir + " called from " + callingFunction)
-			os.MkdirAll(dir, 0777)
+			_ = os.MkdirAll(dir, 0777) // FIXME: error should be handled
 		} else {
 			Debugf("Trying to remove: " + dir + " called from " + callingFunction)
 			if err := os.RemoveAll(dir); err != nil {
 				log.Print("createOrPurgeDir(): error: removing dir failed", err)
 			}
 			Debugf("Trying to create dir: " + dir + " called from " + callingFunction)
-			os.MkdirAll(dir, 0777)
+			_ = os.MkdirAll(dir, 0777) // FIXME: error should be handled
 		}
 	}
 }
@@ -196,10 +196,10 @@ func executeCommand(command string, commandDir string, timeout int, allowFail bo
 		Debugf("found matching NO_PROXY URL, trying to disable http_proxy and https_proxy env variables for " + command)
 		// execCommand.Env = append(os.Environ(), "http_proxy=")
 		// execCommand.Env = append(os.Environ(), "https_proxy=")
-		os.Unsetenv("http_proxy")
-		os.Unsetenv("https_proxy")
-		os.Unsetenv("HTTP_PROXY")
-		os.Unsetenv("HTTPS_PROXY")
+		_ = os.Unsetenv("http_proxy")  // FIXME: error should be handled
+		_ = os.Unsetenv("https_proxy") // FIXME: error should be handled
+		_ = os.Unsetenv("HTTP_PROXY")  // FIXME: error should be handled
+		_ = os.Unsetenv("HTTPS_PROXY") // FIXME: error should be handled
 	}
 	execCommand.Env = os.Environ()
 	out, err := execCommand.CombinedOutput()
@@ -229,9 +229,10 @@ func funcName() string {
 
 func timeTrack(start time.Time, name string) {
 	duration := time.Since(start).Seconds()
-	if name == "resolveForgeModules" {
+	switch name {
+	case "resolveForgeModules":
 		syncForgeTime = duration
-	} else if name == "resolveGitRepositories" {
+	case "resolveGitRepositories":
 		syncGitTime = duration
 	}
 	Debugf(name + "() took " + strconv.FormatFloat(duration, 'f', 5, 64) + "s")
@@ -241,14 +242,14 @@ func timeTrack(start time.Time, name string) {
 func checkForAndExecutePostrunCommand() {
 	if len(config.PostRunCommand) > 0 {
 		postrunCommandString := strings.Join(config.PostRunCommand, " ")
-		postrunCommandString = strings.Replace(postrunCommandString, "$modifieddirs", strings.Join(needSyncDirs, " "), -1)
+		postrunCommandString = strings.ReplaceAll(postrunCommandString, "$modifieddirs", strings.Join(needSyncDirs, " "))
 
 		needSyncEnvText := ""
 		for needSyncEnv := range needSyncEnvs {
 			needSyncEnvText += needSyncEnv + " "
 		}
-		postrunCommandString = strings.Replace(postrunCommandString, "$modifiedenvs", needSyncEnvText, -1)
-		postrunCommandString = strings.Replace(postrunCommandString, "$branchparam", branchParam, -1)
+		postrunCommandString = strings.ReplaceAll(postrunCommandString, "$modifiedenvs", needSyncEnvText)
+		postrunCommandString = strings.ReplaceAll(postrunCommandString, "$branchparam", branchParam)
 
 		er := executeCommand(postrunCommandString, "", config.Timeout, false, false)
 		Debugf("postrun command '" + postrunCommandString + "' terminated with exit code " + strconv.Itoa(er.returnCode))
@@ -262,7 +263,7 @@ func getSha256sumFile(file string) string {
 	if err != nil {
 		Fatalf("failed to open file " + file + " to calculate SHA256 sum. Error: " + err.Error())
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	h := sha256.New()
 	if _, err := io.Copy(h, f); err != nil {
@@ -280,12 +281,12 @@ func moveFile(sourcePath, destPath string, deleteSourceFileToggle bool) error {
 	}
 	outputFile, err := os.Create(destPath)
 	if err != nil {
-		inputFile.Close()
+		_ = inputFile.Close()
 		return fmt.Errorf("couldn't open dest file: %s", err)
 	}
-	defer outputFile.Close()
+	defer func() { _ = outputFile.Close() }()
 	_, err = io.Copy(outputFile, inputFile)
-	inputFile.Close()
+	_ = inputFile.Close()
 	if err != nil {
 		return fmt.Errorf("writing to output file failed: %s", err)
 	}
@@ -328,7 +329,9 @@ func readDeployResultFile(file string) DeployResult {
 	if err != nil {
 		Warnf("Could not open JSON file " + file + " " + err.Error())
 	}
-	defer jsonFile.Close()
+	defer func() {
+		_ = jsonFile.Close()
+	}()
 
 	byteValue, err := io.ReadAll(jsonFile)
 	if err != nil {
@@ -336,7 +339,7 @@ func readDeployResultFile(file string) DeployResult {
 	}
 
 	var dr DeployResult
-	json.Unmarshal([]byte(byteValue), &dr)
+	_ = json.Unmarshal([]byte(byteValue), &dr) // FIXME an error here should actually be handled
 
 	return dr
 
