@@ -51,7 +51,8 @@ func doModuleInstallOrNothing(fm ForgeModule) {
 	if check4update {
 		moduleVersion = "latest"
 	}
-	if moduleVersion == "latest" {
+	switch moduleVersion {
+	case "latest":
 		if !isDir(workDir) {
 			Debugf(workDir + " does not exist, fetching Forge module")
 			// check forge API what the latest version is
@@ -104,7 +105,7 @@ func doModuleInstallOrNothing(fm ForgeModule) {
 			//fmt.Println(needToGet)
 		}
 
-	} else if moduleVersion == "present" {
+	case "present":
 		// ensure that a latest version this module exists
 		latestDir := filepath.Join(config.ForgeCacheDir, moduleName+"-latest")
 		if !isDir(latestDir) {
@@ -118,7 +119,7 @@ func doModuleInstallOrNothing(fm ForgeModule) {
 			return
 		}
 		Debugf("Nothing to do for module " + fm.author + "-" + fm.name + "-" + fm.version + ", because " + latestDir + " exists")
-	} else {
+	default:
 		if !isDir(workDir) {
 			_ = queryForgeAPI(fm)
 			fr.needToGet = true
@@ -197,9 +198,10 @@ func queryForgeAPI(fm ForgeModule) ForgeResult {
 	mutex.Lock()
 	syncForgeTime += duration
 	mutex.Unlock()
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
-	if resp.StatusCode == http.StatusOK {
+	switch resp.StatusCode {
+	case http.StatusOK:
 		// need to get latest version
 		body, err := io.ReadAll(resp.Body)
 		if err != nil {
@@ -212,15 +214,15 @@ func queryForgeAPI(fm ForgeModule) ForgeResult {
 		lastCheckedFile := filepath.Join(config.ForgeCacheDir, fm.author+"-"+fm.name+"-latest-last-checked")
 		Debugf("writing last-checked file " + lastCheckedFile)
 		f, _ := os.Create(lastCheckedFile)
-		defer f.Close()
-		f.WriteString(json)
+		defer func() { _ = f.Close() }()
+		_, _ = f.WriteString(json) // FIXME: error should be handled
 
 		return ForgeResult{true, fr.versionNumber, fr.md5sum, fr.fileSize}
 
-	} else if resp.StatusCode == http.StatusNotModified {
+	case http.StatusNotModified:
 		Debugf("Got 304 nothing to do for module " + fm.author + "-" + fm.name)
 		return ForgeResult{false, "", "", 0}
-	} else if resp.StatusCode == http.StatusNotFound {
+	case http.StatusNotFound:
 		Fatalf("Received 404 from Forge for module " + fm.author + "-" + fm.name + " using URL " + url + " Does the module really exist and is it correctly named?")
 		return ForgeResult{false, "", "", 0}
 	}
@@ -302,7 +304,7 @@ func getMetadataForgeModule(fm ForgeModule) ForgeModule {
 	if err != nil {
 		Fatalf("getMetadataForgeModule(): Error while querying metadata for Forge module " + fm.name + " from " + url + ": " + err.Error())
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode == http.StatusOK {
 		body, err := io.ReadAll(resp.Body)
@@ -340,7 +342,7 @@ func extractForgeModule(wgForgeModule *sync.WaitGroup, file *io.PipeReader, file
 	if err != nil {
 		Fatalf(funcName + "(): pgzip reader error for module " + fileName + " error:" + err.Error())
 	}
-	defer fileReader.Close()
+	defer func() { _ = fileReader.Close() }()
 
 	duration := time.Since(before).Seconds()
 	Verbosef("Extracting " + filepath.Join(config.ForgeCacheDir, fileName) + " took " + strconv.FormatFloat(duration, 'f', 5, 64) + "s")
@@ -387,9 +389,10 @@ func downloadForgeModule(name string, version string, fm ForgeModule, retryCount
 		if err != nil {
 			Fatalf(funcName + "(): Error while GETing Forge module " + name + " from " + url + ": " + err.Error())
 		}
-		defer resp.Body.Close()
+		defer func() { _ = resp.Body.Close() }()
 
-		if resp.StatusCode == http.StatusOK {
+		switch resp.StatusCode {
+		case http.StatusOK:
 			wgForgeModule.Add(1)
 			go func() {
 				defer wgForgeModule.Done()
@@ -399,8 +402,8 @@ func downloadForgeModule(name string, version string, fm ForgeModule, retryCount
 				if err != nil {
 					Fatalf(funcName + "(): Error while creating file for Forge module " + targetFileName + " Error: " + err.Error())
 				}
-				defer out.Close()
-				io.Copy(out, saveFileR)
+				defer func() { _ = out.Close() }()
+				_, _ = io.Copy(out, saveFileR) // FIXME: error should be handled
 				Debugf(funcName + "(): Finished creating " + targetFileName)
 			}()
 			wgForgeModule.Add(1)
@@ -412,8 +415,8 @@ func downloadForgeModule(name string, version string, fm ForgeModule, retryCount
 				// after completing the copy, we need to close
 				// the PipeWriters to propagate the EOF to all
 				// PipeReaders to avoid deadlock
-				defer extractW.Close()
-				defer saveFileW.Close()
+				defer func() { _ = extractW.Close() }()
+				defer func() { _ = saveFileW.Close() }()
 
 				// build the multiwriter for all the pipes
 				mw := io.MultiWriter(extractW, saveFileW)
@@ -423,11 +426,11 @@ func downloadForgeModule(name string, version string, fm ForgeModule, retryCount
 					Fatalf("Error while writing to MultiWriter " + err.Error())
 				}
 			}()
-		} else if resp.StatusCode == http.StatusNotFound {
+		case http.StatusNotFound:
 			Fatalf("Received 404 from Forge using URL " + url +
 				"\nCheck if the module name '" + fm.author + "-" + fm.name + "' and version '" + version + "' really exist" +
 				"\nUsed in Puppet environment '" + fm.sourceBranch + "'")
-		} else {
+		default:
 			Fatalf("Unexpected response code while GETing " + url + " " + resp.Status)
 		}
 	} else {
@@ -443,7 +446,7 @@ func downloadForgeModule(name string, version string, fm ForgeModule, retryCount
 			}
 			Warnf("Retrying...")
 			purgeDir(filepath.Join(config.ForgeCacheDir, fileName), "downloadForgeModule()")
-			purgeDir(strings.Replace(filepath.Join(config.ForgeCacheDir, fileName), ".tar.gz", "/", -1), "downloadForgeModule()")
+			purgeDir(strings.ReplaceAll(filepath.Join(config.ForgeCacheDir, fileName), ".tar.gz", "/"), "downloadForgeModule()")
 			// retry if hash sum mismatch found
 			downloadForgeModule(name, version, fm, retryCount-1)
 		}
@@ -608,9 +611,9 @@ func doForgeModuleIntegrityCheck(m ForgeModule) bool {
 		// after completing the copy, we need to close
 		// the PipeWriters to propagate the EOF to all
 		// PipeReaders to avoid deadlock
-		defer md5W.Close()
+		defer func() { _ = md5W.Close() }()
 		if m.sha256sum != "" {
-			defer sha256W.Close()
+			defer func() { _ = sha256W.Close() }()
 		}
 
 		var mw io.Writer
@@ -628,7 +631,7 @@ func doForgeModuleIntegrityCheck(m ForgeModule) bool {
 			if err != nil {
 				Fatalf("Can't access Forge module archive " + fileName + " ! Error: " + err.Error())
 			}
-			defer file.Close()
+			defer func() { _ = file.Close() }()
 
 			// copy the data into the multiwriter
 			if _, err := io.Copy(mw, file); err != nil {
@@ -820,7 +823,7 @@ func syncForgeToModuleDir(name string, m ForgeModule, moduleDir string, correspo
 func getLatestCachedModule(m ForgeModule) string {
 	latest := "//"
 	version := "latest"
-	latestDir := filepath.Join(config.ForgeCacheDir, m.author+"-"+m.name+"-latest")
+	latestDir := filepath.Join(config.ForgeCacheDir, m.author+"-"+m.name+"-"+version)
 	if !isDir(latestDir) {
 
 		globPath := filepath.Join(config.ForgeCacheDir, m.author+"-"+m.name+"-*")

@@ -78,7 +78,7 @@ func readConfigfile(configFile string) ConfigSettings {
 	}
 
 	// set default max Go routines for Forge and Git module resolution if none is given
-	if !(config.Maxworker > 0) {
+	if config.Maxworker <= 0 {
 		config.Maxworker = maxworker
 	}
 	if maxworker != 50 {
@@ -90,7 +90,7 @@ func readConfigfile(configFile string) ConfigSettings {
 	}
 
 	// set default max Go routines for Forge and Git module extracting
-	if !(config.MaxExtractworker > 0) {
+	if config.MaxExtractworker <= 0 {
 		config.MaxExtractworker = maxExtractworker
 	}
 	if maxExtractworker != 20 {
@@ -153,7 +153,9 @@ func preparePuppetfile(pf string) string {
 	if err != nil {
 		Fatalf("preparePuppetfile(): Error while opening Puppetfile " + pf + " Error: " + err.Error())
 	}
-	defer file.Close()
+	defer func() {
+		_ = file.Close()
+	}()
 
 	reComma := regexp.MustCompile(`,\s*$`)
 	reComment := regexp.MustCompile(`^\s*#`)
@@ -340,7 +342,7 @@ func readPuppetfile(pf string, sshKey string, source string, branch string, forc
 				cga := ""
 				if len(gas) > 1 {
 					for _, ga := range gas {
-						cga += strings.TrimSpace(strings.Replace(ga[0], "=>", "", -1)) + ", "
+						cga += strings.TrimSpace(strings.ReplaceAll(ga[0], "=>", "")) + ", "
 					}
 					Fatalf("Error: Found conflicting git attributes " + cga + "in " + pf + " for module " + gitModuleName + " line: " + line)
 				}
@@ -360,45 +362,46 @@ func readPuppetfile(pf string, sshKey string, source string, branch string, forc
 						Fatalf("Error: Trailing comma or invalid setting for module found in " + pf + " for module " + gitModuleName + " line: " + line)
 					}
 					gitModuleAttribute := a[1]
-					if gitModuleAttribute == "git" {
+					switch gitModuleAttribute {
+					case "git":
 						if strings.Contains(a[2], "ProxyCommand") {
 							Fatalf("Error: Found ProxyCommand option in git url in " + pf + " for module " + gitModuleName + " line: " + line)
 						}
 						gm.git = a[2]
-					} else if gitModuleAttribute == "branch" {
+					case "branch":
 						if a[2] == ":control_branch" || a[2] == "control_branch" {
 							gm.link = true
 						} else {
 							gm.branch = a[2]
 						}
-					} else if gitModuleAttribute == "tag" {
+					case "tag":
 						gm.tag = a[2]
-					} else if gitModuleAttribute == "commit" {
+					case "commit":
 						gm.commit = a[2]
-					} else if gitModuleAttribute == "ref" {
+					case "ref":
 						gm.ref = a[2]
-					} else if gitModuleAttribute == "install_path" {
+					case "install_path":
 						gm.installPath = a[2]
-					} else if gitModuleAttribute == "link" {
+					case "link":
 						link, err := strconv.ParseBool(a[2])
 						if err != nil {
 							Fatalf("Error: Can not convert value " + a[2] + " of parameter " + gitModuleAttribute + " to boolean. In " + pf + " for module " + gitModuleName + " line: " + line)
 						}
 						gm.link = link
-					} else if gitModuleAttribute == "ignore-unreachable" || gitModuleAttribute == "ignore_unreachable" {
+					case "ignore-unreachable", "ignore_unreachable":
 						ignoreUnreachable, err := strconv.ParseBool(a[2])
 						if err != nil {
 							Fatalf("Error: Can not convert value " + a[2] + " of parameter " + gitModuleAttribute + " to boolean. In " + pf + " for module " + gitModuleName + " line: " + line)
 						}
 						gm.ignoreUnreachable = ignoreUnreachable
-					} else if gitModuleAttribute == "fallback" || gitModuleAttribute == "default_branch" {
+					case "fallback", "default_branch":
 						mapSize := strings.Count(a[2], "|") + 1
 						gm.fallback = make([]string, mapSize)
 						for i, fallbackBranch := range strings.Split(a[2], "|") {
 							//fmt.Println("--------> ", i, strings.TrimSpace(fallbackBranch))
 							gm.fallback[i] = strings.TrimSpace(fallbackBranch)
 						}
-					} else if gitModuleAttribute == "local" {
+					case "local":
 						local, err := strconv.ParseBool(a[2])
 						if err != nil {
 							Fatalf("Error: Can not convert value " + a[2] + " of parameter " + gitModuleAttribute + " to boolean. In " + pf + " for module " + gitModuleName + " line: " + line)
@@ -406,7 +409,7 @@ func readPuppetfile(pf string, sshKey string, source string, branch string, forc
 						if local {
 							gm.local = true
 						}
-					} else if gitModuleAttribute == "use_ssh_agent" {
+					case "use_ssh_agent":
 						useSSHAgent, err := strconv.ParseBool(a[2])
 						if err != nil {
 							Fatalf("Error: Can not convert value " + a[2] + " of parameter " + gitModuleAttribute + " to boolean. In " + pf + " for module " + gitModuleName + " line: " + line)

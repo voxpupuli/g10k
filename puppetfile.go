@@ -156,10 +156,10 @@ func resolvePuppetEnvironment(tags bool, outputNameTag string) {
 								Fatalf("Renamed environment naming conflict detected with renamed environment " + prefix + renamedBranch)
 							}
 							mutex.Unlock()
-							targetDir := filepath.Join(sa.Basedir, prefix+strings.Replace(renamedBranch, "/", "_", -1))
+							targetDir := filepath.Join(sa.Basedir, prefix+strings.ReplaceAll(renamedBranch, "/", "_"))
 							targetDir = normalizeDir(targetDir)
 
-							env := strings.Replace(strings.Replace(targetDir, sa.Basedir, "", 1), "/", "", -1)
+							env := strings.ReplaceAll(strings.Replace(targetDir, sa.Basedir, "", 1), "/", "")
 							if len(moduleParam) == 0 {
 								gitModule := GitModule{}
 								gitModule.tree = branch
@@ -230,11 +230,12 @@ func resolvePuppetEnvironment(tags bool, outputNameTag string) {
 
 // resolveSourcePrefix implements the prefix read out from each source given in the config file, like r10k https://github.com/puppetlabs/r10k/blob/master/doc/dynamic-environments/configuration.mkd#prefix
 func resolveSourcePrefix(source string, sa Source) string {
-	if sa.Prefix == "false" || sa.Prefix == "" {
+	switch sa.Prefix {
+	case "false", "":
 		return ""
-	} else if sa.Prefix == "true" {
+	case "true":
 		return source + "_"
-	} else {
+	default:
 		return sa.Prefix + "_"
 	}
 }
@@ -280,7 +281,7 @@ func resolvePuppetfile(allPuppetfiles map[string]Puppetfile) {
 				fm.cacheTTL = config.ForgeCacheTTL
 			}
 			// fmt.Println("Found Forge module", fm.author, "/", forgeModuleName, "with version", fm.version, "and cacheTTL", fm.cacheTTL)
-			forgeModuleName = strings.Replace(forgeModuleName, "/", "-", -1)
+			forgeModuleName = strings.ReplaceAll(forgeModuleName, "/", "-")
 			uniqueForgeModuleName := fm.author + "/" + forgeModuleName + "-" + fm.version
 			if _, ok := uniqueForgeModules[uniqueForgeModuleName]; !ok {
 				uniqueForgeModules[uniqueForgeModuleName] = fm
@@ -354,7 +355,7 @@ func resolvePuppetfile(allPuppetfiles map[string]Puppetfile) {
 			go func(gitName string, gitModule GitModule, env string, pf Puppetfile) {
 				defer wg.Done()
 				targetDir := normalizeDir(filepath.Join(moduleDir, gitName))
-				moduleCacheDir := filepath.Join(config.ModulesCacheDir, strings.Replace(strings.Replace(gitModule.git, "/", "_", -1), ":", "-", -1))
+				moduleCacheDir := filepath.Join(config.ModulesCacheDir, strings.ReplaceAll(strings.ReplaceAll(gitModule.git, "/", "_"), ":", "-"))
 				tree := detectDefaultBranch(moduleCacheDir)
 				Debugf("Setting " + tree + " as default branch for " + gitModule.git)
 				if len(gitModule.branch) > 0 {

@@ -77,7 +77,7 @@ func unTar(r io.Reader, targetBaseDir string) {
 				Fatalf(funcName + "(): error while Chtimes() file: " + filename + " Error: " + err.Error())
 			}
 
-			writer.Close()
+			_ = writer.Close()
 
 		case tar.TypeSymlink:
 			if fileExists(targetFilename) {

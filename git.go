@@ -77,7 +77,7 @@ func resolveGitRepositories(uniqueGitModules map[string]GitModule) {
 
 			//log.Println(config)
 			// create save directory name from Git repo name
-			repoDir := strings.Replace(strings.Replace(url, "/", "_", -1), ":", "-", -1)
+			repoDir := strings.ReplaceAll(strings.ReplaceAll(url, "/", "_"), ":", "-")
 			workDir := filepath.Join(config.ModulesCacheDir, repoDir)
 
 			success := doMirrorOrUpdate(gm, workDir, 0)
@@ -124,10 +124,7 @@ func doMirrorOrUpdate(gitModule GitModule, workDir string, retryCount int) bool 
 	}
 
 	// check if git URL does match NO_PROXY
-	disableHttpProxy := false
-	if matchGitRemoteURLNoProxy(gitModule.git) {
-		disableHttpProxy = true
-	}
+	disableHttpProxy := matchGitRemoteURLNoProxy(gitModule.git)
 
 	if explicitlyLoadSSHKey {
 		sshAddCmd := "ssh-add "
@@ -279,7 +276,7 @@ func syncToModuleDir(gitModule GitModule, srcDir string, targetDir string, corre
 				}
 				Fatalf("syncToModuleDir(): Failed to execute command: git --git-dir " + srcDir + " archive " + gitModule.tree + " Error: " + err.Error())
 			}
-			cmd.Start()
+			_ = cmd.Start() // FIXME: error should be handled
 
 			before := time.Now()
 			unTar(cmdOut, targetDir)
@@ -309,9 +306,9 @@ func syncToModuleDir(gitModule GitModule, srcDir string, targetDir string, corre
 			} else {
 				Debugf("Writing hash " + commitHash + " from command " + revParseCmd + " to " + hashFile)
 				f, _ := os.Create(hashFile)
-				defer f.Close()
-				f.WriteString(commitHash)
-				f.Sync()
+				defer func() { _ = f.Close() }()
+				_, _ = f.WriteString(commitHash) // FIXME: error should be handled
+				_ = f.Sync()                     // FIXME: error should be handled
 			}
 
 		} else if config.CloneGitModules {
