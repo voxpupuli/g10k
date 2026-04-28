@@ -392,10 +392,15 @@ func resolvePuppetfile(allPuppetfiles map[string]Puppetfile) {
 					Debugf("Trying to resolve " + moduleCacheDir + " with branch " + tree)
 					gitModule.tree = tree
 					success = syncToModuleDir(gitModule, moduleCacheDir, targetDir, env)
+				} else if gitModule.hasExplicitRef() {
+					// For non-link modules, try the primary tree when an explicit reference is set
+					// When branch/commit/tag/ref is set, it takes priority over the fallback/default_branch.
+					Debugf("Trying to resolve " + moduleCacheDir + " with branch " + tree)
+					gitModule.tree = tree
+					success = syncToModuleDir(gitModule, moduleCacheDir, targetDir, env)
 				}
-
-				if len(gitModule.fallback) > 0 {
-					if !success {
+				if !success {
+					if len(gitModule.fallback) > 0 {
 						for i, fallbackBranch := range gitModule.fallback {
 							if i == len(gitModule.fallback)-1 {
 								// last try
@@ -408,14 +413,15 @@ func resolvePuppetfile(allPuppetfiles map[string]Puppetfile) {
 								break
 							}
 						}
-						// possible TODO: shouldn't this fail if all fallback branches fail?
+					} else {
+						Debugf("Trying to resolve " + moduleCacheDir + " with branch " + tree)
+						gitModule.tree = tree
+						success = syncToModuleDir(gitModule, moduleCacheDir, targetDir, env)
 					}
-				} else {
-					gitModule.tree = tree
-					success = syncToModuleDir(gitModule, moduleCacheDir, targetDir, env)
-					if !success && !config.IgnoreUnreachableModules {
-						Fatalf("Failed to resolve git module '" + gitName + "' with repository " + gitModule.git + " and branch/reference '" + tree + "' used in control repository branch '" + pf.sourceBranch + "' or Puppet environment '" + env + "'")
-					}
+				}
+
+				if !success && !config.IgnoreUnreachableModules {
+					Fatalf("Failed to resolve git module '" + gitName + "' with repository " + gitModule.git + " and branch/reference '" + tree + "' used in control repository branch '" + pf.sourceBranch + "' or Puppet environment '" + env + "'")
 				}
 
 				// remove this module from the exisitingModuleDirs map

@@ -523,3 +523,33 @@ func TestReadPuppetfileSSHKeyAlreadyLoaded(t *testing.T) {
 		t.Errorf("Expected Puppetfile: %+v, but got Puppetfile: %+v", expected, got)
 	}
 }
+
+// TestReadPuppetfileBranchWithDefaultBranch verifies that a Puppetfile entry with both
+// :branch and :default_branch is parsed correctly: branch is stored in GitModule.branch
+// and default_branch is stored in GitModule.fallback.
+func TestReadPuppetfileBranchWithDefaultBranch(t *testing.T) {
+	quiet = true
+	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
+	got := readPuppetfile("tests/"+funcName, "", "test", "test", false, false)
+
+	fallbackMap := make([]string, 1)
+	fallbackMap[0] = "master"
+
+	fm := make(map[string]ForgeModule)
+	gm := make(map[string]GitModule)
+	gm["g10k_testmodule"] = GitModule{
+		git:      "https://github.com/xorpaul/g10k_testmodule.git",
+		branch:   "control_branch_foobar",
+		fallback: fallbackMap,
+	}
+
+	expected := Puppetfile{source: "test", gitModules: gm, forgeModules: fm}
+
+	if !equalPuppetfile(got, expected) {
+		fmt.Println("Expected:")
+		spew.Dump(expected)
+		fmt.Println("Got:")
+		spew.Dump(got)
+		t.Errorf("Expected Puppetfile: %+v, but got Puppetfile: %+v", expected, got)
+	}
+}

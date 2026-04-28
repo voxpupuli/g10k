@@ -186,6 +186,11 @@ type GitModule struct {
 	useSSHAgent       bool
 }
 
+// hasExplicitRef reports whether an explicit branch, commit, tag, or ref was set on the module.
+func (gm GitModule) hasExplicitRef() bool {
+	return len(gm.branch) > 0 || len(gm.commit) > 0 || len(gm.tag) > 0 || len(gm.ref) > 0
+}
+
 // ForgeResult is returned by queryForgeAPI and contains if and which version of the Puppetlabs Forge module needs to be downloaded
 type ForgeResult struct {
 	needToGet     bool
