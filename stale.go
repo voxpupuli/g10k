@@ -102,11 +102,24 @@ func checkRemoteSourceOfEnvironment(environmentDir string, configSources map[str
 func purgeControlRepoExceptModuledir(dir string, moduleDir string) {
 	moduleDir = filepath.Join(dir, moduleDir)
 
+	allowlistFolders := []string{}
+	if len(config.PurgeAllowList) > 0 {
+		for _, wlpattern := range config.PurgeAllowList {
+			allowlistGlobPath := filepath.Join(dir, wlpattern)
+			Debugf("purge_allowlist Glob'ing with path " + allowlistGlobPath)
+			we, _ := filepath.Glob(allowlistGlobPath)
+			allowlistFolders = append(allowlistFolders, we...)
+		}
+	}
+
 	globPath := filepath.Join(dir, "*")
 	Debugf("Glob'ing with path " + globPath)
 	folders, _ := filepath.Glob(globPath)
 	for _, folder := range folders {
 		if folder == moduleDir || strings.HasPrefix(folder, moduleDir) {
+			continue
+		} else if stringSliceContains(allowlistFolders, folder) {
+			Debugf("Not deleting " + folder + " due to purge_allowlist match")
 			continue
 		} else {
 			Debugf("deleting " + folder)
