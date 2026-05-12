@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"runtime"
 	"strings"
@@ -12,6 +13,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func equalPuppetfile(rt *Runtime, a, b Puppetfile) bool {
@@ -115,7 +117,7 @@ func equalGitModule(a, b GitModule) bool {
 }
 
 func readTestPuppetfile(t *testing.T, rt *Runtime, pf string, forceForgeVersions bool) Puppetfile {
-	got, err := rt.readPuppetfile(pf, "", "test", "test", forceForgeVersions, false)
+	got, err := rt.readPuppetfile(pf, "", "test", "test", forceForgeVersions)
 	if err != nil {
 		t.Fatalf("readPuppetfile(%s): %v", pf, err)
 	}
@@ -126,7 +128,7 @@ func checkExitCodeAndOutputOfReadPuppetfileSubprocess(t *testing.T, rt *Runtime,
 	pc, _, _, _ := runtime.Caller(1)
 	testFunctionName := strings.Split(runtime.FuncForPC(pc).Name(), ".")[len(strings.Split(runtime.FuncForPC(pc).Name(), "."))-1]
 	if os.Getenv("TEST_FOR_CRASH_"+testFunctionName) == "1" {
-		if _, err := rt.readPuppetfile("../../tests/"+testFunctionName, "", "test", "test", forceForgeVersions, false); err != nil {
+		if _, err := rt.readPuppetfile("../../tests/"+testFunctionName, "", "test", "test", forceForgeVersions); err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
@@ -279,6 +281,92 @@ func TestForceForgeVersionsPuppetfileCorrect(t *testing.T) {
 func TestReadPuppetfileDuplicateGitAttribute(t *testing.T) {
 	rt := NewRuntime(Options{})
 	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "")
+}
+
+func TestReadPuppetfileMixed(t *testing.T) {
+	rt := NewRuntime(Options{Quiet: true})
+	got := readTestPuppetfile(t, rt, "../../tests/TestReadPuppetfileMixed", false)
+
+	require.Contains(t, got.forgeModules, "a")
+	assert.Equal(t, "a", got.forgeModules["a"].author)
+	assert.Equal(t, "a", got.forgeModules["a"].name)
+	require.Contains(t, got.gitModules, "hieradata")
+	assert.Equal(t, []string{"foobar"}, got.gitModules["hieradata"].fallback)
+	assert.True(t, got.gitModules["hieradata"].link)
+	require.Contains(t, got.gitModules, "b")
+	assert.Equal(t, "https://a/b.git", got.gitModules["b"].git)
+}
+
+func TestParsePuppetfileReturnsErrors(t *testing.T) {
+	for _, tt := range []struct {
+		name    string
+		content string
+		wantErr string
+	}{
+		{"syntax", "mod 'example',\n :git =>\n", "invalid setting"},
+		{"duration", "forge.cacheTtl '300x'\n", "golang Duration"},
+		{"module name", "mod 'invalid/module/name'\n", "Forge module name is invalid"},
+		{"attributes", "mod 'example', :git => 'https://example.com/repo.git', :link => 'invalid'\n", "to boolean"},
+		{"duplicate", "mod 'example/module'\nmod 'example/module'\n", "Duplicate forge module"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "Puppetfile")
+			require.NoError(t, os.WriteFile(path, []byte(tt.content), 0o600))
+			rt := NewRuntime(Options{})
+			got, err := rt.ParsePuppetfile(path, "", "test", "test", false)
+			require.ErrorContains(t, err, tt.wantErr)
+			assert.Equal(t, Puppetfile{}, got)
+		})
+	}
+
+	t.Run("missing file", func(t *testing.T) {
+		rt := NewRuntime(Options{})
+		got, err := rt.ParsePuppetfile(filepath.Join(t.TempDir(), "missing"), "", "", "", false)
+		require.ErrorIs(t, err, os.ErrNotExist)
+		assert.Equal(t, Puppetfile{}, got)
+	})
+}
+
+func TestParsePuppetfileRuntimeSettings(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "Puppetfile")
+	require.NoError(t, os.WriteFile(path, []byte("moduledir 'ignored'\nmod 'author/forge', '1.0.0'\nmod 'git', :git => 'https://example.com/git.git'\nmod 'author/notation', :git => 'https://example.com/notation.git'\n"), 0o600))
+
+	rt := NewRuntime(Options{ModuleDir: "custom"})
+	rt.Config.ForgeBaseURL = "https://forge.example.com"
+	rt.Config.IgnoreUnreachableModules = true
+	got, err := rt.ParsePuppetfile(path, "ssh-key-path", "source", "branch", false)
+	require.NoError(t, err)
+	assert.Equal(t, []string{"custom"}, got.moduleDirs)
+	assert.Equal(t, "custom", got.forgeModules["forge"].moduleDir)
+	assert.Equal(t, "custom", got.gitModules["git"].moduleDir)
+	assert.Equal(t, "custom", got.gitModules["notation"].moduleDir)
+	assert.True(t, got.gitModules["git"].ignoreUnreachable)
+	assert.True(t, got.gitModules["notation"].ignoreUnreachable)
+	assert.Equal(t, rt.Config.ForgeBaseURL, got.forgeBaseURL)
+	assert.Equal(t, "ssh-key-path", got.privateKey)
+	assert.Equal(t, "source", got.source)
+	assert.Equal(t, "branch", got.sourceBranch)
+	assert.Equal(t, "source_branch", got.forgeModules["forge"].sourceBranch)
+
+	other := NewRuntime(Options{})
+	other.Config.ForgeBaseURL = "https://other.example.com"
+	parsed, err := other.ParsePuppetfile(path, "", "", "", false)
+	require.NoError(t, err)
+	assert.Equal(t, []string{"ignored"}, parsed.moduleDirs)
+	assert.False(t, parsed.gitModules["git"].ignoreUnreachable)
+	assert.Equal(t, other.Config.ForgeBaseURL, parsed.forgeBaseURL)
+}
+
+func TestParsePuppetfileCRLF(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "Puppetfile")
+	content := "forge.cacheTtl 50m\r\nmod 'author/forge', '1.0.0'\r\nmod 'git', :git => 'https://example.com/git.git'\r\n"
+	require.NoError(t, os.WriteFile(path, []byte(content), 0o600))
+
+	got, err := NewRuntime(Options{}).ParsePuppetfile(path, "", "test", "test", false)
+	require.NoError(t, err)
+	assert.Equal(t, 50*time.Minute, got.forgeCacheTTL)
+	assert.Equal(t, "1.0.0", got.forgeModules["forge"].version)
+	assert.Equal(t, "https://example.com/git.git", got.gitModules["git"].git)
 }
 
 func TestReadPuppetfileTrailingComma(t *testing.T) {

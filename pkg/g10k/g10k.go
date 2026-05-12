@@ -326,7 +326,7 @@ func Run(opts Options) (int, error) {
 			rt.Config.CloneGitModules = true
 		}
 		target := rt.PFLocation
-		puppetfile, err := rt.readPuppetfile(target, "", "cmdlineparam", "cmdlineparam", false, false)
+		puppetfile, err := rt.readPuppetfile(target, "", "cmdlineparam", "cmdlineparam", false)
 		if err != nil {
 			return 1, err
 		}

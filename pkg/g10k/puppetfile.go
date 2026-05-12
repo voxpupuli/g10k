@@ -180,7 +180,7 @@ func (rt *Runtime) resolvePuppetEnvironment(tags bool, outputNameTag string) err
 									rt.writeStructJSONFile(deployFile, dr)
 								}
 							} else {
-								puppetfile, err := rt.readPuppetfile(pf, sa.PrivateKey, source, branch, sa.ForceForgeVersions, false)
+								puppetfile, err := rt.readPuppetfile(pf, sa.PrivateKey, source, branch, sa.ForceForgeVersions)
 								if err != nil {
 									rt.Fatalf(err.Error())
 									return
