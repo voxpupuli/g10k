@@ -581,3 +581,21 @@ goreleaser build --snapshot --clean
 ```
 ./g10k -debug -config test.yaml
 ```
+
+# testing
+
+Integration tests verify the complete directory structure of deployed Puppet environments using snapshots. The test suite creates golden files that are committed to the repository.
+
+### Regenerate snapshots
+
+When integration test snapshots need to be updated (e.g., after intentional deployment changes), run:
+
+```
+# Generate new reference snapshots
+go test -v -run 'TestResolveStaticWithSnapshot|TestResolveStaticChangesDetected|TestResolveStaticSkiplistWithSnapshot|TestSymlinkHandlingWithSnapshot|TestSymlinkStabilityAcrossRuns|TestConfigFullworkingMultipleSourcesWithSnapshot|TestFilePermissionsPreserved' -count=1
+
+# Verify tests pass with new snapshots
+go test -v -run 'TestResolveStaticWithSnapshot|TestResolveStaticChangesDetected|TestResolveStaticSkiplistWithSnapshot|TestSymlinkHandlingWithSnapshot|TestSymlinkStabilityAcrossRuns|TestConfigFullworkingMultipleSourcesWithSnapshot|TestFilePermissionsPreserved'
+```
+
+Snapshots are stored in `tests/snapshots/` as JSON files and should be committed along with the code changes.

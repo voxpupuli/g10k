@@ -64,8 +64,6 @@ cmd := exec.Command(os.Args[0], "-test.run="+funcName+"$")
 cmd.Env = append(os.Environ(), "TEST_FOR_CRASH_"+funcName+"=1")
 ```
 
-Integration tests use `hashdeep` for file tree verification against `.hashdeep` files in `tests/`.
-
 ## Code Conventions
 
 ### Logging Levels
