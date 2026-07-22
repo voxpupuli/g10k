@@ -1,0 +1,3084 @@
+{
+  "root": "/tmp/out",
+  "files": [
+    {
+      "path": ".",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/.g10k-deploy.json",
+      "size": 362,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "88387aff07632f08d25c1e45d2159667",
+      "sha256": "d01f1dcedd1fdc0cd6c65b19d0e253f60556da27a738799d1be31a2a8a69c39f",
+      "is_link": false
+    },
+    {
+      "path": "example_single/Puppetfile",
+      "size": 63,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "c0dbb0987dfacc5d6f6626d7a6d070a6",
+      "sha256": "908886e175b83d37844a06ce1c8635a19d8a6b7c69c9b219c775027b77706766",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile",
+      "size": 420,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/CHANGELOG.md",
+      "size": 14656,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "82be5f6fd4406ced2c4603c5812fd06b",
+      "sha256": "7ac7ffb74a9afc51414922e46f243506665dfcb12bdfcfce6fc859e6020f0902",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/CONTRIBUTING.md",
+      "size": 9776,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "4d17f3c942e7c93d1577cc4438a231e4",
+      "sha256": "9894e0f7f26dd00d428fa43bf38b897bfaabd472dbf82ee080ea3d55b8202f42",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/Gemfile",
+      "size": 3723,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "547549329fb7fa5d97ab51bfe6f72080",
+      "sha256": "5367e09f5027c05efff92e54b381b3822e0a03115b37b30dec040460c40dec4b",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/HISTORY.md",
+      "size": 11086,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "f037200c8a4e43973960a43f6fc2768d",
+      "sha256": "ae7487244f4fd095221cfa228800a57e8bd4c09c09d572c82ea92329638e03f0",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/LICENSE",
+      "size": 11358,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "3b83ef96387f14655fc854ddc3c6bd57",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/MAINTAINERS.md",
+      "size": 191,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "601b5502368255945a0ec51758d24d72",
+      "sha256": "5063c81d0675e9902e2bdd54e448b73a8f895688d7637c84cd393cae5855aa8c",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/NOTICE",
+      "size": 676,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "d8696846ced56eb64cd473c23a68bf64",
+      "sha256": "883ab50cedd2d8b5945e576259413a00e0c4af99b8dd332cffc9b0bd1afb1717",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/README.md",
+      "size": 9276,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "8190ec8a421a499ad7899e29e2daaf3c",
+      "sha256": "2c1f72311bc4337865a416d0b2e3649704aead63f35cbb42eaebcb079d260cf7",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/REFERENCE.md",
+      "size": 4714,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "bc9647b99b03e62579b23dc9501fde27",
+      "sha256": "b70f4279d03019ea53696bd3d236f4de9b5a698ec274ec7d65dc481384a2da34",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/Rakefile",
+      "size": 3416,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "8e02a195f05b3a18f0a4eb2ec42bc2f4",
+      "sha256": "515fd17f701f3933d9354d28547865b401731f52078708a17ce6b4134b8ec782",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/appveyor.yml",
+      "size": 1342,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "4aa690537aadcdd9341e0e3cca957d38",
+      "sha256": "9ac169413d844cfc873015c900362ce0dc0f6e90fee8ea60b8ae3663f1f20e2a",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/checksums.json",
+      "size": 4374,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "256c3f9aa3ed1b225eabc33466ad7455",
+      "sha256": "168ad9dea61ca192c8b93041c04b397d720d3e3aa61356bb8f1981a058bfb2c4",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/distelli-manifest.yml",
+      "size": 847,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "b0309b09b8ee18c62c3c344b913fa5f5",
+      "sha256": "112823bd5e46029150fab9f2842d90a9e9a1119770468cff25e1af1df2a10f1a",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/examples",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/examples/ini_setting.pp",
+      "size": 618,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "9c8a9d2c453901cedb106cada253f1f6",
+      "sha256": "544481091c70d2280ea1956c406e5201bd9d23f5031206e6d72d5cf8b05564a2",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/examples/ini_subsetting.pp",
+      "size": 1029,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "16ef08c1534754b47120e58fa9e2f068",
+      "sha256": "2b601220eeb5cd4f6bac4ce687cb678c3efe2e1a89d23a46c42829b6568f4be9",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet",
+      "size": 120,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/parser",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/parser/functions",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/parser/functions/create_ini_settings.rb",
+      "size": 1711,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "3d3d2567fd4c5a71bec0beebbc8c228c",
+      "sha256": "f03e8106eb2b3582c113760d3403d7d16bdc3f274b4645ea183b60cd0cee98fa",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/provider",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/provider/ini_setting",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/provider/ini_setting/ruby.rb",
+      "size": 4272,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "8b83e058f484cb3475ff17ed49d7927f",
+      "sha256": "8f698cf7764403a227118dc90e46874e5bebcf35511ce9e0a362820538c9f43b",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/provider/ini_subsetting",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/provider/ini_subsetting/ruby.rb",
+      "size": 2197,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "f5961782c6b0d2efade6ab1ea8d2d05d",
+      "sha256": "6ca7bbafd48f625ce558aea08aec2b51e61a6d5be55b9487840538b4f9b0684c",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/type",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/type/ini_setting.rb",
+      "size": 4033,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "338c3cc0d24bf22fda2977b9dfb9b499",
+      "sha256": "31bb7adf3e991a43798308edf80994c429c52fae10a4f3f2e8ce266e04b62824",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/type/ini_subsetting.rb",
+      "size": 3695,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "c043a05e10b5e2fad984950d56b9b900",
+      "sha256": "5022ba85b84a41060426569bd5cd52d2038ed4fc2528ba88553988dc2b755e86",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/util",
+      "size": 120,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/util/external_iterator.rb",
+      "size": 429,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "aeeaae87574c2d2b895a186b3b03b67c",
+      "sha256": "076a50c77f464e8f6c8b1d8b0fc73cb31f9b18f62e59a9a7a541e23d44bff83d",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/util/ini_file",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/util/ini_file.rb",
+      "size": 12661,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "970108703c760539172fd07591ce63d2",
+      "sha256": "cb84074e9776266f42176e5b34352cc1ffec527a3948086755ccd72509727f03",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/util/ini_file/section.rb",
+      "size": 3102,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "0c973aca899289fed0a57bbd466561ad",
+      "sha256": "5ff274cc1f0b3d8574c3073e5e7cac2d4cecd551debbabb3c2913529f2cb98fc",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/lib/puppet/util/setting_value.rb",
+      "size": 7544,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "13ffa9f47a8aa6d0d26f9dfd4f717d49",
+      "sha256": "109ad391a923df3d9bc049a57b1d797d8184a389bae8a03683022b9925d1e636",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/locales",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/locales/config.yaml",
+      "size": 1062,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "2689a5a8fc3c80d049cddc4197ea7b3a",
+      "sha256": "b3d334ce7e5aa34ef42e7379db83c5af056c8848edd6ad71a2a9dd3b44b15cb6",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/locales/ja",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/locales/ja/puppetlabs-inifile.po",
+      "size": 3366,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "fdebcc9c33441932c8280cacf5480d11",
+      "sha256": "af8563e15dbe8802a76eade8eaaf3d69ec513fd4fe87d500ed6e43aad5e357df",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/locales/puppetlabs-inifile.pot",
+      "size": 4875,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "00b40b0bc723c6b0e2ff0d3ba05845f6",
+      "sha256": "d7c07b00fc97d5fb6011eb42f7c474027b4fb90c76d4e5d5d60a18f229ffce02",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/metadata.json",
+      "size": 2144,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "c4350714a1f512f03e057a6477ac085b",
+      "sha256": "7b28e3c03e23f28e0c7b0280290f9107a74abada6c854bac5ab3b058754c965c",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/provision.yaml",
+      "size": 1264,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "7dc7b2ac8536ba9d6af06f5c808516f2",
+      "sha256": "6d55b75801d99abbfb17eedba09f4b49d7c081ec0451a81f131cde8f4ff3aaf5",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec",
+      "size": 240,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/acceptance",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/acceptance/ini_setting_spec.rb",
+      "size": 9880,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "29f5cb21c60b8092a547017463c1ec67",
+      "sha256": "1493ba8faf780f326276c23f905b06a82a6d48765398eb4390230c5f985ca66a",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/acceptance/ini_subsetting_spec.rb",
+      "size": 7286,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "6efcefe070a4eaf867b0f591747e61d0",
+      "sha256": "231aa26ce61a8d6648b8e84fa48e6d07cbd837f82aded317080797583d1780f0",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/acceptance/nodesets",
+      "size": 120,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/acceptance/nodesets/centos-7-x64.yml",
+      "size": 174,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "a713f3abd3657f0ae2878829badd23cd",
+      "sha256": "697c149d85ebb33771dfe3eb3822e7ad5fa8253f8eff3f77a1c32658d9ff66c9",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/acceptance/nodesets/debian-8-x64.yml",
+      "size": 177,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "d2d2977900989f30086ad251a14a1f39",
+      "sha256": "eccf27e3eeed6cb0516f67e4ac62a70345034f8608c0664b50405bc664f3dfa7",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/acceptance/nodesets/default.yml",
+      "size": 186,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "b42da5a1ea0c964567ba7495574b8808",
+      "sha256": "84415beed8594ef9c3a34a7f402c50ef56c4149b7186cf441592150b460be9fb",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/acceptance/nodesets/docker",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/acceptance/nodesets/docker/centos-7.yml",
+      "size": 381,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "8a3892807bdd62306ae4774f41ba11ae",
+      "sha256": "3101897fda5f6b4455c2fc90d1706367bffeb05c6fff1bbba456ef7cc324aaaf",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/acceptance/nodesets/docker/debian-8.yml",
+      "size": 356,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "ac8e871d1068c96de5e85a89daaec6df",
+      "sha256": "93ecfe721ee41cfb2f75173c96f4663060a739debde2d15880c49d88ba8e87da",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/acceptance/nodesets/docker/ubuntu-14.04.yml",
+      "size": 474,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "dc42ee922a96908d85b8f0f08203ce58",
+      "sha256": "31ec78aac8354e5f9a3b0fb46901b88e263e254eeaa3ca3de784835989eb69d4",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/classes",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/classes/create_ini_settings_test_spec.rb",
+      "size": 796,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "bc5d3eb29dd05af9380e0e7082514e73",
+      "sha256": "15eb501f0ee0e69235484984e3c323798b32894818954141d9ba270579903918",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/classes/create_multiple_ini_settings_spec.rb",
+      "size": 594,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "0b71592f15f249c95d70c8be6ffb11da",
+      "sha256": "a6831c452114c29d533220680911d4d72e8f77dc8cc4b9b5cb8f43a6a91e3d20",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/classes/inherit_test1_spec.rb",
+      "size": 239,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "a19362ce956087ba0abdbae7a28b99d6",
+      "sha256": "85d0a8f8e8fb08e9bf6b2b560e5f3ddbe984eb33abba41c9bf5a904288f7e561",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/default_facts.yml",
+      "size": 217,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "d4442f09ee2f33f2d55f078d0ee2634f",
+      "sha256": "03bf00b19fad56fd70b5fd7e7011ab8155d19f05cb0634293e09924f8bd4b578",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures",
+      "size": 120,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/create_ini_settings_test",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/create_ini_settings_test/manifests",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/create_ini_settings_test/manifests/init.pp",
+      "size": 311,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "24dfde4e5e727c491d7388445369ca3d",
+      "sha256": "2eb999160e16038203390ffb566948258fd1c8cedaa88302d4150af8ccf6a592",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/create_multiple_ini_settings",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/create_multiple_ini_settings/manifests",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/create_multiple_ini_settings/manifests/init.pp",
+      "size": 409,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "14be9a3873627bafe4d4cb022b395715",
+      "sha256": "3feb987bd77a3fe7f331b00f05d8a294de9b11eaa75b6d935b2bbcd8337d107a",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/inherit_ini_setting",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/inherit_ini_setting/lib",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/inherit_ini_setting/lib/puppet",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/inherit_ini_setting/lib/puppet/provider",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/inherit_ini_setting/lib/puppet/provider/inherit_ini_setting",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/inherit_ini_setting/lib/puppet/provider/inherit_ini_setting/ini_setting.rb",
+      "size": 385,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "16cdab9b4d6cfa8f4013ed7ea6420c3c",
+      "sha256": "948542f7dc2fa70b68e8fd8e0f0d4b49b05e75e2b7daa8f8a4ebe856439ba3e1",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/inherit_ini_setting/lib/puppet/type",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/inherit_ini_setting/lib/puppet/type/inherit_ini_setting.rb",
+      "size": 120,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "ec08c7a0a841f929c5b698d468b052be",
+      "sha256": "4abf86850f3e3f3e9a04a4eec7bebb594dd079a1d9010a40fd83f5f10f5b6cc7",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/inherit_test1",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/inherit_test1/manifests",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/fixtures/inherit_test1/manifests/init.pp",
+      "size": 120,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "55bb7494f2a13139e1f610c234222d84",
+      "sha256": "5738f57afce9ad77d6f0f220614cda3b00c74b340a527462fb0a3314252ba828",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/functions",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/functions/create_ini_settings_spec.rb",
+      "size": 1057,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "f88c156503aa026e843ce08b81a72bc1",
+      "sha256": "fa23dee8907d9f93f27227fe76e0f3502fe0d05e4cb17d051d0dbbd4ac5b9da3",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/spec_helper.rb",
+      "size": 1702,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "ec40d36ed109d8dba0df527c34c2c6db",
+      "sha256": "8432a7d8ab8f8ffd129bfdf1ddc5205db98f8bfa6afd662b5067a0ee440f6aa1",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/spec_helper_acceptance.rb",
+      "size": 1895,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "85a0f5bc64860a3eed2009faf6609002",
+      "sha256": "83744acd64d484b76db4eacfaae413ff7f0341aec480a6cec0f2ccfa211a5b36",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/spec_helper_acceptance_local.rb",
+      "size": 936,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "3614d37701ec4d96f976b765d17de7f6",
+      "sha256": "9698a68f2c34649287d3a8745b59a10c22b6dffc2f322b9908b727cffba86245",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/spec_helper_local.rb",
+      "size": 730,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "be320849409fd3a6ae2a21c04701d88a",
+      "sha256": "fb918f36d28bc55f0be7247632802cc7aaa3d77296c2f4ad21951b086dcc5ba8",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/unit",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/unit/puppet",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/unit/puppet/provider",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/unit/puppet/provider/ini_setting",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/unit/puppet/provider/ini_setting/inheritance_spec.rb",
+      "size": 1872,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "5c2abe993e3aeef44058d524af716947",
+      "sha256": "e4f3e18991e550f150ec6fdd07a6b0dfd5b854b6ae78c8114ac7a546e7ef0972",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/unit/puppet/provider/ini_setting/ruby_spec.rb",
+      "size": 41904,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "54db6c939621d80f51b5e17169fb94d1",
+      "sha256": "069ac6dc6272e20b3186d2574e0d22bc39516ab7f249e3d51ea0d3a79731fedd",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/unit/puppet/provider/ini_subsetting",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/unit/puppet/provider/ini_subsetting/ruby_spec.rb",
+      "size": 11130,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "ded5c4b44044aefef2ec344ce7fcab41",
+      "sha256": "1bf7fc1f2074f5cc32792159d57e0b71877bb7811b6e827df5a3a4159d1b0f17",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/unit/puppet/type",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/unit/puppet/type/ini_setting_spec.rb",
+      "size": 6152,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "4a32e724589521e984ea993296db01e2",
+      "sha256": "471b7310a0feb9dd5985950e04b6ba1be852e65d4c09d58b486590f2369ccdf5",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/unit/puppet/type/ini_subetting_spec.rb",
+      "size": 4647,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "c66047fdbbbb22ee4f14eab2324f411a",
+      "sha256": "8ff88fa4d57a003bfaf5bc97da3f2eadfe0a4614d62b9394639c172f98576de8",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/unit/puppet/util",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/unit/puppet/util/external_iterator_spec.rb",
+      "size": 963,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "9e35a3306a3276862975ee30bd69c7f2",
+      "sha256": "e8cdb580d067ce7bc00032e3d356ea5bad05b8d082083650d67e9de9c53cf332",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/unit/puppet/util/ini_file_spec.rb",
+      "size": 10023,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "52e015621a8c97c0a3444568876415b1",
+      "sha256": "f5ed52d19140838817888aa405a016918ac1d76d78d70ab5e8a461ec11913dbb",
+      "is_link": false
+    },
+    {
+      "path": "example_single/external_modules/inifile/spec/unit/puppet/util/setting_value_spec.rb",
+      "size": 4618,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "b92633de5968905743dd7fa964162c2a",
+      "sha256": "27518cb599394416ad1edd37f310ac847bb3e8cb62b090353d26015a7e487551",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git",
+      "size": 120,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/.g10k-deploy.json",
+      "size": 366,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "cfcbe5d8dd227a4334672d1c287206e3",
+      "sha256": "fc1d0422511b8a16515ecbedbb8658521c28abb8807cdd1a37c8ad4e41664d00",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/Puppetfile",
+      "size": 102,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "efef6f7155a5a98d34ef078687b869e6",
+      "sha256": "922ac4039ece26fe99590932886486182bf47d5e2e28432d950b9e2db39b5e64",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall",
+      "size": 600,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/.fixtures.yml",
+      "size": 136,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "ee101fccd1dc1c9f2f3bf55ba58b1539",
+      "sha256": "54d097191e660f67ac61852984232e5669c43ffd9057864112a6f26cc3a48ea5",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/.gitattributes",
+      "size": 62,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "e654c1d3fc38cfe5c1e06aa99522533b",
+      "sha256": "551b85c86581ae54fd8f51110584e55f72f95f09bc299c60b82d7533f9fa703f",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/.gitignore",
+      "size": 282,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "36e728ce51dacea4723d37bde4b2d7de",
+      "sha256": "ca6f33961a6a4f27b3bd17b1378ea05d0a51f8036904b48e7b5b4a87460949fe",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/.latest_commit",
+      "size": 40,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "07052c1312ef4c5c2398f371a88f2411",
+      "sha256": "bec9fec87ddc10cb3e48db1e77dc481a5e081f4d6278bd66990d62e36ee4a352",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/.nodeset.yml",
+      "size": 668,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "f2b857f9fc7a701ff118e28591c12925",
+      "sha256": "ad6c51ddd8ac1646a3d678b249171f84fab2cbd904edb098d16a0058cd727020",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/.pdkignore",
+      "size": 439,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "eac399e432f1ea0c16d8cdbb18901911",
+      "sha256": "856fd9872d813e59c3f227f8edc3cc71667295808f8933a70cdcac4103b16fb1",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/.project",
+      "size": 594,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "b9a2c0f54779d0e6adb7df140d16074a",
+      "sha256": "5c320aa5d4a9fdaa1ae58ef6a829ac637f39c7f814b7fc29670f98126a0c0933",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/.puppet-lint.rc",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/.rspec",
+      "size": 31,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "c5f206a3f2387663a941cd9719e4bb00",
+      "sha256": "3c1e0e3627dc030a4c0095acd12ac6b4eb367e6e2095fa1c89653d97006beb7e",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/.rubocop.yml",
+      "size": 3519,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d3fb87ac1455570f5770d1a5c47d7d4b",
+      "sha256": "f3cd521ee5f33b4e35e60d8f8975d740dab960aec5786079ef0527ac877f9829",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/.rubocop_todo.yml",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/.sync.yml",
+      "size": 931,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "c9f3ffe142da3489e1f1ce32f247b724",
+      "sha256": "b37e8365bd490a08e657259c947382173347c861c82fd79ba37e6821181d94b6",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/.travis.yml",
+      "size": 1446,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "be6f2685b433203534915e0e5bc016ba",
+      "sha256": "bc8e7cbdfff8c965f31376efda5e1e7360201e9ad3ad50d03800405f5aee2f1d",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/.yardopts",
+      "size": 18,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "0ab66243d3613097dd34716843151743",
+      "sha256": "40bb82c0e8b2c5c71f6067e313fc09e77f31f737aef02c4ec76eda06f10324e9",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/CHANGELOG.md",
+      "size": 32271,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "490c387ff9870aa0ff18c07d1a3b5bc1",
+      "sha256": "c69df3b3046cf87e3e85efc6b3bd5b4577a58e8540d93e15b3e9d3bf292d05a6",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/CONTRIBUTING.md",
+      "size": 9776,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "4d17f3c942e7c93d1577cc4438a231e4",
+      "sha256": "9894e0f7f26dd00d428fa43bf38b897bfaabd472dbf82ee080ea3d55b8202f42",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/Gemfile",
+      "size": 3759,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "3864447c01e8ca140685b2f085f2d262",
+      "sha256": "57722dd1245edc5b0e1ed1fd5ac40c8fbb924bdc9388af498bb7c32433a205ea",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/HISTORY.md",
+      "size": 26962,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "78554cf4cff5c350fbf7c87cfe18e812",
+      "sha256": "dd535a6342edb50a6a635604997c3049d7f4620f3950a196a473449b32615f18",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/LICENSE",
+      "size": 11358,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "3b83ef96387f14655fc854ddc3c6bd57",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/MAINTAINERS.md",
+      "size": 192,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "04aaaf05e794f325fd498880858fbd0f",
+      "sha256": "bcd6ff390d9161ed346d3dacdb107dbfd587409c8132e5fb2ecaf9b17f419609",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/NOTICE",
+      "size": 589,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "16e399d242da32229321f743a0b27d8c",
+      "sha256": "981d3e1d33ec9e1653935ce7e1f415d058b4f784e5bf2b78621671336a5425cc",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/README.markdown",
+      "size": 49122,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "7e39743cacdbc94d963a263167dc8d50",
+      "sha256": "282d2ee6e72220f059e3fa66f0ff2621e2c8da71e867ed51105c914ede9c5261",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/Rakefile",
+      "size": 3260,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "512af00ae1c759f7cc090bfae438d6d8",
+      "sha256": "2c76719b99bee8bb42f6880bfcdff62a04d7a0704594ce9c591adf2433b47c0a",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/facter",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/facter/ip6tables_version.rb",
+      "size": 235,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "4ea8934f4329ab0133f803f801b61db6",
+      "sha256": "278ab36ac1c84223ac4402a1643581bcf2ba1a0406951eb661edb5ad35bec015",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/facter/iptables_persistent_version.rb",
+      "size": 836,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "6c634cb505e167ad088946e042450bff",
+      "sha256": "c63624cb6da95a93c144e310824026378f586bc35ee7e77513fd7fe56e97cfdc",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/facter/iptables_version.rb",
+      "size": 233,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "146e4e8b3655df1b77988e835ac3ba44",
+      "sha256": "bedf2e1c1435424b2ce9049c72d9205283106a66b7c4befb169fd5201bfac7f2",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/puppet",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/puppet/provider",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/puppet/provider/firewall",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/puppet/provider/firewall.rb",
+      "size": 1053,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d94d0ca1ac01e546fb9e0ff591f09aaf",
+      "sha256": "87bcd0ae857721c651cea7c8c34d4aa74906ed1b8f3e9af49f4d53bae20c5845",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/puppet/provider/firewall/ip6tables.rb",
+      "size": 9615,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "ab6284070585007668d05abb4b8e179c",
+      "sha256": "9fed747c7f4e7fe08a4d4c8730b35c92307ce1eed345b690a0a6b2c83b4d469a",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/puppet/provider/firewall/iptables.rb",
+      "size": 32834,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "0a61c06e71b9f2ddd99c3b72d331256e",
+      "sha256": "865e4b539624e4ea6777ea8bd3e0e2e4876bd0afbb56f6486e4f7cb70c1c7965",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/puppet/provider/firewallchain",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/puppet/provider/firewallchain/iptables_chain.rb",
+      "size": 5174,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "292a7126bb9ead563ee3e1c635aeff67",
+      "sha256": "3dc5c6552887d3a124d8945581fe17939e1f8e4227da191d15b5e57dad39fa29",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/puppet/type",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/puppet/type/firewall.rb",
+      "size": 59528,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "74f559cd2f9505ef1a8c4fb0d410ca01",
+      "sha256": "9fcf5dbc1d5b0d2cfdd619893a4fc8234481f517ed845f783a19fc1ee0e0ac26",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/puppet/type/firewallchain.rb",
+      "size": 8782,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "96c7597a988c59dd358c2998e4ed8ab2",
+      "sha256": "4e8c1aaaabcb790da1388c9ba7f0b237c50d9288af50b2337015957a9c3b515a",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/puppet/util",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/puppet/util/firewall.rb",
+      "size": 8315,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "556272947eb178b0edd6df855629c301",
+      "sha256": "42d65653327d9c93afc643f5bdb2aec9e7852c76bb165dd0644d45ef6031493f",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/lib/puppet/util/ipcidr.rb",
+      "size": 834,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "45fcb84e1cc295c432737e46e6a02a98",
+      "sha256": "a9baaaf0f09ad01a42dc20296a302ddda6992a6cc7fb34360213578fa2696dda",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/locales",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/locales/config.yaml",
+      "size": 1064,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "92a513534d781a27f58da8e200b87b49",
+      "sha256": "e0438b67635cae95e228e79aceb1dc179d072241c89e64131b052cf7e767a025",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/manifests",
+      "size": 120,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/manifests/init.pp",
+      "size": 1580,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "69c22e13d3c82568f5acc5249f0c21b5",
+      "sha256": "fce20b83e2aec84f5f2bc53a7dbd5bbae7e94217f92856a2954dc8939981250b",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/manifests/linux",
+      "size": 120,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/manifests/linux.pp",
+      "size": 2643,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "391cfe691e648bcb3ce0aa97c84c6076",
+      "sha256": "f74bd2dd72688f4e7f5a44ab034cde0ee77c878fbf790c6770990de8a257f9cb",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/manifests/linux/archlinux.pp",
+      "size": 1058,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "692a236965597cfba264a2e361aa3522",
+      "sha256": "0eee12eaa396f4f3c502301c2f20d9e14f7608b66aae6771bdb2d72b343f9d0c",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/manifests/linux/debian.pp",
+      "size": 2066,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "dae5e87b4d3e0a2570f6a57abb213735",
+      "sha256": "335b15cc09f28baf6f6a04bf98c3170613c4b9ecc2ff2688dbefe7680f0a1991",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/manifests/linux/gentoo.pp",
+      "size": 1054,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "225a291a80afacc8d5f01a21825c0c5a",
+      "sha256": "f82c28bc1bb69e749752d602ec739ecccb7246088ff0f9be11a578c8a821a253",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/manifests/linux/redhat.pp",
+      "size": 5853,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "35e9a030a849f5e5223dadc93268c4d9",
+      "sha256": "f96bba076b1c6ac6e79d544746cfb0a1e43d11bdeaa0950705a34a249faed771",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/manifests/params.pp",
+      "size": 2685,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "894542ad50db0bb2378964090492289d",
+      "sha256": "daf4a4c5a7b1e919a7e3ee1a83144778864955070b564a01e920ce26500ab7e2",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/metadata.json",
+      "size": 1645,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "ac0e34d7acc74c349794ddc6989a9367",
+      "sha256": "08db5cab53fa7484c8eb868548ed004e26b14cc642bb5bdc1d48788469bfd2bd",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec",
+      "size": 180,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance",
+      "size": 240,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/class_spec.rb",
+      "size": 902,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "6a4f8fc845b2ec5124c7ce0733943065",
+      "sha256": "73519eeee4ba0c164982095c52a1675d5f43f6e9b797fb50e10a0d521868e8c6",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/firewall_attributes_exceptions_spec.rb",
+      "size": 44883,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "e150c51ebc40ff6180825266e7233d15",
+      "sha256": "83b7d166ac4a301a18f40bebcf6bbd3108eca37731ef39a84d9b6a5271497c19",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/firewall_attributes_happy_path_spec.rb",
+      "size": 21941,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "eeec72c5d530db63dc9b728994df1dda",
+      "sha256": "eb816cadd9d85680bef2df1206eb7c6f115858fdc3711982a10d031e7d0a0beb",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/firewall_attributes_ipv6_exceptions_spec.rb",
+      "size": 23012,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d2321de4852519d3eb9249015a8f9281",
+      "sha256": "d4bb42d581e694e94a23fbefb5da100793b812e8d87dc3f64ed99dfba862317a",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/firewall_attributes_ipv6_happy_path_spec.rb",
+      "size": 16813,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "dac94ded0e13cab03f7fa80fb33c4ed8",
+      "sha256": "e8b06e290cd2a555060a1b430549ac4ca2938dd705b12e6e6571818fc6aac903",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/firewallchain_spec.rb",
+      "size": 3506,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "62bf213945c854de341182db0ea27c90",
+      "sha256": "04114e4a807cf26706efbccb62452638e4ef9b828b053825665076b76bfbd86d",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets",
+      "size": 140,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/centos-7-x64.yml",
+      "size": 174,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "a713f3abd3657f0ae2878829badd23cd",
+      "sha256": "697c149d85ebb33771dfe3eb3822e7ad5fa8253f8eff3f77a1c32658d9ff66c9",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/debian-8-x64.yml",
+      "size": 177,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d2d2977900989f30086ad251a14a1f39",
+      "sha256": "eccf27e3eeed6cb0516f67e4ac62a70345034f8608c0664b50405bc664f3dfa7",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/default.yml",
+      "size": 186,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "b42da5a1ea0c964567ba7495574b8808",
+      "sha256": "84415beed8594ef9c3a34a7f402c50ef56c4149b7186cf441592150b460be9fb",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/docker",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/docker/centos-7.yml",
+      "size": 381,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "8a3892807bdd62306ae4774f41ba11ae",
+      "sha256": "3101897fda5f6b4455c2fc90d1706367bffeb05c6fff1bbba456ef7cc324aaaf",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/docker/debian-8.yml",
+      "size": 356,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "ac8e871d1068c96de5e85a89daaec6df",
+      "sha256": "93ecfe721ee41cfb2f75173c96f4663060a739debde2d15880c49d88ba8e87da",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/docker/ubuntu-14.04.yml",
+      "size": 474,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "dc42ee922a96908d85b8f0f08203ce58",
+      "sha256": "31ec78aac8354e5f9a3b0fb46901b88e263e254eeaa3ca3de784835989eb69d4",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/aio",
+      "size": 140,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/aio/debian-8-64mda.yml",
+      "size": 604,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "3cb5b076f8ff1ce0123f7002d1132aa1",
+      "sha256": "2d65af4d368c9a54859ee5fe208e5335966c970e1264385a1431f2e1a4e000ec",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/aio/redhat-6-64mda.yml",
+      "size": 600,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "2da8ffed4efeb44fb78b686a06195116",
+      "sha256": "fd93e32f4b178ac5f2a17c4d51fa7b739fdf2fc0e028a0f3b0e652a673dbb171",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/aio/redhat-7-64mda.yml",
+      "size": 600,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "200ba1439bddf26dd611b5f315e3b955",
+      "sha256": "8479baada756712efd381035475071f96dba5070a72f065104c8c098f2a61035",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/aio/ubuntu-1404-64mda.yml",
+      "size": 650,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "41256594850e488f033ec30327139162",
+      "sha256": "9d60add9e27361edf75a4cdbc08b61cd7940d4ab345221b11f075e1923e42c2a",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/aio/ubuntu-1604-64mda.yml",
+      "size": 651,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "9c79b040697c25f1170feaf3ea3d9700",
+      "sha256": "36c627e6b47bc819243682e920c7dc60792f3aa279d95aadc051ae740ec84e8e",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe",
+      "size": 480,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/centos-5-64mda.yml",
+      "size": 633,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "192e4434be158fb238b8088f5d9adce0",
+      "sha256": "f8da51d3cfc21cff3e55e6a60d582362f4a79aa2769795849d65b90a56717d4f",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/centos-6-64mda.yml",
+      "size": 633,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "13947041961996723a56bfa35289919a",
+      "sha256": "5fa5fd0b568b88ad54ed89c8a4d772b5bd9bbfd3d3118ee85ba4b0366e125f08",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/centos-7-64mda.yml",
+      "size": 589,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "5ff3e38e023c75ce2ace69a5ccadbf33",
+      "sha256": "5e272aa3e0b7274ab4f5a6af45e6f746aae05fccaec2bd6aef2973923914e8a0",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/debian-6-64mda.yml",
+      "size": 591,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "ff79b672c5a532409c492ad0d45dc0ad",
+      "sha256": "9f95c3e46a9c0c6b74404be666efd4a6dd0da84de24b588183710b028b9a7076",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/debian-7-64mda.yml",
+      "size": 590,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "63fefd7c9395781748a8b63d08dfd86c",
+      "sha256": "7672fcd0f590e19685ce2c7a27015b1371be8df75ed099e7a5f1f00a20b983f5",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/debian-8-64mda.yml",
+      "size": 592,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "ed8e721a3d96556d92a9a1806171987b",
+      "sha256": "87d4aa3fb493dc4df6eea446e0b022bc95407c58d8c1594823d8972e69db6629",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/oracle-5-64mda.yml",
+      "size": 589,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "64adf2da3fff9a6cf4b28c638f568a43",
+      "sha256": "fd4257636e4dbe18dca7b45c7ade15400601002be70919f96e9b0bbb8e78678c",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/oracle-6-64mda.yml",
+      "size": 588,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "3e0fbe6f9516023816c85884f0fdc839",
+      "sha256": "5e83b47701fe28aca8ab5abf18ae44bbeb1aae29d6e7c3280b6acdd80cd9fb9d",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/oracle-7-64mda.yml",
+      "size": 588,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "b5f568cf11baafdf98f0127220527219",
+      "sha256": "5babaa895aac828f6bb00477e325e634c7a1bec5d090c4b5cc8603ca32092055",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/redhat-5-64mda.yml",
+      "size": 588,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "3c07dc9d83607f0f04a6903a77f5825d",
+      "sha256": "0a35bebb22a99b3d0ea62138cfdf9ad084779c2e976b931b89a2fd9949c86748",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/redhat-6-64mda.yml",
+      "size": 588,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "886858b5f4ddcd484da013eca85d996e",
+      "sha256": "398ab6d5d515bc9bfbe3032719b9b7232ac447e725807b3f0039878ea3c2c8c7",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/redhat-7-64mda.yml",
+      "size": 588,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "199c73bd7860987d5af932164b5603e7",
+      "sha256": "53b4d723e952433f6d9f82165e0881f53ae87fccfc32db33fb15a662ccb98310",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/scientific-5-64mda.yml",
+      "size": 596,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "4d23f6b5aa75033ddd9077588ee605a9",
+      "sha256": "d244ad4183ffad5fc9f606d778314fad7ba535dcc125fbeb9975fadfb07dc929",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/scientific-6-64mda.yml",
+      "size": 596,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "342a75a0f2a8e45b7f317d34a35fdb77",
+      "sha256": "ac2ee5ede3c5219cbd9d86b2b75fb7553da24dc106e78942ad767005fc1fd6bc",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/scientific-7-64mda.yml",
+      "size": 596,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "5952c337b5dfd11ddbc28cd7936630db",
+      "sha256": "63cd8e789c32d7592771a932d23d4259bc032760a0778a0676981ce4de111cba",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/sles-10-64mda.yml",
+      "size": 589,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "6b71985abd427432bdb2f9e8b76087fe",
+      "sha256": "fa4dc0ac67b697ffc66e755ee046a7a7cfc39d64d0ad9e14b1868e1012448ef1",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/sles-11-64mda.yml",
+      "size": 589,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "5ed55d2324395308cab72ec6e0545967",
+      "sha256": "3076285a74e4c4beae488216100afc59843129136cfde2e7d7b1ace3a956eaea",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/sles-12-64mda.yml",
+      "size": 589,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "bc2fc9c59161c30b69fe907d65a138dc",
+      "sha256": "9c82cb7a4676562614f122e85d13d4e3a80e9827c845df345bb0ae7aac159434",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/ubuntu-1004-64mda.yml",
+      "size": 594,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "07bef5f739c27a6a62945adbd2e8813e",
+      "sha256": "261bc6adf295a2a1b1d42e0a938d97da8e732eebb419545dccd738c72ab419a2",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/ubuntu-1204-64mda.yml",
+      "size": 638,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "c689063fd68a3c3ba3c47ced3016fa0e",
+      "sha256": "674cd53d5adf43abf43ff595ea1cb49b0adde8aa6b0f4a58d56cd6d12c2742ad",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/ubuntu-1404-64mda.yml",
+      "size": 638,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d0f11e054810e240ba4efdf3d08de815",
+      "sha256": "694232da3f2e40d2735f4fc4826a9cfe903c4b8d038851e3d2aaba5e8cf8b7bd",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/nodesets/new/pe/ubuntu-1604-64mda.yml",
+      "size": 639,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "c66b70cd33f4e338ddfb54ff46f35c8e",
+      "sha256": "a0f580d40babc8ffe18400bb0bf269fc5fa117a8181c787fbedd2f06ae9c4893",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/resource_cmd_spec.rb",
+      "size": 7775,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "81f40e5ac601b09e64c9a9ccf117db17",
+      "sha256": "d1915817dbe18cb764ccc85827e91a07276a8b568da090ab81d4244d968c05b4",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/rules_spec.rb",
+      "size": 10150,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "c5243452870e8a52a351813e5f5d008a",
+      "sha256": "83eade8cf6a9f011b5f5874fb23da85a15a9294b2df7444ed8902d20244a3f5c",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/acceptance/standard_usage_spec.rb",
+      "size": 1616,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "4a4fadac8e277d1380d481d07041ff08",
+      "sha256": "0bce38f8331a06343cb10f003a2c5934ab70095f1aa845f8a8807a161d000e2a",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/default_facts.yml",
+      "size": 217,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d4442f09ee2f33f2d55f078d0ee2634f",
+      "sha256": "03bf00b19fad56fd70b5fd7e7011ab8155d19f05cb0634293e09924f8bd4b578",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/fixtures",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/fixtures/ip6tables",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/fixtures/ip6tables/conversion_hash.rb",
+      "size": 4236,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "ac76867b62fd635a85dcc7a565324491",
+      "sha256": "891d5b82e88812b18919ea0d421eddc6c91a14cb59e806ea056865030eb96463",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/fixtures/iptables",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/fixtures/iptables/conversion_hash.rb",
+      "size": 45032,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "da717c8247a970e7910742e38927f0b6",
+      "sha256": "d75c5fea49ff4ab13f2684e797797b6364604afaf1109b4cd08c9da578cb1693",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/spec_helper.rb",
+      "size": 1486,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "12f17315eff18ac6546873e0fdc1c5c0",
+      "sha256": "ee0bfd5f89b79a149d7dafd9288089a02239c46e73333c4e40eb60cc9e283a6c",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/spec_helper_acceptance.rb",
+      "size": 1082,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "126f3d90ff51283b902e8d017cd0016d",
+      "sha256": "c0fe0bfb414e1d2780da890bb4cb01a39b7bf8fca3f8f841f585d2dce652712e",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/spec_helper_local.rb",
+      "size": 910,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "52f607e106668c536cef53ec15539563",
+      "sha256": "70dc14107c738d80a2a378fedbc259b0c38d1b144c6d61ec9fe7951a7c4508e9",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit",
+      "size": 120,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/classes",
+      "size": 140,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/classes/firewall_linux_archlinux_spec.rb",
+      "size": 1010,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "fd9ffeddd563b1030597e8289f5ba81f",
+      "sha256": "65f3c05aefc8d16b01e6ab9e7d4967e0e24be1524c873630cc5e3fa8821b7fb3",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/classes/firewall_linux_debian_spec.rb",
+      "size": 1799,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d08f4b8df0ee201ba81dba58cae4ce2b",
+      "sha256": "96dc0edad4be16b808256800ae34ce7a44984c16ee62fbe87bdfd360eea1ffe0",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/classes/firewall_linux_redhat_spec.rb",
+      "size": 5326,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "af2f3b4b98d7b098e42f36f4543beac6",
+      "sha256": "14d9972043c30d9d1130c1f8b34b7aeaec22d56ae31cd06dca82529e5e3542b0",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/classes/firewall_linux_spec.rb",
+      "size": 1448,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "f005992268d40b739e7cafa3b0f703e4",
+      "sha256": "27a002d728087352f00bf0a56de8bacacb42d1c9827bb31d2edf75112f5ba1bd",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/classes/firewall_spec.rb",
+      "size": 1463,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "9f843d1b925a806f5480e9a882da1477",
+      "sha256": "95eec1c3ac67b669238e9d192bdea9bb0ec044ad21cb41a4db35f6494b6b9a4c",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/documentation",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/documentation/readme_spec.rb",
+      "size": 202,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "ebe547b0051099281904dad3c5413de8",
+      "sha256": "65a2860b996852b6bd49934f84afaa668d692d9f7d558b18c3ba4ac491bead5a",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/facter",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/facter/iptables_persistent_version_spec.rb",
+      "size": 3300,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "b5c32d4e2fa97cba4b20008924a2a45b",
+      "sha256": "c01cbcdf92030ae9882fe2839d047ed617dd9234446c7e8eeb311aae34b92195",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/facter/iptables_spec.rb",
+      "size": 805,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "ee1ee01c6fcacdc23f9a85a3b147ee98",
+      "sha256": "6f69708a2ec61254ab87677597a4952de96cbbf7d1a73b02aa612477e2eb1996",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/puppet",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/puppet/provider",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/puppet/provider/ip6tables_spec.rb",
+      "size": 2090,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "ceee1675b92d9b391d23379064d6a343",
+      "sha256": "c1dd02b13203f3cefac8ec562c6c92bc59cffc94c940b8293476123b63ba4ab3",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/puppet/provider/iptables_chain_spec.rb",
+      "size": 7697,
+      "mode": "-rwxrwxr-x",
+      "is_dir": false,
+      "md5": "0fca1374172197039fcdf5e50531257a",
+      "sha256": "a2fd9fa0c2d1d00879130d8193d4c414b39dd88c1251c615ae46c03df8a8c966",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/puppet/provider/iptables_spec.rb",
+      "size": 19658,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "09facfaa53e9c9d15836e6c5af9e9cbc",
+      "sha256": "925d488a5f0e707afa7ed81a978917f825c7db26c48741dd63bedc93359347a0",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/puppet/type",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/puppet/type/firewall_spec.rb",
+      "size": 26190,
+      "mode": "-rwxrwxr-x",
+      "is_dir": false,
+      "md5": "8b638dd51547e9e24a41be0cdd3824e7",
+      "sha256": "100ec0043cd33dcff6c6dd7fa4ed7ea321b177ab3d3eb2a49e907bd435d33828",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/puppet/type/firewallchain_spec.rb",
+      "size": 8159,
+      "mode": "-rwxrwxr-x",
+      "is_dir": false,
+      "md5": "67b78ef4df1e4868adb87b2cb7e19e20",
+      "sha256": "b11fd0ef932955102e3cef8b4cbe98d1b75680101373cd54afe5c2a3ff6a13cf",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/puppet/util",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/puppet/util/firewall_spec.rb",
+      "size": 11001,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "4480171573cff443782a9f2e39ec64d7",
+      "sha256": "967ba6e84e4582b8beb0cd974c5738bebb542d7ae85e4ebe9b5763eba8323a8c",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/modules/firewall/spec/unit/puppet/util/ipcidr_spec.rb",
+      "size": 3015,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "c6c8097b4779aae250e38d8d8492ca32",
+      "sha256": "f13a2f8e4532a4148634cac5a179c736b6fa62dba5b182b5e18f71a69563979f",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/mymodule2",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "example_single_git/mymodule2/bar",
+      "size": 4,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d3b07384d113edec49eaa6238ad5ff00",
+      "sha256": "b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c",
+      "is_link": false
+    },
+    {
+      "path": "full_single",
+      "size": 180,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/.g10k-deploy.json",
+      "size": 366,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "e1450268eeda68d1fabaee471eaeb6cc",
+      "sha256": "a7225914f144650c07fd1c41c3a280201983728ac9e1a6da7528e155240a4886",
+      "is_link": false
+    },
+    {
+      "path": "full_single/1",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/1/2",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/1/2/test",
+      "size": 8,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "6e1a1962fe3195ffb5004eecf2672c2c",
+      "sha256": "d35bc21907bfb3f7a06a081737d243314917928a42e3da25fee54ed1b31a9738",
+      "is_link": false
+    },
+    {
+      "path": "full_single/Puppetfile",
+      "size": 30,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "a163d3aab681785896cf4c1d4f94c6c9",
+      "sha256": "ccd2660b5e19c7154323405345650e050427a352b9a28081da15c461cf7b4f1b",
+      "is_link": false
+    },
+    {
+      "path": "full_single/README.md",
+      "size": 19,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "81701b699100553aaa496b9ade7413f8",
+      "sha256": "26f2f734b829739375e13ac8dfe956793e20359b582a374fd97fabfc43cf929f",
+      "is_link": false
+    },
+    {
+      "path": "full_single/dir2",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/dir2/hy9",
+      "size": 6,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "f8d3be7e1f85489edb06705ae531fa75",
+      "sha256": "ce875e46f0975dc6e36922a8795c8f23c2e0f8de48cff209bd9b2fe1e7225f91",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp",
+      "size": 520,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/CHANGELOG.md",
+      "size": 18809,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "19bc87b4e3d8da7a299f511b9fba4671",
+      "sha256": "48699f18d898c600cebab36c7ded5335db3daa0331b09ffbed4425b06941ee20",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/CODEOWNERS",
+      "size": 62,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "366aefdc1424442b8f864528c2e0db1d",
+      "sha256": "e95366f9ccb4326ce2abdbf5db505c1c7bf22807078bd14266f322ce7a2a55ca",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/CONTRIBUTING.md",
+      "size": 9776,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "4d17f3c942e7c93d1577cc4438a231e4",
+      "sha256": "9894e0f7f26dd00d428fa43bf38b897bfaabd472dbf82ee080ea3d55b8202f42",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/Gemfile",
+      "size": 3643,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "8c95e1e615523c1014577fbe5a862adc",
+      "sha256": "38abb9b29fd66a300918769d3c3ad2801384932c8adba71439c05f33094d3383",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/HISTORY.md",
+      "size": 14990,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "0bc8da09607dcac3227f3e27bfb30108",
+      "sha256": "1a776420021810cc1f3033cde57819fe44443643a13a47877710acea532131f2",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/LICENSE",
+      "size": 11358,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "3b83ef96387f14655fc854ddc3c6bd57",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/MAINTAINERS.md",
+      "size": 187,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "9230f8b03e0d9dbb08812838574be9d3",
+      "sha256": "62b4ec8b486bb6bdc80dbd4cd3e4595fd28627e537201f132a25ca8919d3e76e",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/NOTICE",
+      "size": 584,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "c9a9561a16eac9f7304d12680d9df29f",
+      "sha256": "1e500a1b33bb8b9dfa2e42457f02e096c947b026460339deda2daea1d9d30f7c",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/README.md",
+      "size": 4135,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "42ea325c34b67954c2c4bee75bd489d7",
+      "sha256": "e0d8e2dbfd41d3a2071ccdc4415477024dd0b631192d25dbdbfeebc26ab6b6de",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/REFERENCE.md",
+      "size": 11841,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "cdce8b1864375efdf22af3d2993bc731",
+      "sha256": "e14ad088dfec175a2f54af435bebbe92c94832b743e4201982fe1cbc1f221371",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/Rakefile",
+      "size": 3383,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "84fa82ff71d12bf1f830000bf54667d8",
+      "sha256": "fab50d101f15715a4d936764e31de12fd14a42594c32c8c92aba349685e49e4f",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/checksums.json",
+      "size": 4288,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "6541c5f314775656b70bd49c7630b2fb",
+      "sha256": "72d70b51a4df5ebf5eb5ccbd2d30aaaeb8cd336dd07992f84e67944ca2c11bae",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data",
+      "size": 360,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data/AIX-family.yaml",
+      "size": 206,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "9ebab7ca637c380fa75e7dff0a694795",
+      "sha256": "9787465ff62e236f9b544fad9f92366a4d26b66037a92c280c625d1e0d9faa33",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data/Amazon.yaml",
+      "size": 329,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "592c462c2449a2aa36067b32a5c9b559",
+      "sha256": "38b929abab34f51656f10d7b479506416c50ed2b17baaf511c716acb5ab9f878",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data/Archlinux-family.yaml",
+      "size": 330,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "37df45c9174facb6699d68db292098a6",
+      "sha256": "a24d683ddcf9d3ec7f1ba08958c792ca82b2641cd7639dcf1753ef76d846a8b2",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data/Debian-family.yaml",
+      "size": 296,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "9c482d7062f1dd2e073b510d25ea07d9",
+      "sha256": "ee693f70f587e06e0849ca075512a2724f2c0907f79653a168a5c24165bcc1bd",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data/Fedora.yaml",
+      "size": 212,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "7e28c6fea7fe7e41b39bfbb8952138f9",
+      "sha256": "1f0e0fc2efeeac5fa63c56312d6fe77aeb3eb9cb5549ace58b70f5bcd67c5370",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data/FreeBSD-family.yaml",
+      "size": 434,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "e9c4ea29ea681b82e63e22735b43ca5c",
+      "sha256": "59ca9d37cfddc1f5c70da2649a13604b7f940003ba91154cd40d9c5c51336fd6",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data/Gentoo-family.yaml",
+      "size": 335,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "4cbfa6ca120ea1861270d523d97018a1",
+      "sha256": "2646d956d865cb13af48f8c6d6860567e4c607672195aaf4c147c0fd981bc3f1",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data/OpenSuSE.yaml",
+      "size": 55,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "0df8a5b62510ce8a86d2040f238b5f76",
+      "sha256": "fda919a65c8dcf2ad6ef6e063fa140e88f6fb5f3e8b80ef9bef8c2068893171a",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data/RedHat-family.yaml",
+      "size": 349,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "37faf7710394c7f26bfd3c2cce35871a",
+      "sha256": "3d406414c46a1527f0836e9be033f795ec70481bdc5fe6b5898b5a44383bb82c",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data/SLES-10.yaml",
+      "size": 30,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "b1ffac58b18589235bbb546dda98380f",
+      "sha256": "2784ce16239bd43127412f6348fd7d2f15ab6cc42ba9bc274d56328bff227d44",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data/SLES-12.yaml",
+      "size": 55,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "0df8a5b62510ce8a86d2040f238b5f76",
+      "sha256": "fda919a65c8dcf2ad6ef6e063fa140e88f6fb5f3e8b80ef9bef8c2068893171a",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data/SLES-15.yaml",
+      "size": 55,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "0df8a5b62510ce8a86d2040f238b5f76",
+      "sha256": "fda919a65c8dcf2ad6ef6e063fa140e88f6fb5f3e8b80ef9bef8c2068893171a",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data/Solaris-10.yaml",
+      "size": 292,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "5fd9c7acbb4b4d4ad337f310d13734f9",
+      "sha256": "1dc7a26f0c31bcb2709ffc8f912cba77e51d04d241dd2760d382d33157870a75",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data/Solaris-11.yaml",
+      "size": 357,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "c314fbdb06a00722974146b10dc8ba00",
+      "sha256": "d622076fd8b54df6179250ff54f3809563cd661d2a38ae1c66b359fb0da6d9d1",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data/Suse-family.yaml",
+      "size": 349,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "b9ddb837225182db53d04b8f3aae2703",
+      "sha256": "7834dc6f6de22fbb360372e668f44ae0c338d0fa9c08882c36c6fe49945d9fd6",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/data/common.yaml",
+      "size": 1538,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "d470b6496fabcce602b05f9efee16e78",
+      "sha256": "82b6a02ea5a1a5e08fb9b716abb0d34815a24adc31543c308bb0173754d411b7",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/distelli-manifest.yml",
+      "size": 843,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "079ee067c3fc5157e4e21d93d6b23d58",
+      "sha256": "a0eb83e1d3b3273aed17b2e4013aa85920d8418205daec8b5d8077e40acb4f32",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/examples",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/examples/init.pp",
+      "size": 183,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "d398e7687ec1d893ef23d1b7d2afc094",
+      "sha256": "1df97a49e55585940b300f7e7ef0507f9ff6cce53b126e8c18d206cb4b802be0",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/hiera.yaml",
+      "size": 442,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "992040941dac878c116c0e02a3ed757e",
+      "sha256": "fa4c51badbf74b824cfa57e49b50022fd381601653cb573a657d0dc32d5232ed",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/locales",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/locales/config.yaml",
+      "size": 1054,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "69304e9cce562aa59bd7bd4ddcb91b8b",
+      "sha256": "39992a2009ab220c4b2ae13f93d48e98bfc8e788004d01e37e048aaa48a07c3f",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/locales/ja",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/locales/ja/puppetlabs-ntp.po",
+      "size": 1000,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "7265ff57e178feb7a65835f7cf271e2c",
+      "sha256": "a3fd30454e9d760ff42f2be3e52e8dd1dc05db5cfdf8588a074f6fe7db9139f6",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/locales/puppetlabs-ntp.pot",
+      "size": 674,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "7d6e724b81413279c5980f12c49c47d2",
+      "sha256": "672203a5720549bc468012b8dbc81744694f8ab2311b6343c62f4d52948e628b",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/manifests",
+      "size": 120,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/manifests/config.pp",
+      "size": 2950,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "ce91f0df43742fa70d20df5a6a471afa",
+      "sha256": "14f7c74680a8053c969694f21ffa74d627a33c953387965f613dc397b9f4340a",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/manifests/init.pp",
+      "size": 11577,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "e793e247e33d3da1f80ff8046612bde9",
+      "sha256": "bc1ea24127b834a4fc8342962fa03c3aee43fca915f67510d88419659fda0578",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/manifests/install.pp",
+      "size": 204,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "fd145448707fc7c97b4eae9a005d6700",
+      "sha256": "0687dfcf18b106d0a158e20eb6ab1cf6942331dd8f653f7549b5c55bf4739de9",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/manifests/service.pp",
+      "size": 421,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "e083a929542239ad77b226c673ff5a37",
+      "sha256": "aad5a4a789182dc20aef50b9c97153b7cf124eb727f2352547bef777d308a2ba",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/metadata.json",
+      "size": 2054,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "4455b901b713954b725ce23af72933a9",
+      "sha256": "cb05453553ebd675509a665242f5c5569a5ab385b7afe7dee13a97874612b658",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/provision.yaml",
+      "size": 911,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "6ec5da61ca74127f60b59595b46d5724",
+      "sha256": "8724e5c06ca04f05a9d312a3450101f888a388ac938b649b8e1962724b9cc8f0",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/readmes",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/readmes/README_ja_JP.md",
+      "size": 17208,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "7e6c28fcf29c5a2c170d289edca7f853",
+      "sha256": "12ea621078fba26433b4f1a685021299f242efd266376ccecef66fa547d71da6",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec",
+      "size": 200,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/acceptance",
+      "size": 180,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/acceptance/class_spec.rb",
+      "size": 1229,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "4208ac738082931a5f99a4a8b825be35",
+      "sha256": "039125932b790de8b78c020f3653924ae4ec1d8bd63e72e97cb621c84fd7d941",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/acceptance/nodesets",
+      "size": 120,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/acceptance/nodesets/centos-7-x64.yml",
+      "size": 174,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "a713f3abd3657f0ae2878829badd23cd",
+      "sha256": "697c149d85ebb33771dfe3eb3822e7ad5fa8253f8eff3f77a1c32658d9ff66c9",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/acceptance/nodesets/debian-8-x64.yml",
+      "size": 177,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "d2d2977900989f30086ad251a14a1f39",
+      "sha256": "eccf27e3eeed6cb0516f67e4ac62a70345034f8608c0664b50405bc664f3dfa7",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/acceptance/nodesets/default.yml",
+      "size": 186,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "b42da5a1ea0c964567ba7495574b8808",
+      "sha256": "84415beed8594ef9c3a34a7f402c50ef56c4149b7186cf441592150b460be9fb",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/acceptance/nodesets/docker",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/acceptance/nodesets/docker/centos-7.yml",
+      "size": 381,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "8a3892807bdd62306ae4774f41ba11ae",
+      "sha256": "3101897fda5f6b4455c2fc90d1706367bffeb05c6fff1bbba456ef7cc324aaaf",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/acceptance/nodesets/docker/debian-8.yml",
+      "size": 356,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "ac8e871d1068c96de5e85a89daaec6df",
+      "sha256": "93ecfe721ee41cfb2f75173c96f4663060a739debde2d15880c49d88ba8e87da",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/acceptance/nodesets/docker/ubuntu-14.04.yml",
+      "size": 474,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "dc42ee922a96908d85b8f0f08203ce58",
+      "sha256": "31ec78aac8354e5f9a3b0fb46901b88e263e254eeaa3ca3de784835989eb69d4",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/acceptance/ntp_install_spec.rb",
+      "size": 605,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "cf18d5607a88eafa33ff238a3ac74ccf",
+      "sha256": "0a3bf44ce2f5bf562a0f60f2c0ba5e975703447f5edaa3251e0508e17863a879",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/acceptance/ntp_parameters_spec.rb",
+      "size": 3436,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "8191697920cbfe3715b3f2f6b414b0e9",
+      "sha256": "c72af51ad344045fbf886a00399be249474413e082f81a0e75a40890c6fb230d",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/acceptance/ntp_service_spec.rb",
+      "size": 1720,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "78036d8a62d8fa321b5e6e2079b69694",
+      "sha256": "b95fc07c82daeb85ad6df6f4cea5973ab08b040454784fee0cf02ae5558d8788",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/acceptance/preferred_servers_spec.rb",
+      "size": 846,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "a307ebf848f95ff3fa2da84a7e69b89b",
+      "sha256": "337fb0f44ae72d4df293faefe5a0e02aafe671aed174a73b82ebaea8eec45af1",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/acceptance/unsupported_spec.rb",
+      "size": 312,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "ed329ca84ec053253f7a59b72b503221",
+      "sha256": "9dad4c5155d0295d00d55761bc7a1dc108c6547af229567a852e374150e206f9",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/classes",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/classes/contains_spec.rb",
+      "size": 998,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "3dbe2f27b3c2ca3eac5b7a77794f5558",
+      "sha256": "4af1cc51776a9a3d3fee9db54ba68b11b1f72928fa1b7fc69f5ff2f9afc90417",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/classes/ntp_spec.rb",
+      "size": 34246,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "236a4d3b36ea66410b4fa35b5c28cb0f",
+      "sha256": "d027330a4539f6437a2438425dfc40632990fbb14f8fa5f214b3d74d9f734b03",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/default_facts.yml",
+      "size": 217,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "d4442f09ee2f33f2d55f078d0ee2634f",
+      "sha256": "03bf00b19fad56fd70b5fd7e7011ab8155d19f05cb0634293e09924f8bd4b578",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/fixtures",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/fixtures/my_ntp",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/fixtures/my_ntp/templates",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/fixtures/my_ntp/templates/ntp.conf.epp",
+      "size": 64,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "21cd1ad2ded293bd0411e3f1654ebf91",
+      "sha256": "e5f454ea87556bc1a611c37518abdaf03f11b39dd37fd429b0bab1dbea4f920b",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/fixtures/my_ntp/templates/ntp.conf.erb",
+      "size": 62,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "a123f4613d4c8f1945139f3307c1bc69",
+      "sha256": "716512c304efad98ce0db35d3abe91f583e9efa19f09c9b240205bb312e7397d",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/spec_helper.rb",
+      "size": 1702,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "ec40d36ed109d8dba0df527c34c2c6db",
+      "sha256": "8432a7d8ab8f8ffd129bfdf1ddc5205db98f8bfa6afd662b5067a0ee440f6aa1",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/spec_helper_acceptance.rb",
+      "size": 3720,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "7a285d6e707935349a4b37eabdb3ae2a",
+      "sha256": "5feed1eb48315540be0325ae9bd195b5edaad97f37a61821f4b360bb5332a8c0",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/spec_helper_acceptance_local.rb",
+      "size": 84,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "53ed4028c981feec66bf52c6389cd424",
+      "sha256": "01383a69f5e809e3b880c49d337ba2101bb6515798c3c3e832246a2ce3d70216",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/spec/spec_helper_local.rb",
+      "size": 784,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "bdc1f90758d428a1cc5794699eb6ed4f",
+      "sha256": "fd1b352f2fd1ec84c04e60b1ff4346a439f667d806b9f6e38852a3aea7aa7fa9",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/templates",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/templates/keys.epp",
+      "size": 87,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "4931f55f1669138166cadd70b931ddca",
+      "sha256": "1fce447b5c6ebe0d0185bf4fdd3bbec758af1d3f5fdd4bc634addd2bb12180ee",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/templates/ntp.conf.epp",
+      "size": 4514,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "c363c4138d93ac782843baa321531f4c",
+      "sha256": "a63d6f4369542263ac3f046959a7cb79a0590248b0268f36b9493a6b7bb0e307",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/templates/step-tickers.epp",
+      "size": 293,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "1a20cfd4c636ce4f696b23419d6c9ace",
+      "sha256": "17640d7ae4ac43ff5debff2bcf54242a60c050e61b481b3d499097d1fa13e116",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/types",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/types/key_id.pp",
+      "size": 176,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "e01c91e0839c5684495a8ea70f2399e5",
+      "sha256": "7f611e83c425dbdfb2764db19ac0cb1992953e1aaa58d56a5efce16ded01c6b2",
+      "is_link": false
+    },
+    {
+      "path": "full_single/modules/ntp/types/poll_interval.pp",
+      "size": 184,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "6a2190db7dcfbf3a7be0f659b6fd287d",
+      "sha256": "60f22b2a5d0229d5c3fda17cec7c0eb5ef91da527a37eca486cddfbf219e0f7c",
+      "is_link": false
+    },
+    {
+      "path": "full_single/uuui",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "full_single/uuui/d0",
+      "size": 16,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "586f7692150f19f1cec9128772aa40e5",
+      "sha256": "525205e8852233cfb6adcf4b2eba60ee700ce92a6488fb3fd86ff530c644b99f",
+      "is_link": false
+    }
+  ],
+  "count": 342
+}
