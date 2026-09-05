@@ -1,13 +1,13 @@
 ---
-:cachedir: '/tmp/g10k'
+:cachedir: "/tmp/g10k"
 
 sources:
   full:
-    remote: 'https://github.com/xorpaul/g10k-fullworking-env.git'
-    basedir: '/tmp/branchfilter'
+    remote: "https://github.com/xorpaul/g10k-fullworking-env.git"
+    basedir: "/tmp/branchfilter"
     exit_if_unreachable: true
     warn_if_branch_is_missing: true
     prefix: true
-    filter_command: 'tests/branch_filter_command.sh $R10K_BRANCH ^(single|master)$'
+    filter_command: "../../tests/branch_filter_command.sh $R10K_BRANCH ^(single|master)$"
     ignore_branch_prefixes:
-      - 'qa'
+      - "qa"
