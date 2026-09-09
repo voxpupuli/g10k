@@ -122,10 +122,9 @@ func readTestPuppetfile(t *testing.T, rt *Runtime, pf string, forceForgeVersions
 	return got
 }
 
-func checkExitCodeAndOutputOfReadPuppetfileSubprocess(t *testing.T, forceForgeVersions bool, expectedExitCode int, expectedOutput string) {
+func checkExitCodeAndOutputOfReadPuppetfileSubprocess(t *testing.T, rt *Runtime, forceForgeVersions bool, expectedExitCode int, expectedOutput string) {
 	pc, _, _, _ := runtime.Caller(1)
 	testFunctionName := strings.Split(runtime.FuncForPC(pc).Name(), ".")[len(strings.Split(runtime.FuncForPC(pc).Name(), "."))-1]
-	rt := NewRuntime(Options{})
 	if os.Getenv("TEST_FOR_CRASH_"+testFunctionName) == "1" {
 		if _, err := rt.readPuppetfile("../../tests/"+testFunctionName, "", "test", "test", forceForgeVersions, false); err != nil {
 			fmt.Fprintln(os.Stderr, err)
@@ -268,67 +267,83 @@ func TestForgeCacheTTLPuppetfile(t *testing.T) {
 }
 
 func TestForceForgeVersionsPuppetfile(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, true, 1, "")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, true, 1, "")
 }
 
 func TestForceForgeVersionsPuppetfileCorrect(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, true, 0, "")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, true, 0, "")
 }
 
 func TestReadPuppetfileDuplicateGitAttribute(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, false, 1, "")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "")
 }
 
 func TestReadPuppetfileTrailingComma(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, false, 1, "")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "")
 }
 
 func TestReadPuppetfileInvalidForgeModuleName(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, false, 1, "")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "")
 }
 
 func TestReadPuppetfileDuplicateForgeModule(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, false, 1, "")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "")
 }
 
 func TestReadPuppetfileMissingGitAttribute(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, false, 1, "")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "")
 }
 
 func TestReadPuppetfileTooManyGitAttributes(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, false, 1, "")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "")
 }
 
 func TestReadPuppetfileConflictingGitAttributesTag(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, false, 1, "")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "")
 }
 
 func TestReadPuppetfileConflictingGitAttributesBranch(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, false, 1, "")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "")
 }
 
 func TestReadPuppetfileConflictingGitAttributesCommit(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, false, 1, "")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "")
 }
 
 func TestReadPuppetfileConflictingGitAttributesRef(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, false, 1, "")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "")
 }
 
 func TestReadPuppetfileIgnoreUnreachable(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, false, 1, "")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "")
 }
 
 func TestReadPuppetfileForgeCacheTTL(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, false, 1, "error: Can not convert value 300x of parameter forge.cacheTtl 300x to a golang Duration. valid time units are 300ms, 1.5h or 2h45m. In ../../tests/TestReadPuppetfileForgeCacheTTL line: forge.cacheTtl 300x")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "error: Can not convert value 300x of parameter forge.cacheTtl 300x to a golang Duration. valid time units are 300ms, 1.5h or 2h45m. In ../../tests/TestReadPuppetfileForgeCacheTTL line: forge.cacheTtl 300x")
 }
 
 func TestReadPuppetfileLink(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, false, 1, "error: found conflicting git attributes :branch, :link, in ../../tests/TestReadPuppetfileLink for module example_module line: mod 'example_module',:git => 'git@somehost.com/foo/example-module.git',:branch => 'foo',:link => true")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "error: found conflicting git attributes :branch, :link, in ../../tests/TestReadPuppetfileLink for module example_module line: mod 'example_module',:git => 'git@somehost.com/foo/example-module.git',:branch => 'foo',:link => true")
 }
 
 func TestReadPuppetfileDuplicateForgeGitModule(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, false, 1, "error: git puppet module with same name found in ../../tests/TestReadPuppetfileDuplicateForgeGitModule for module bar line: mod 'bar',:git => 'https://github.com/foo/bar.git'")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "error: git puppet module with same name found in ../../tests/TestReadPuppetfileDuplicateForgeGitModule for module bar line: mod 'bar',:git => 'https://github.com/foo/bar.git'")
 }
 
 func TestReadPuppetfileChecksumAttribute(t *testing.T) {
@@ -404,11 +419,13 @@ func TestReadPuppetfileLocalModule(t *testing.T) {
 }
 
 func TestReadPuppetfileMissingTrailingComma(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, false, 1, "")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "")
 }
 
 func TestReadPuppetfileMissingTrailingComma2(t *testing.T) {
-	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, false, 1, "")
+	rt := NewRuntime(Options{})
+	checkExitCodeAndOutputOfReadPuppetfileSubprocess(t, rt, false, 1, "")
 }
 
 func TestReadPuppetfileForgeNotationGitModule(t *testing.T) {
