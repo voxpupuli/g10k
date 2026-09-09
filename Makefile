@@ -4,9 +4,9 @@ BUILDTIME ?= $(shell date -u '+%Y-%m-%d_%H:%M:%S')
 UNAME := $(shell uname)
 
 GO           ?= go
-FIRST_GOPATH := $(firstword $(subst :, ,$(shell $(GO) env GOPATH)))
-SKIP_GOLANGCI_LINT :=
-GOLANGCI_LINT :=
+FIRST_GOPATH ?= $(firstword $(subst :, ,$(shell $(GO) env GOPATH)))
+SKIP_GOLANGCI_LINT ?=
+GOLANGCI_LINT ?=
 GOLANGCI_LINT_OPTS ?=
 GOLANGCI_LINT_VERSION ?= v2.11.4
 GOLANGCI_FMT_OPTS ?=
@@ -19,9 +19,9 @@ ifeq ($(GOHOSTOS),$(filter $(GOHOSTOS),linux darwin))
 		ifneq (,$(SKIP_GOLANGCI_LINT))
 			GOLANGCI_LINT :=
 		else ifeq (,$(CIRCLE_JOB))
-			GOLANGCI_LINT := $(FIRST_GOPATH)/bin/golangci-lint
+			GOLANGCI_LINT ?= $(FIRST_GOPATH)/bin/golangci-lint
 		else ifeq (,$(wildcard .github/workflows/golangci-lint.yml))
-			GOLANGCI_LINT := $(FIRST_GOPATH)/bin/golangci-lint
+			GOLANGCI_LINT ?= $(FIRST_GOPATH)/bin/golangci-lint
 		endif
 	endif
 endif
