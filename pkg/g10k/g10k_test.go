@@ -2121,6 +2121,9 @@ func TestPurgeStalePuppetfileOnly(t *testing.T) {
 		return
 	}
 
+	rt.purgeDir(cacheDir, funcName)
+	rt.purgeDir("/tmp/full", funcName)
+
 	cmd := exec.Command(os.Args[0], "-test.run="+funcName+"$")
 	cmd.Env = append(os.Environ(), "TEST_FOR_CRASH_"+funcName+"=1")
 	out, err := cmd.CombinedOutput()
@@ -2175,6 +2178,8 @@ func TestPurgeStaleDeploymentOnly(t *testing.T) {
 		mustResolvePuppetEnvironment(rt, false, "")
 		return
 	}
+	rt.purgeDir(cacheDir, funcName)
+	rt.purgeDir("/tmp/full", funcName)
 	rt.createOrPurgeDir("/tmp/full/full_stale/stale_directory_that_should_be_purged", funcName)
 	rt.createOrPurgeDir("/tmp/full/full_stale/stale_dir", funcName)
 	f, _ := os.Create("/tmp/full/full_stale/stale_dir/stale_file")
@@ -2193,7 +2198,7 @@ func TestPurgeStaleDeploymentOnly(t *testing.T) {
 
 	expectedExitCode := 0
 	if expectedExitCode != exitCode {
-		t.Errorf("terminated with %v, but we expected exit status %v", exitCode, expectedExitCode)
+		t.Errorf("terminated with %v, but we expected exit status %v\nOutput: %s", exitCode, expectedExitCode, string(out))
 	}
 	// fmt.Println(string(out))
 
@@ -2240,6 +2245,8 @@ func TestPurgeStaleDeploymentOnlyWithAllowList(t *testing.T) {
 		mustResolvePuppetEnvironment(rt, false, "")
 		return
 	}
+	rt.purgeDir(cacheDir, funcName)
+	rt.purgeDir("/tmp/full", funcName)
 	rt.createOrPurgeDir("/tmp/full/full_master/modules/stale_module_directory_that_should_not_be_purged", funcName)
 	rt.createOrPurgeDir("/tmp/full/full_master/stale_directory_that_should_not_be_purged", funcName)
 	rt.createOrPurgeDir("/tmp/full/full_stale/stale_directory_that_should_be_purged", funcName)
