@@ -52,13 +52,13 @@ endif
 lint: $(GOLANGCI_LINT)
 ifdef GOLANGCI_LINT
 	@echo ">> running golangci-lint"
-	$(GOLANGCI_LINT) run $(GOLANGCI_LINT_OPTS) $(pkgs)
+	$(GOLANGCI_LINT) run $(GOLANGCI_LINT_OPTS) ./...
 endif
 
 lint-fix: $(GOLANGCI_LINT)
 ifdef GOLANGCI_LINT
 	@echo ">> running golangci-lint fix"
-	$(GOLANGCI_LINT) run --fix $(GOLANGCI_LINT_OPTS) $(pkgs)
+	$(GOLANGCI_LINT) run --fix $(GOLANGCI_LINT_OPTS) ./...
 endif
 
 ifdef GOLANGCI_LINT
@@ -86,7 +86,7 @@ ifeq ($(UNAME), Linux)
 endif
 
 clean:
-	rm -rf g10k dist coverage.txt cache example
+	rm -rf g10k dist coverage.txt pkg/g10k/cache pkg/g10k/example
 
 build-image:
 	docker build -t g10k:${BUILDVERSION} .
