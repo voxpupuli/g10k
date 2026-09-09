@@ -201,7 +201,7 @@ func (rt *Runtime) queryForgeAPI(fm ForgeModule) ForgeResult {
 	if err != nil {
 		rt.Fatalf("queryForgeAPI(): Error while getting http proxy with golang http.ProxyFromEnvironment()" + err.Error())
 	}
-	client := &http.Client{Transport: &http.Transport{Proxy: http.ProxyURL(proxyURL)}}
+	client := &http.Client{Timeout: time.Duration(rt.Config.Timeout) * time.Second, Transport: &http.Transport{Proxy: http.ProxyURL(proxyURL)}}
 	before := time.Now()
 	resp, err := client.Do(req)
 	if err != nil {
@@ -312,7 +312,7 @@ func (rt *Runtime) getMetadataForgeModule(fm ForgeModule) ForgeModule {
 	if err != nil {
 		rt.Fatalf("getMetadataForgeModule(): Error while getting http proxy with golang http.ProxyFromEnvironment()" + err.Error())
 	}
-	client := &http.Client{Transport: &http.Transport{Proxy: http.ProxyURL(proxyURL)}}
+	client := &http.Client{Timeout: time.Duration(rt.Config.Timeout) * time.Second, Transport: &http.Transport{Proxy: http.ProxyURL(proxyURL)}}
 	before := time.Now()
 	rt.Debugf("GETing " + url)
 	resp, err := client.Do(req)
@@ -397,7 +397,7 @@ func (rt *Runtime) downloadForgeModule(name string, version string, fm ForgeModu
 		if err != nil {
 			rt.Fatalf(funcName + "(): Error while getting http proxy with golang http.ProxyFromEnvironment()" + err.Error())
 		}
-		client := &http.Client{Transport: &http.Transport{Proxy: http.ProxyURL(proxyURL)}}
+		client := &http.Client{Timeout: time.Duration(rt.Config.Timeout) * time.Second, Transport: &http.Transport{Proxy: http.ProxyURL(proxyURL)}}
 		before := time.Now()
 		rt.Debugf("GETing " + url)
 		resp, err := client.Do(req)

@@ -319,7 +319,7 @@ func Run(opts Options) (int, error) {
 		forgeCachedir := rt.checkDirAndCreate(filepath.Join(cachedir, "forge"), "default in pfMode")
 		modulesCacheDir := rt.checkDirAndCreate(filepath.Join(cachedir, "modules"), "default in pfMode")
 		envsCacheDir := rt.checkDirAndCreate(filepath.Join(cachedir, "environments"), "default in pfMode")
-		rt.Config = ConfigSettings{CacheDir: cachedir, ForgeCacheDir: forgeCachedir, ModulesCacheDir: modulesCacheDir, EnvCacheDir: envsCacheDir, Sources: sm, ForgeBaseURL: "https://forgeapi.puppet.com", Maxworker: rt.MaxWorker, UseCacheFallback: rt.UseCacheFallback, MaxExtractworker: rt.MaxExtractWorker, RetryGitCommands: rt.RetryGitCommands, GitObjectSyntaxNotSupported: rt.GitObjectSyntaxNotSupported}
+		rt.Config = ConfigSettings{CacheDir: cachedir, ForgeCacheDir: forgeCachedir, ModulesCacheDir: modulesCacheDir, EnvCacheDir: envsCacheDir, Sources: sm, Timeout: 5, ForgeBaseURL: "https://forgeapi.puppet.com", Maxworker: rt.MaxWorker, UseCacheFallback: rt.UseCacheFallback, MaxExtractworker: rt.MaxExtractWorker, RetryGitCommands: rt.RetryGitCommands, GitObjectSyntaxNotSupported: rt.GitObjectSyntaxNotSupported}
 		// default purge_levels
 		rt.Config.PurgeLevels = []string{"puppetfile"}
 		if rt.CloneGit {

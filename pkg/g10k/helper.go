@@ -1,6 +1,7 @@
 package g10k
 
 import (
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
@@ -188,7 +189,14 @@ func (rt *Runtime) executeCommand(command string, commandDir string, timeout int
 	}
 
 	before := time.Now()
-	execCommand := exec.Command(cmd, cmdArgs...)
+	ctx := context.Background()
+	if timeout > 0 {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
+		defer cancel()
+	}
+	execCommand := exec.CommandContext(ctx, cmd, cmdArgs...)
+	execCommand.WaitDelay = 5 * time.Second
 	if len(commandDir) > 0 {
 		execCommand.Dir = commandDir
 	}

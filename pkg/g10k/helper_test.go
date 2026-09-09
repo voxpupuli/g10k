@@ -4,6 +4,7 @@ import (
 	"os"
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestMain(m *testing.M) {
@@ -13,6 +14,25 @@ func TestMain(m *testing.M) {
 	_ = os.Setenv("GIT_CONFIG_KEY_1", "gc.auto")
 	_ = os.Setenv("GIT_CONFIG_VALUE_1", "0")
 	os.Exit(m.Run())
+}
+
+func TestExecuteCommandTimeout(t *testing.T) {
+	rt := NewRuntime(Options{})
+
+	before := time.Now()
+	er := rt.executeCommand("sleep 5", "", 1, true, false)
+	elapsed := time.Since(before)
+	if er.returnCode == 0 {
+		t.Error("executeCommand() should fail when the command exceeds the given timeout")
+	}
+	if elapsed > 4*time.Second {
+		t.Errorf("executeCommand() should have killed the command after about 1s, but took %s", elapsed)
+	}
+
+	er = rt.executeCommand("sleep 1", "", 0, true, false)
+	if er.returnCode != 0 {
+		t.Errorf("executeCommand() should not enforce a timeout when timeout is 0, but got return code %d and output %s", er.returnCode, er.output)
+	}
 }
 
 func TestSplitCommandLine(t *testing.T) {
