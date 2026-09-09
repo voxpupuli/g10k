@@ -1,4 +1,4 @@
-DEPS = $(wildcard */*.go)
+DEPS = $(wildcard pkg/g10k/*.go cmd/g10k/*.go)
 BUILDVERSION ?= $(shell git describe --tags --dirty --always 2>/dev/null || echo dev)
 BUILDTIME ?= $(shell date -u '+%Y-%m-%d_%H:%M:%S')
 UNAME := $(shell uname)
@@ -30,22 +30,22 @@ all: test g10k
 
 build:
 	CGO_ENABLED=0 go build \
-		-trimpath \
-		-ldflags "-s -w -X main.buildversion=${BUILDVERSION} -X main.buildtime=${BUILDTIME}" \
-	-o g10k .
+	-trimpath \
+	-ldflags "-s -w -X main.buildversion=${BUILDVERSION} -X main.buildtime=${BUILDTIME}" \
+	-o g10k ./cmd/g10k
 
-g10k: g10k.go $(DEPS)
+g10k: $(DEPS)
 # -race flag is currently removed because of issues in OS X Monterey. Should be solved above go version 1.17.6
 ifeq ($(UNAME), Darwin)
 	CGO_ENABLED=1 GOOS=darwin go build \
 		-ldflags "-s -w -X main.buildversion=${BUILDVERSION} -X main.buildtime=${BUILDTIME}" \
-	-o $@
+	-o $@ ./cmd/g10k
 	strip -X $@
 endif
 ifeq ($(UNAME), Linux)
 	CGO_ENABLED=1 GOOS=linux go build \
 		-race -ldflags "-s -w -X main.buildversion=${BUILDVERSION} -X main.buildtime=${BUILDTIME}" \
-	-o $@
+	-o $@ ./cmd/g10k
 	strip $@
 endif
 
@@ -69,17 +69,17 @@ $(GOLANGCI_LINT):
 		| sh -s -- -b $(FIRST_GOPATH)/bin $(GOLANGCI_LINT_VERSION)
 endif
 
-vet: g10k.go
-	go vet
+vet:
+	go vet ./...
 
-imports: g10k.go
+imports:
 	go install golang.org/x/tools/cmd/goimports@latest && \
-	goimports -d *.go tests/
+	goimports -d pkg cmd tests/
 
 test: lint vet imports
 # This is a workaround for Bug https://github.com/golang/go/issues/49138
 ifeq ($(UNAME), Darwin)
-	MallocNanoZone=0 go test -race -coverprofile=coverage.txt -covermode=atomic -v
+	MallocNanoZone=0 go test -race -coverprofile=coverage.txt -covermode=atomic -v ./...
 endif
 ifeq ($(UNAME), Linux)
 	go test -race -coverprofile=coverage.txt -covermode=atomic -v ./...
