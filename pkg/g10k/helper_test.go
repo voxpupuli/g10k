@@ -1,9 +1,19 @@
 package g10k
 
 import (
+	"os"
 	"reflect"
 	"testing"
 )
+
+func TestMain(m *testing.M) {
+	_ = os.Setenv("GIT_CONFIG_COUNT", "2")
+	_ = os.Setenv("GIT_CONFIG_KEY_0", "maintenance.auto")
+	_ = os.Setenv("GIT_CONFIG_VALUE_0", "false")
+	_ = os.Setenv("GIT_CONFIG_KEY_1", "gc.auto")
+	_ = os.Setenv("GIT_CONFIG_VALUE_1", "0")
+	os.Exit(m.Run())
+}
 
 func TestSplitCommandLine(t *testing.T) {
 	tests := []struct {
