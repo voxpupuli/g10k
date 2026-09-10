@@ -16,7 +16,7 @@ var (
 func main() {
 	var (
 		configFileFlag = flag.String("config", "", "which config file to use")
-		versionFlag    = flag.Bool("versions", false, "show build time and version number")
+		versionFlag    = flag.Bool("version", false, "show build time and version number")
 	)
 	var opts g10k.Options
 
