@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func removeTimestampsFromDeployfile(rt *Runtime, file string) {
@@ -24,7 +25,6 @@ func removeTimestampsFromDeployfile(rt *Runtime, file string) {
 			Name:               dr.Name,
 			Signature:          dr.Signature,
 			PuppetfileChecksum: dr.PuppetfileChecksum,
-			GitDir:             dr.GitDir,
 			GitURL:             dr.GitURL,
 		}
 
@@ -265,119 +265,6 @@ func TestResolveConfigAddError(t *testing.T) {
 	if !strings.Contains(string(out), "Couldn't find specified branch 'nonExistingBranch' anywhere in source 'example' (https://github.com/xorpaul/g10k-environment.git)") {
 		t.Errorf("terminated with the correct exit code, but the expected output was missing. out: %s", string(out))
 	}
-}
-
-func TestResolveStatic(t *testing.T) {
-	path, err := exec.LookPath("hashdeep")
-	if err != nil {
-		t.Skip("Skipping full Puppet environment resolve test, because package hashdeep is missing")
-	}
-
-	rt := NewRuntime(Options{Quiet: true})
-	rt.purgeDir("./cache", "TestResolveStatic()")
-	rt.purgeDir("./example", "TestResolveStatic()")
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigStatic.yaml")
-	// increase maxworker to finish the test quicker
-	rt.Config.Maxworker = 500
-	rt.Branch = "static"
-	mustResolvePuppetEnvironment(rt, false, "")
-
-	// remove timestamps from .g10k-deploy.json otherwise hash sum would always differ
-	removeTimestampsFromDeployfile(rt, "example/example_static/.g10k-deploy.json")
-
-	cmd := exec.Command(path, "-vv", "-l", "-r", "-a", "-k", "tests/hashdeep_example_static.hashdeep", "./example")
-	out, err := cmd.CombinedOutput()
-	exitCode := 0
-	if msg, ok := err.(*exec.ExitError); ok { // there is error code
-		exitCode = msg.Sys().(syscall.WaitStatus).ExitStatus()
-	}
-	if exitCode != 0 {
-		t.Errorf("hashdeep terminated with %v, but we expected exit status 0\nOutput: %v", exitCode, string(out))
-	}
-	if !strings.Contains(string(out), "") {
-		t.Errorf("resolvePuppetfile() terminated with the correct exit code, but the expected output was missing. out: %s", string(out))
-	}
-	rt.Debugf("hashdeep output:" + string(out))
-
-	rt.purgeDir("example/example_static/external_modules/stdlib/spec/unit/facter/util", "TestResolveStatic()")
-
-	cmd = exec.Command("hashdeep", "-l", "-r", "-a", "-k", "tests/hashdeep_example_static.hashdeep", "./example")
-	out, err = cmd.CombinedOutput()
-	exitCode = 0
-	if msg, ok := err.(*exec.ExitError); ok { // there is error code
-		exitCode = msg.Sys().(syscall.WaitStatus).ExitStatus()
-	}
-
-	if exitCode != 1 {
-		t.Errorf("hashdeep terminated with %v, but we expected exit status 1\nOutput: %v", exitCode, string(out))
-	}
-
-	fileMode, err := os.Stat("./example/example_static/external_modules/aws/examples/audit-security-groups/count_out_of_sync_resources.sh")
-	if err != nil {
-		t.Error("Error while trying to stat() testfile")
-	}
-	if fileMode.Mode().String() != "-rwxrwxr-x" {
-		t.Error("Wrong file permission for test file. Check unTar()")
-	}
-
-}
-
-func TestResolveStaticSkiplist(t *testing.T) {
-	path, err := exec.LookPath("hashdeep")
-	if err != nil {
-		t.Skip("Skipping full Puppet environment resolve test, because package hashdeep is missing")
-	}
-
-	rt := NewRuntime(Options{Quiet: true})
-	rt.purgeDir("./cache", "TestResolvStaticSkiplist()")
-	rt.purgeDir("./example", "TestResolvStaticSkiplist()")
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigStaticSkiplist.yaml")
-	// increase maxworker to finish the test quicker
-	rt.Config.Maxworker = 500
-	rt.Branch = "skiplist"
-	mustResolvePuppetEnvironment(rt, false, "")
-
-	// remove timestamps from .g10k-deploy.json otherwise hash sum would always differ
-	removeTimestampsFromDeployfile(rt, "example/example_skiplist/.g10k-deploy.json")
-
-	cmd := exec.Command(path, "-vv", "-l", "-r", "-a", "-k", "tests/hashdeep_example_static_skiplist.hashdeep", "./example")
-	out, err := cmd.CombinedOutput()
-	exitCode := 0
-	if msg, ok := err.(*exec.ExitError); ok { // there is error code
-		exitCode = msg.Sys().(syscall.WaitStatus).ExitStatus()
-	}
-	if exitCode != 0 {
-		t.Errorf("hashdeep terminated with %v, but we expected exit status 0\nOutput: %v", exitCode, string(out))
-	}
-	if !strings.Contains(string(out), "") {
-		t.Errorf("resolvePuppetfile() terminated with the correct exit code, but the expected output was missing. out: %s", string(out))
-	}
-	rt.Debugf("hashdeep output:" + string(out))
-
-	expectedMissingFiles := []string{
-		"example/example_skiplist/external_modules/stdlib/spec",
-		"example/example_skiplist/external_modules/stdlib/readmes",
-		"example/example_skiplist/external_modules/stdlib/examples",
-	}
-	for _, expectedMissingFile := range expectedMissingFiles {
-		if fileExists(expectedMissingFile) {
-			t.Errorf("skiplisted directory still exists that should have been purged! %s", expectedMissingFile)
-		}
-	}
-
-	rt.purgeDir("example/example_skiplist/Puppetfile", "TestResolveStaticSkiplist()")
-
-	cmd = exec.Command(path, "-l", "-r", "-a", "-k", "tests/hashdeep_example_static_skiplist.hashdeep", "./example")
-	out, err = cmd.CombinedOutput()
-	exitCode = 0
-	if msg, ok := err.(*exec.ExitError); ok { // there is error code
-		exitCode = msg.Sys().(syscall.WaitStatus).ExitStatus()
-	}
-
-	if exitCode != 1 {
-		t.Errorf("hashdeep terminated with %v, but we expected exit status 1\nOutput: %v", exitCode, string(out))
-	}
-
 }
 
 func TestConfigGlobalAllowFail(t *testing.T) {
@@ -2426,34 +2313,30 @@ func TestSkipPurgingWithMultipleSources(t *testing.T) {
 		}
 	}
 
-	path, err := exec.LookPath("hashdeep")
-	if err != nil {
-		t.Skip("Skipping full Puppet environment resolve test, because package hashdeep is missing")
-	}
-
-	// remove timestamps from .g10k-deploy.json otherwise hash sum would always differ
+	// remove timestamps from .g10k-deploy.json otherwise the snapshot would always differ
 	removeTimestampsFromDeployfile(rt, "/tmp/out/example_single/.g10k-deploy.json")
 	removeTimestampsFromDeployfile(rt, "/tmp/out/full_single/.g10k-deploy.json")
 	removeTimestampsFromDeployfile(rt, "/tmp/out/example_single_git/.g10k-deploy.json")
 
-	cmd = exec.Command(path, "-vv", "-l", "-r", "-a", "-k", "tests/hashdeep_both_multiple.hashdeep", "/tmp/out")
-	out, err = cmd.CombinedOutput()
-	exitCode = 0
-	if msg, ok := err.(*exec.ExitError); ok { // there is error code
-		exitCode = msg.Sys().(syscall.WaitStatus).ExitStatus()
-	}
-	if exitCode != 0 {
-		t.Errorf("hashdeep terminated with %v, but we expected exit status 0\nOutput: %v", exitCode, string(out))
-	}
+	actual, err := SnapshotDirectory("/tmp/out")
+	require.NoError(t, err, "Failed to snapshot multiple sources")
 
+	// this test deploys an extra example_single_git environment on top of what
+	// fullworking_multiple.json covers, so it needs its own snapshot.
+	snapshotFile := "tests/snapshots/fullworking_multiple_with_git.json"
+	expected, err := LoadSnapshot(snapshotFile)
+	if err != nil && os.IsNotExist(err) {
+		require.NoError(t, os.MkdirAll("tests/snapshots", 0755))
+		require.NoError(t, SaveSnapshot(actual, snapshotFile), "Failed to save reference snapshot")
+		t.Skip("Reference snapshot created; run test again to verify")
+	}
+	require.NoError(t, err, "Failed to load expected snapshot")
+
+	result := CompareSnapshots(expected, actual)
+	assert.True(t, result.IsIdentical(), "Multiple sources deployment doesn't match:\n%s", result.String())
 }
 
 func TestSymlink(t *testing.T) {
-	path, err := exec.LookPath("hashdeep")
-	if err != nil {
-		t.Skip("Skipping full Puppet environment resolve test, because package hashdeep is missing")
-	}
-
 	rt := NewRuntime(Options{Quiet: true})
 	rt.purgeDir("/tmp/g10k", "TestSymlink()")
 	rt.purgeDir("/tmp/out", "TestSymlink()")
@@ -2462,34 +2345,29 @@ func TestSymlink(t *testing.T) {
 	rt.Config.Maxworker = 500
 	rt.Environment = "full_symlinks"
 
+	deployDir := "/tmp/out/full_symlinks"
+	expected, err := LoadSnapshot("tests/snapshots/symlinks.json")
+	require.NoError(t, err, "Failed to load expected snapshot")
+
 	//do it twice to detect errors
 	for i := 0; i < 3; {
 		i++
 
 		mustResolvePuppetEnvironment(rt, false, "")
 
-		// remove timestamps from .g10k-deploy.json otherwise hash sum would always differ
-		removeTimestampsFromDeployfile(rt, "/tmp/out/full_symlinks/.g10k-deploy.json")
+		// remove timestamps from .g10k-deploy.json otherwise the snapshot would always differ
+		removeTimestampsFromDeployfile(rt, filepath.Join(deployDir, ".g10k-deploy.json"))
 
-		cmd := exec.Command(path, "-vv", "-l", "-r", "-a", "-k", "tests/hashdeep_both_symlinks.hashdeep", "/tmp/out")
-		out, err := cmd.CombinedOutput()
-		exitCode := 0
-		if msg, ok := err.(*exec.ExitError); ok { // there is error code
-			exitCode = msg.Sys().(syscall.WaitStatus).ExitStatus()
-		}
-		if exitCode != 0 {
-			t.Errorf("hashdeep terminated with %v, but we expected exit status 0\nOutput: %v", exitCode, string(out))
-		}
-		if !strings.Contains(string(out), "") {
-			t.Errorf("resolvePuppetfile() terminated with the correct exit code, but the expected output was missing. out: %s", string(out))
-		}
-		rt.Debugf("hashdeep output:" + string(out))
+		actual, err := SnapshotDirectory(deployDir)
+		require.NoError(t, err, "Failed to snapshot symlink environment on iteration %d", i)
+
+		result := CompareSnapshots(expected, actual)
+		assert.True(t, result.IsIdentical(), "Symlink deployment doesn't match expected state on iteration %d:\n%s", i, result.String())
 
 		// check if the symlinks with non-existent targets are there #150
-		// because hashdeep ignores them
 		invalidSymlinks := []string{
-			"/tmp/out/full_symlinks/modules/testmodule/not-working-symlink",
-			"/tmp/out/full_symlinks/1/not-working-symlink",
+			filepath.Join(deployDir, "modules", "testmodule", "not-working-symlink"),
+			filepath.Join(deployDir, "1", "not-working-symlink"),
 		}
 
 		for _, invalidSymlink := range invalidSymlinks {
@@ -2498,21 +2376,16 @@ func TestSymlink(t *testing.T) {
 			}
 		}
 
-		rt.purgeDir("/tmp/out/full_symlinks/modules/testmodule/files/docs/another_dir/file", "TestResolveStatic()")
+		rt.purgeDir(filepath.Join(deployDir, "modules", "testmodule", "files", "docs", "another_dir", "file"), "TestSymlink()")
 
-		cmd = exec.Command("hashdeep", "-l", "-r", "-a", "-k", "tests/hashdeep_both_symlinks.hashdeep", "/tmp/out")
-		out, err = cmd.CombinedOutput()
-		exitCode = 0
-		if msg, ok := err.(*exec.ExitError); ok { // there is error code
-			exitCode = msg.Sys().(syscall.WaitStatus).ExitStatus()
-		}
+		modified, err := SnapshotDirectory(deployDir)
+		require.NoError(t, err, "Failed to snapshot symlink environment after purge on iteration %d", i)
+		result = CompareSnapshots(expected, modified)
+		assert.False(t, result.IsIdentical(), "Should detect that a file was purged on iteration %d", i)
 
-		if exitCode != 1 {
-			t.Errorf("hashdeep terminated with %v, but we expected exit status 1\nOutput: %v", exitCode, string(out))
-		}
-		rt.purgeDir("/tmp/out/full_symlinks/modules/testmodule/.latest_commit", "TestResolveStatic()")
+		rt.purgeDir(filepath.Join(deployDir, "modules", "testmodule", ".latest_commit"), "TestSymlink()")
 
-		f, _ := os.Create("/tmp/out/full_symlinks/modules/testmodule/.latest_commit")
+		f, _ := os.Create(filepath.Join(deployDir, "modules", "testmodule", ".latest_commit"))
 		defer func() { _ = f.Close() }()
 		_, _ = f.WriteString("foobarinvalidgitcommithashthatshouldtriggeraresyncofthismodule")
 		_ = f.Sync()

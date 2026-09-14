@@ -32,11 +32,6 @@ jobs:
         with:
           go-version: ${{ env.go_version }}
           check-latest: true
-      - name: Install additional Packages for tests
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y hashdeep
-        shell: bash
       - name: Test
         run: make test SKIP_GOLANGCI_LINT=1
 

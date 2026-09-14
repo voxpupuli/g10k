@@ -1,0 +1,1399 @@
+{
+  "root": "/tmp/TestSymlinkHandlingWithSnapshot633342244/001/out/full_symlinks",
+  "files": [
+    {
+      "path": ".",
+      "size": 200,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": ".g10k-deploy.json",
+      "size": 368,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "6082161ef6fa5be0832b003f21760776",
+      "sha256": "08e57a9bf43c4a2673d4a9257e449f87277d919ef99add1908afc53cea666871",
+      "is_link": false
+    },
+    {
+      "path": "1",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "1/2",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "1/2/test",
+      "size": 8,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "6e1a1962fe3195ffb5004eecf2672c2c",
+      "sha256": "d35bc21907bfb3f7a06a081737d243314917928a42e3da25fee54ed1b31a9738",
+      "is_link": false
+    },
+    {
+      "path": "1/not-working-symlink",
+      "size": 19,
+      "mode": "Lrwxrwxrwx",
+      "is_dir": false,
+      "md5": "",
+      "sha256": "",
+      "is_link": true,
+      "link_dst": "non-existent-target"
+    },
+    {
+      "path": "1/working-symlink",
+      "size": 10,
+      "mode": "Lrwxrwxrwx",
+      "is_dir": false,
+      "md5": "",
+      "sha256": "",
+      "is_link": true,
+      "link_dst": "../uuui/d0"
+    },
+    {
+      "path": "Puppetfile",
+      "size": 133,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "9fb8eb9ea7495d8e9edc7b9b507da50e",
+      "sha256": "3dd55a5bc25cc429789a26aa552e3663c5bb1737e5b8c4861cd77742621430d3",
+      "is_link": false
+    },
+    {
+      "path": "README",
+      "size": 9,
+      "mode": "Lrwxrwxrwx",
+      "is_dir": false,
+      "md5": "",
+      "sha256": "",
+      "is_link": true,
+      "link_dst": "README.md"
+    },
+    {
+      "path": "README.md",
+      "size": 19,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "81701b699100553aaa496b9ade7413f8",
+      "sha256": "26f2f734b829739375e13ac8dfe956793e20359b582a374fd97fabfc43cf929f",
+      "is_link": false
+    },
+    {
+      "path": "dir2",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "dir2/hy9",
+      "size": 6,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "f8d3be7e1f85489edb06705ae531fa75",
+      "sha256": "ce875e46f0975dc6e36922a8795c8f23c2e0f8de48cff209bd9b2fe1e7225f91",
+      "is_link": false
+    },
+    {
+      "path": "modules",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp",
+      "size": 520,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/CHANGELOG.md",
+      "size": 18809,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "19bc87b4e3d8da7a299f511b9fba4671",
+      "sha256": "48699f18d898c600cebab36c7ded5335db3daa0331b09ffbed4425b06941ee20",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/CODEOWNERS",
+      "size": 62,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "366aefdc1424442b8f864528c2e0db1d",
+      "sha256": "e95366f9ccb4326ce2abdbf5db505c1c7bf22807078bd14266f322ce7a2a55ca",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/CONTRIBUTING.md",
+      "size": 9776,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "4d17f3c942e7c93d1577cc4438a231e4",
+      "sha256": "9894e0f7f26dd00d428fa43bf38b897bfaabd472dbf82ee080ea3d55b8202f42",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/Gemfile",
+      "size": 3643,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "8c95e1e615523c1014577fbe5a862adc",
+      "sha256": "38abb9b29fd66a300918769d3c3ad2801384932c8adba71439c05f33094d3383",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/HISTORY.md",
+      "size": 14990,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "0bc8da09607dcac3227f3e27bfb30108",
+      "sha256": "1a776420021810cc1f3033cde57819fe44443643a13a47877710acea532131f2",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/LICENSE",
+      "size": 11358,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "3b83ef96387f14655fc854ddc3c6bd57",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/MAINTAINERS.md",
+      "size": 187,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "9230f8b03e0d9dbb08812838574be9d3",
+      "sha256": "62b4ec8b486bb6bdc80dbd4cd3e4595fd28627e537201f132a25ca8919d3e76e",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/NOTICE",
+      "size": 584,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "c9a9561a16eac9f7304d12680d9df29f",
+      "sha256": "1e500a1b33bb8b9dfa2e42457f02e096c947b026460339deda2daea1d9d30f7c",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/README.md",
+      "size": 4135,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "42ea325c34b67954c2c4bee75bd489d7",
+      "sha256": "e0d8e2dbfd41d3a2071ccdc4415477024dd0b631192d25dbdbfeebc26ab6b6de",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/REFERENCE.md",
+      "size": 11841,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "cdce8b1864375efdf22af3d2993bc731",
+      "sha256": "e14ad088dfec175a2f54af435bebbe92c94832b743e4201982fe1cbc1f221371",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/Rakefile",
+      "size": 3383,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "84fa82ff71d12bf1f830000bf54667d8",
+      "sha256": "fab50d101f15715a4d936764e31de12fd14a42594c32c8c92aba349685e49e4f",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/checksums.json",
+      "size": 4288,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "6541c5f314775656b70bd49c7630b2fb",
+      "sha256": "72d70b51a4df5ebf5eb5ccbd2d30aaaeb8cd336dd07992f84e67944ca2c11bae",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data",
+      "size": 360,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data/AIX-family.yaml",
+      "size": 206,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "9ebab7ca637c380fa75e7dff0a694795",
+      "sha256": "9787465ff62e236f9b544fad9f92366a4d26b66037a92c280c625d1e0d9faa33",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data/Amazon.yaml",
+      "size": 329,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "592c462c2449a2aa36067b32a5c9b559",
+      "sha256": "38b929abab34f51656f10d7b479506416c50ed2b17baaf511c716acb5ab9f878",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data/Archlinux-family.yaml",
+      "size": 330,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "37df45c9174facb6699d68db292098a6",
+      "sha256": "a24d683ddcf9d3ec7f1ba08958c792ca82b2641cd7639dcf1753ef76d846a8b2",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data/Debian-family.yaml",
+      "size": 296,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "9c482d7062f1dd2e073b510d25ea07d9",
+      "sha256": "ee693f70f587e06e0849ca075512a2724f2c0907f79653a168a5c24165bcc1bd",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data/Fedora.yaml",
+      "size": 212,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "7e28c6fea7fe7e41b39bfbb8952138f9",
+      "sha256": "1f0e0fc2efeeac5fa63c56312d6fe77aeb3eb9cb5549ace58b70f5bcd67c5370",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data/FreeBSD-family.yaml",
+      "size": 434,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "e9c4ea29ea681b82e63e22735b43ca5c",
+      "sha256": "59ca9d37cfddc1f5c70da2649a13604b7f940003ba91154cd40d9c5c51336fd6",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data/Gentoo-family.yaml",
+      "size": 335,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "4cbfa6ca120ea1861270d523d97018a1",
+      "sha256": "2646d956d865cb13af48f8c6d6860567e4c607672195aaf4c147c0fd981bc3f1",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data/OpenSuSE.yaml",
+      "size": 55,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "0df8a5b62510ce8a86d2040f238b5f76",
+      "sha256": "fda919a65c8dcf2ad6ef6e063fa140e88f6fb5f3e8b80ef9bef8c2068893171a",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data/RedHat-family.yaml",
+      "size": 349,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "37faf7710394c7f26bfd3c2cce35871a",
+      "sha256": "3d406414c46a1527f0836e9be033f795ec70481bdc5fe6b5898b5a44383bb82c",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data/SLES-10.yaml",
+      "size": 30,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "b1ffac58b18589235bbb546dda98380f",
+      "sha256": "2784ce16239bd43127412f6348fd7d2f15ab6cc42ba9bc274d56328bff227d44",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data/SLES-12.yaml",
+      "size": 55,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "0df8a5b62510ce8a86d2040f238b5f76",
+      "sha256": "fda919a65c8dcf2ad6ef6e063fa140e88f6fb5f3e8b80ef9bef8c2068893171a",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data/SLES-15.yaml",
+      "size": 55,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "0df8a5b62510ce8a86d2040f238b5f76",
+      "sha256": "fda919a65c8dcf2ad6ef6e063fa140e88f6fb5f3e8b80ef9bef8c2068893171a",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data/Solaris-10.yaml",
+      "size": 292,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "5fd9c7acbb4b4d4ad337f310d13734f9",
+      "sha256": "1dc7a26f0c31bcb2709ffc8f912cba77e51d04d241dd2760d382d33157870a75",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data/Solaris-11.yaml",
+      "size": 357,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "c314fbdb06a00722974146b10dc8ba00",
+      "sha256": "d622076fd8b54df6179250ff54f3809563cd661d2a38ae1c66b359fb0da6d9d1",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data/Suse-family.yaml",
+      "size": 349,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "b9ddb837225182db53d04b8f3aae2703",
+      "sha256": "7834dc6f6de22fbb360372e668f44ae0c338d0fa9c08882c36c6fe49945d9fd6",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/data/common.yaml",
+      "size": 1538,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "d470b6496fabcce602b05f9efee16e78",
+      "sha256": "82b6a02ea5a1a5e08fb9b716abb0d34815a24adc31543c308bb0173754d411b7",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/distelli-manifest.yml",
+      "size": 843,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "079ee067c3fc5157e4e21d93d6b23d58",
+      "sha256": "a0eb83e1d3b3273aed17b2e4013aa85920d8418205daec8b5d8077e40acb4f32",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/examples",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/examples/init.pp",
+      "size": 183,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "d398e7687ec1d893ef23d1b7d2afc094",
+      "sha256": "1df97a49e55585940b300f7e7ef0507f9ff6cce53b126e8c18d206cb4b802be0",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/hiera.yaml",
+      "size": 442,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "992040941dac878c116c0e02a3ed757e",
+      "sha256": "fa4c51badbf74b824cfa57e49b50022fd381601653cb573a657d0dc32d5232ed",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/locales",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/locales/config.yaml",
+      "size": 1054,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "69304e9cce562aa59bd7bd4ddcb91b8b",
+      "sha256": "39992a2009ab220c4b2ae13f93d48e98bfc8e788004d01e37e048aaa48a07c3f",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/locales/ja",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/locales/ja/puppetlabs-ntp.po",
+      "size": 1000,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "7265ff57e178feb7a65835f7cf271e2c",
+      "sha256": "a3fd30454e9d760ff42f2be3e52e8dd1dc05db5cfdf8588a074f6fe7db9139f6",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/locales/puppetlabs-ntp.pot",
+      "size": 674,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "7d6e724b81413279c5980f12c49c47d2",
+      "sha256": "672203a5720549bc468012b8dbc81744694f8ab2311b6343c62f4d52948e628b",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/manifests",
+      "size": 120,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/manifests/config.pp",
+      "size": 2950,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "ce91f0df43742fa70d20df5a6a471afa",
+      "sha256": "14f7c74680a8053c969694f21ffa74d627a33c953387965f613dc397b9f4340a",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/manifests/init.pp",
+      "size": 11577,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "e793e247e33d3da1f80ff8046612bde9",
+      "sha256": "bc1ea24127b834a4fc8342962fa03c3aee43fca915f67510d88419659fda0578",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/manifests/install.pp",
+      "size": 204,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "fd145448707fc7c97b4eae9a005d6700",
+      "sha256": "0687dfcf18b106d0a158e20eb6ab1cf6942331dd8f653f7549b5c55bf4739de9",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/manifests/service.pp",
+      "size": 421,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "e083a929542239ad77b226c673ff5a37",
+      "sha256": "aad5a4a789182dc20aef50b9c97153b7cf124eb727f2352547bef777d308a2ba",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/metadata.json",
+      "size": 2054,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "4455b901b713954b725ce23af72933a9",
+      "sha256": "cb05453553ebd675509a665242f5c5569a5ab385b7afe7dee13a97874612b658",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/provision.yaml",
+      "size": 911,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "6ec5da61ca74127f60b59595b46d5724",
+      "sha256": "8724e5c06ca04f05a9d312a3450101f888a388ac938b649b8e1962724b9cc8f0",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/readmes",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/readmes/README_ja_JP.md",
+      "size": 17208,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "7e6c28fcf29c5a2c170d289edca7f853",
+      "sha256": "12ea621078fba26433b4f1a685021299f242efd266376ccecef66fa547d71da6",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec",
+      "size": 200,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/acceptance",
+      "size": 180,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/acceptance/class_spec.rb",
+      "size": 1229,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "4208ac738082931a5f99a4a8b825be35",
+      "sha256": "039125932b790de8b78c020f3653924ae4ec1d8bd63e72e97cb621c84fd7d941",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/acceptance/nodesets",
+      "size": 120,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/acceptance/nodesets/centos-7-x64.yml",
+      "size": 174,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "a713f3abd3657f0ae2878829badd23cd",
+      "sha256": "697c149d85ebb33771dfe3eb3822e7ad5fa8253f8eff3f77a1c32658d9ff66c9",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/acceptance/nodesets/debian-8-x64.yml",
+      "size": 177,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "d2d2977900989f30086ad251a14a1f39",
+      "sha256": "eccf27e3eeed6cb0516f67e4ac62a70345034f8608c0664b50405bc664f3dfa7",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/acceptance/nodesets/default.yml",
+      "size": 186,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "b42da5a1ea0c964567ba7495574b8808",
+      "sha256": "84415beed8594ef9c3a34a7f402c50ef56c4149b7186cf441592150b460be9fb",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/acceptance/nodesets/docker",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/acceptance/nodesets/docker/centos-7.yml",
+      "size": 381,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "8a3892807bdd62306ae4774f41ba11ae",
+      "sha256": "3101897fda5f6b4455c2fc90d1706367bffeb05c6fff1bbba456ef7cc324aaaf",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/acceptance/nodesets/docker/debian-8.yml",
+      "size": 356,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "ac8e871d1068c96de5e85a89daaec6df",
+      "sha256": "93ecfe721ee41cfb2f75173c96f4663060a739debde2d15880c49d88ba8e87da",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/acceptance/nodesets/docker/ubuntu-14.04.yml",
+      "size": 474,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "dc42ee922a96908d85b8f0f08203ce58",
+      "sha256": "31ec78aac8354e5f9a3b0fb46901b88e263e254eeaa3ca3de784835989eb69d4",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/acceptance/ntp_install_spec.rb",
+      "size": 605,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "cf18d5607a88eafa33ff238a3ac74ccf",
+      "sha256": "0a3bf44ce2f5bf562a0f60f2c0ba5e975703447f5edaa3251e0508e17863a879",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/acceptance/ntp_parameters_spec.rb",
+      "size": 3436,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "8191697920cbfe3715b3f2f6b414b0e9",
+      "sha256": "c72af51ad344045fbf886a00399be249474413e082f81a0e75a40890c6fb230d",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/acceptance/ntp_service_spec.rb",
+      "size": 1720,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "78036d8a62d8fa321b5e6e2079b69694",
+      "sha256": "b95fc07c82daeb85ad6df6f4cea5973ab08b040454784fee0cf02ae5558d8788",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/acceptance/preferred_servers_spec.rb",
+      "size": 846,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "a307ebf848f95ff3fa2da84a7e69b89b",
+      "sha256": "337fb0f44ae72d4df293faefe5a0e02aafe671aed174a73b82ebaea8eec45af1",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/acceptance/unsupported_spec.rb",
+      "size": 312,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "ed329ca84ec053253f7a59b72b503221",
+      "sha256": "9dad4c5155d0295d00d55761bc7a1dc108c6547af229567a852e374150e206f9",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/classes",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/classes/contains_spec.rb",
+      "size": 998,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "3dbe2f27b3c2ca3eac5b7a77794f5558",
+      "sha256": "4af1cc51776a9a3d3fee9db54ba68b11b1f72928fa1b7fc69f5ff2f9afc90417",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/classes/ntp_spec.rb",
+      "size": 34246,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "236a4d3b36ea66410b4fa35b5c28cb0f",
+      "sha256": "d027330a4539f6437a2438425dfc40632990fbb14f8fa5f214b3d74d9f734b03",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/default_facts.yml",
+      "size": 217,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "d4442f09ee2f33f2d55f078d0ee2634f",
+      "sha256": "03bf00b19fad56fd70b5fd7e7011ab8155d19f05cb0634293e09924f8bd4b578",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/fixtures",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/fixtures/my_ntp",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/fixtures/my_ntp/templates",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/fixtures/my_ntp/templates/ntp.conf.epp",
+      "size": 64,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "21cd1ad2ded293bd0411e3f1654ebf91",
+      "sha256": "e5f454ea87556bc1a611c37518abdaf03f11b39dd37fd429b0bab1dbea4f920b",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/fixtures/my_ntp/templates/ntp.conf.erb",
+      "size": 62,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "a123f4613d4c8f1945139f3307c1bc69",
+      "sha256": "716512c304efad98ce0db35d3abe91f583e9efa19f09c9b240205bb312e7397d",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/spec_helper.rb",
+      "size": 1702,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "ec40d36ed109d8dba0df527c34c2c6db",
+      "sha256": "8432a7d8ab8f8ffd129bfdf1ddc5205db98f8bfa6afd662b5067a0ee440f6aa1",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/spec_helper_acceptance.rb",
+      "size": 3720,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "7a285d6e707935349a4b37eabdb3ae2a",
+      "sha256": "5feed1eb48315540be0325ae9bd195b5edaad97f37a61821f4b360bb5332a8c0",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/spec_helper_acceptance_local.rb",
+      "size": 84,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "53ed4028c981feec66bf52c6389cd424",
+      "sha256": "01383a69f5e809e3b880c49d337ba2101bb6515798c3c3e832246a2ce3d70216",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/spec/spec_helper_local.rb",
+      "size": 784,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "bdc1f90758d428a1cc5794699eb6ed4f",
+      "sha256": "fd1b352f2fd1ec84c04e60b1ff4346a439f667d806b9f6e38852a3aea7aa7fa9",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/templates",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/templates/keys.epp",
+      "size": 87,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "4931f55f1669138166cadd70b931ddca",
+      "sha256": "1fce447b5c6ebe0d0185bf4fdd3bbec758af1d3f5fdd4bc634addd2bb12180ee",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/templates/ntp.conf.epp",
+      "size": 4514,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "c363c4138d93ac782843baa321531f4c",
+      "sha256": "a63d6f4369542263ac3f046959a7cb79a0590248b0268f36b9493a6b7bb0e307",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/templates/step-tickers.epp",
+      "size": 293,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "1a20cfd4c636ce4f696b23419d6c9ace",
+      "sha256": "17640d7ae4ac43ff5debff2bcf54242a60c050e61b481b3d499097d1fa13e116",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/types",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/types/key_id.pp",
+      "size": 176,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "e01c91e0839c5684495a8ea70f2399e5",
+      "sha256": "7f611e83c425dbdfb2764db19ac0cb1992953e1aaa58d56a5efce16ded01c6b2",
+      "is_link": false
+    },
+    {
+      "path": "modules/ntp/types/poll_interval.pp",
+      "size": 184,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "6a2190db7dcfbf3a7be0f659b6fd287d",
+      "sha256": "60f22b2a5d0229d5c3fda17cec7c0eb5ef91da527a37eca486cddfbf219e0f7c",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule",
+      "size": 320,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/.latest_commit",
+      "size": 40,
+      "mode": "-rw-r--r--",
+      "is_dir": false,
+      "md5": "baa383caeab01834fe1cae35b6334993",
+      "sha256": "d49df51c71d7c8b4b7c0da27508f1340d6b7798d9e5ca582419ae5a370f141c7",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/MODULEBRANCHNAME_IS_control_branch_foobar",
+      "size": 22,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "8ba1456b2b23479713274ea38fbbe23a",
+      "sha256": "a8c42515a4ce67c04719079da40008d5c98b5a4a33d5a7965ee69007596c1f53",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/README",
+      "size": 9,
+      "mode": "Lrwxrwxrwx",
+      "is_dir": false,
+      "md5": "",
+      "sha256": "",
+      "is_link": true,
+      "link_dst": "README.md"
+    },
+    {
+      "path": "modules/testmodule/README.markdown",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/README.md",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/docs",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/docs/foo",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/docs/foo/should_not_be_there4",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/docs/foo/should_not_be_there7",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/docs/should_not_be_there1",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/docs/should_not_be_there3",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/examples",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/examples/foo",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/examples/foo/should_not_be_there4",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/examples/foo/should_not_be_there7",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/examples/should_not_be_there1",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/examples/should_not_be_there3",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/files",
+      "size": 180,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/files/README",
+      "size": 15,
+      "mode": "Lrwxrwxrwx",
+      "is_dir": false,
+      "md5": "",
+      "sha256": "",
+      "is_link": true,
+      "link_dst": "README.markdown"
+    },
+    {
+      "path": "modules/testmodule/files/README.markdown",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/files/README.md",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/files/docs",
+      "size": 120,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/files/docs/another_dir",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/files/docs/another_dir/file",
+      "size": 8,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "0be4411d1bce3b10810f06a8b397930c",
+      "sha256": "331418c46ef3a5b3df31651d605478b7e1dfbee6b6a9cc675e26a2a2d45d053f",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/files/docs/should_also_be_there",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/files/docs/should_also_be_there.markdown",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/files/docs/should_also_be_there.md",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/files/examples",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/files/examples/should_be_there",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/files/spec",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/files/spec/should_also_be_there",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/files/symlink_that_should_be_there",
+      "size": 24,
+      "mode": "Lrwxrwxrwx",
+      "is_dir": false,
+      "md5": "",
+      "sha256": "",
+      "is_link": true,
+      "link_dst": "examples/should_be_there"
+    },
+    {
+      "path": "modules/testmodule/junit",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/junit/foo",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/junit/foo/should_not_be_there4",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/junit/foo/should_not_be_there7",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/junit/should_not_be_there1",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/junit/should_not_be_there3",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/manifests",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/manifests/init.pp",
+      "size": 49,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "67704092aa4c25d4337860e2143a7709",
+      "sha256": "038d0fa035bd860dcdf8d8bc95d49eb823feb60a4ac4e1d939b4d4ee80d24d81",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/metadata.json",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/not-working-symlink",
+      "size": 19,
+      "mode": "Lrwxrwxrwx",
+      "is_dir": false,
+      "md5": "",
+      "sha256": "",
+      "is_link": true,
+      "link_dst": "non-existent-target"
+    },
+    {
+      "path": "modules/testmodule/readmes",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/readmes/foo",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/readmes/foo/should_not_be_there4",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/readmes/foo/should_not_be_there7",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/readmes/should_not_be_there1",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/readmes/should_not_be_there3",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/spec",
+      "size": 100,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/spec/foo",
+      "size": 80,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/spec/foo/should_not_be_there4",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/spec/foo/should_not_be_there7",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/spec/should_not_be_there1",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "modules/testmodule/spec/should_not_be_there3",
+      "size": 0,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "is_link": false
+    },
+    {
+      "path": "uuui",
+      "size": 60,
+      "mode": "drwxr-xr-x",
+      "is_dir": true,
+      "md5": "",
+      "sha256": "",
+      "is_link": false
+    },
+    {
+      "path": "uuui/d0",
+      "size": 16,
+      "mode": "-rw-rw-r--",
+      "is_dir": false,
+      "md5": "586f7692150f19f1cec9128772aa40e5",
+      "sha256": "525205e8852233cfb6adcf4b2eba60ee700ce92a6488fb3fd86ff530c644b99f",
+      "is_link": false
+    }
+  ],
+  "count": 154
+}
