@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -10,8 +9,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-
-	"github.com/xorpaul/uiprogress"
 )
 
 func (rt *Runtime) resolveGitRepositories(uniqueGitModules map[string]GitModule) {
@@ -20,10 +17,6 @@ func (rt *Runtime) resolveGitRepositories(uniqueGitModules map[string]GitModule)
 		rt.Debugf("uniqueGitModules[] is empty, skipping...")
 		return
 	}
-	bar := uiprogress.AddBar(len(uniqueGitModules)).AppendCompleted().PrependElapsed()
-	bar.PrependFunc(func(b *uiprogress.Bar) string {
-		return fmt.Sprintf("Resolving Git modules (%d/%d)", b.Current(), len(uniqueGitModules))
-	})
 	// Dummy channel to coordinate the number of concurrent goroutines.
 	// This channel should be buffered otherwise we will be immediately blocked
 	// when trying to fill it.
@@ -58,13 +51,12 @@ func (rt *Runtime) resolveGitRepositories(uniqueGitModules map[string]GitModule)
 
 	for url, gm := range uniqueGitModules {
 		privateKey := gm.privateKey
-		go func(url string, gm GitModule, bar *uiprogress.Bar) {
+		go func(url string, gm GitModule) {
 			// Try to receive from the concurrentGoroutines channel. When we have something,
 			// it means we can start a new goroutine because another one finished.
 			// Otherwise, it will block the execution until an execution
 			// spot is available.
 			<-concurrentGoroutines
-			defer bar.Incr()
 			defer wg.Done()
 
 			if gm.useSSHAgent {
@@ -85,7 +77,7 @@ func (rt *Runtime) resolveGitRepositories(uniqueGitModules map[string]GitModule)
 				rt.Fatalf("Fatal: Failed to clone or pull " + url + " to " + workDir)
 			}
 			done <- true
-		}(url, gm, bar)
+		}(url, gm)
 	}
 
 	// Wait for all jobs to finish

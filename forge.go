@@ -18,7 +18,6 @@ import (
 	"github.com/fatih/color"
 	"github.com/klauspost/pgzip"
 	"github.com/tidwall/gjson"
-	"github.com/xorpaul/uiprogress"
 )
 
 // createSymlinkIdempotent creates a symlink from linkPath pointing to targetPath.
@@ -506,10 +505,6 @@ func (rt *Runtime) resolveForgeModules(modules map[string]ForgeModule) {
 		rt.Debugf("empty ForgeModule[] found, skipping...")
 		return
 	}
-	bar := uiprogress.AddBar(len(modules)).AppendCompleted().PrependElapsed()
-	bar.PrependFunc(func(b *uiprogress.Bar) string {
-		return fmt.Sprintf("Resolving Forge modules (%d/%d)", b.Current(), len(modules))
-	})
 	// Dummy channel to coordinate the number of concurrent goroutines.
 	// This channel should be buffered otherwise we will be immediately blocked
 	// when trying to fill it.
@@ -542,18 +537,17 @@ func (rt *Runtime) resolveForgeModules(modules map[string]ForgeModule) {
 	wg.Add(len(modules))
 
 	for m, fm := range modules {
-		go func(m string, fm ForgeModule, bar *uiprogress.Bar) {
+		go func(m string, fm ForgeModule) {
 			// Try to receive from the concurrentGoroutines channel. When we have something,
 			// it means we can start a new goroutine because another one finished.
 			// Otherwise, it will block the execution until an execution
 			// spot is available.
 			<-concurrentGoroutines
-			defer bar.Incr()
 			defer wg.Done()
 			rt.Debugf("resolveForgeModules(): Trying to get forge module " + m + " with Forge base url " + fm.baseURL + " and CacheTtl set to " + fm.cacheTTL.String())
 			rt.doModuleInstallOrNothing(fm)
 			done <- true
-		}(m, fm, bar)
+		}(m, fm)
 	}
 	// Wait for all jobs to finish
 	<-waitForAllJobs

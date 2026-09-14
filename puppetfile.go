@@ -10,8 +10,6 @@ import (
 	"time"
 
 	"github.com/remeh/sizedwaitgroup"
-	"github.com/xorpaul/uiprogress"
-	"golang.org/x/term"
 )
 
 // sourceSanityCheck is a validation function that checks if the given source has all necessary attributes (basedir, remote, SSH key exists if given)
@@ -299,9 +297,6 @@ func (rt *Runtime) resolvePuppetfile(allPuppetfiles map[string]Puppetfile) {
 			}
 		}
 	}
-	if !rt.Debug && !rt.Verbose && !rt.Info && !rt.Quiet && term.IsTerminal(int(os.Stdout.Fd())) {
-		uiprogress.Start()
-	}
 	var wgResolve sync.WaitGroup
 	wgResolve.Add(2)
 	go func() {
@@ -470,9 +465,6 @@ func (rt *Runtime) resolvePuppetfile(allPuppetfiles map[string]Puppetfile) {
 	}
 	// TODO: Use properly scaled log levels here rather than a bunch of booleans.
 	// There is an enum created, but unused for this purpose.
-	if !rt.Debug && !rt.Verbose && !rt.Info && !rt.Quiet && term.IsTerminal(int(os.Stdout.Fd())) {
-		uiprogress.Stop()
-	}
 
 	for _, pf := range allPuppetfiles {
 		deployFile := filepath.Join(pf.workDir, ".g10k-deploy.json")
