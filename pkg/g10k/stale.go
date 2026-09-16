@@ -1,4 +1,4 @@
-package main
+package g10k
 
 import (
 	"path/filepath"

@@ -1,6 +1,6 @@
-module github.com/xorpaul/g10k
+module github.com/voxpupuli/g10k
 
-go 1.25.3
+go 1.27
 
 require (
 	github.com/fatih/color v1.18.0

@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 env:
-  go_version: '1.25.3'
+  go_version: "1.27"
 
 jobs:
   golangci-lint:
@@ -20,7 +20,7 @@ jobs:
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0
         with:
-          version: v2.11
+          version: v2.13
 
   test:
     runs-on: ubuntu-24.04
@@ -56,7 +56,7 @@ jobs:
         uses: goreleaser/goreleaser-action@v7
         with:
           distribution: goreleaser
-          version: '~> v2'
+          version: "~> v2"
           args: release --snapshot --clean
 
   tests:

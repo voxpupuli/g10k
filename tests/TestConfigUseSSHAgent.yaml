@@ -5,4 +5,4 @@ sources:
   example:
     remote: "https://github.com/xorpaul/g10k-environment.git"
     basedir: "/tmp/example/"
-    private_key: "tests/test-fake-key" # just some existing file, we just want to check if the ssh-add command isn't used
+    private_key: "../../tests/test-fake-key" # just some existing file, we just want to check if the ssh-add command isn't used

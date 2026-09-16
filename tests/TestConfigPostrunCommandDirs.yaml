@@ -1,10 +1,10 @@
 ---
-:cachedir: '/tmp/g10k'
+:cachedir: "/tmp/g10k"
 
 sources:
   example:
-    remote: 'https://github.com/xorpaul/g10k-test-environment.git'
-    basedir: '/tmp/example/'
+    remote: "https://github.com/xorpaul/g10k-test-environment.git"
+    basedir: "/tmp/example/"
     prefix: true
 
-postrun: ['tests/postrun.sh', '$modifieddirs']
+postrun: ["../../tests/postrun.sh", "$modifieddirs"]
