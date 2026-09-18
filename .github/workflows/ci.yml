@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 env:
-  go_version: '1.25.3'
+  go_version: '1.26.8'
 
 jobs:
   golangci-lint:
@@ -32,11 +32,6 @@ jobs:
         with:
           go-version: ${{ env.go_version }}
           check-latest: true
-      - name: Install additional Packages for tests
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y hashdeep
-        shell: bash
       - name: Test
         run: make test SKIP_GOLANGCI_LINT=1
 
