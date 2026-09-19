@@ -1,14 +1,14 @@
-DEPS = $(wildcard */*.go)
+DEPS = $(wildcard pkg/g10k/*.go cmd/g10k/*.go)
 BUILDVERSION ?= $(shell git describe --tags --dirty --always 2>/dev/null || echo dev)
 BUILDTIME ?= $(shell date -u '+%Y-%m-%d_%H:%M:%S')
 UNAME := $(shell uname)
 
 GO           ?= go
-FIRST_GOPATH := $(firstword $(subst :, ,$(shell $(GO) env GOPATH)))
-SKIP_GOLANGCI_LINT :=
-GOLANGCI_LINT :=
+FIRST_GOPATH ?= $(firstword $(subst :, ,$(shell $(GO) env GOPATH)))
+SKIP_GOLANGCI_LINT ?=
+GOLANGCI_LINT ?=
 GOLANGCI_LINT_OPTS ?=
-GOLANGCI_LINT_VERSION ?= v2.11.4
+GOLANGCI_LINT_VERSION ?= v2.13
 GOLANGCI_FMT_OPTS ?=
 # golangci-lint only supports linux, darwin and windows platforms on i386/amd64/arm64.
 # windows isn't included here because of the path separator being different.
@@ -19,9 +19,9 @@ ifeq ($(GOHOSTOS),$(filter $(GOHOSTOS),linux darwin))
 		ifneq (,$(SKIP_GOLANGCI_LINT))
 			GOLANGCI_LINT :=
 		else ifeq (,$(CIRCLE_JOB))
-			GOLANGCI_LINT := $(FIRST_GOPATH)/bin/golangci-lint
+			GOLANGCI_LINT ?= $(FIRST_GOPATH)/bin/golangci-lint
 		else ifeq (,$(wildcard .github/workflows/golangci-lint.yml))
-			GOLANGCI_LINT := $(FIRST_GOPATH)/bin/golangci-lint
+			GOLANGCI_LINT ?= $(FIRST_GOPATH)/bin/golangci-lint
 		endif
 	endif
 endif
@@ -30,35 +30,35 @@ all: test g10k
 
 build:
 	CGO_ENABLED=0 go build \
-		-trimpath \
-		-ldflags "-s -w -X main.buildversion=${BUILDVERSION} -X main.buildtime=${BUILDTIME}" \
-	-o g10k .
+	-trimpath \
+	-ldflags "-s -w -X main.buildversion=${BUILDVERSION} -X main.buildtime=${BUILDTIME}" \
+	-o g10k ./cmd/g10k
 
-g10k: g10k.go $(DEPS)
+g10k: $(DEPS)
 # -race flag is currently removed because of issues in OS X Monterey. Should be solved above go version 1.17.6
 ifeq ($(UNAME), Darwin)
 	CGO_ENABLED=1 GOOS=darwin go build \
 		-ldflags "-s -w -X main.buildversion=${BUILDVERSION} -X main.buildtime=${BUILDTIME}" \
-	-o $@
+	-o $@ ./cmd/g10k
 	strip -X $@
 endif
 ifeq ($(UNAME), Linux)
 	CGO_ENABLED=1 GOOS=linux go build \
 		-race -ldflags "-s -w -X main.buildversion=${BUILDVERSION} -X main.buildtime=${BUILDTIME}" \
-	-o $@
+	-o $@ ./cmd/g10k
 	strip $@
 endif
 
 lint: $(GOLANGCI_LINT)
 ifdef GOLANGCI_LINT
 	@echo ">> running golangci-lint"
-	$(GOLANGCI_LINT) run $(GOLANGCI_LINT_OPTS) $(pkgs)
+	$(GOLANGCI_LINT) run $(GOLANGCI_LINT_OPTS) ./...
 endif
 
 lint-fix: $(GOLANGCI_LINT)
 ifdef GOLANGCI_LINT
 	@echo ">> running golangci-lint fix"
-	$(GOLANGCI_LINT) run --fix $(GOLANGCI_LINT_OPTS) $(pkgs)
+	$(GOLANGCI_LINT) run --fix $(GOLANGCI_LINT_OPTS) ./...
 endif
 
 ifdef GOLANGCI_LINT
@@ -69,24 +69,24 @@ $(GOLANGCI_LINT):
 		| sh -s -- -b $(FIRST_GOPATH)/bin $(GOLANGCI_LINT_VERSION)
 endif
 
-vet: g10k.go
-	go vet
+vet:
+	go vet ./...
 
-imports: g10k.go
+imports:
 	go install golang.org/x/tools/cmd/goimports@latest && \
-	goimports -d *.go tests/
+	goimports -d pkg cmd tests/
 
 test: lint vet imports
 # This is a workaround for Bug https://github.com/golang/go/issues/49138
 ifeq ($(UNAME), Darwin)
-	MallocNanoZone=0 go test -race -coverprofile=coverage.txt -covermode=atomic -v
+	MallocNanoZone=0 go test -race -coverprofile=coverage.txt -covermode=atomic -v ./...
 endif
 ifeq ($(UNAME), Linux)
 	go test -race -coverprofile=coverage.txt -covermode=atomic -v ./...
 endif
 
 clean:
-	rm -rf g10k dist coverage.txt cache example
+	rm -rf g10k dist coverage.txt pkg/g10k/cache pkg/g10k/example
 
 build-image:
 	docker build -t g10k:${BUILDVERSION} .

@@ -4,7 +4,7 @@ project_name: g10k
 
 builds:
   - id: g10k
-    main: .
+    main: ./cmd/g10k
     binary: g10k
     env:
       - CGO_ENABLED=0

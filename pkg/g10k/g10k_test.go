@@ -1,4 +1,4 @@
-package main
+package g10k
 
 import (
 	"fmt"
@@ -66,7 +66,7 @@ func TestForgeChecksum(t *testing.T) {
 func TestConfigPrefix(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	rt := NewRuntime(Options{})
-	got, err := rt.readConfigfile(filepath.Join("tests", funcName+".yaml"))
+	got, err := rt.readConfigfile(filepath.Join("..", "..", "tests", funcName+".yaml"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -92,7 +92,7 @@ func TestConfigPrefix(t *testing.T) {
 func TestConfigForceForgeVersions(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	rt := NewRuntime(Options{})
-	got, err := rt.readConfigfile(filepath.Join("tests", funcName+".yaml"))
+	got, err := rt.readConfigfile(filepath.Join("..", "..", "tests", funcName+".yaml"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -116,7 +116,7 @@ func TestConfigForceForgeVersions(t *testing.T) {
 func TestConfigAddWarning(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	rt := NewRuntime(Options{})
-	got, err := rt.readConfigfile(filepath.Join("tests", funcName+".yaml"))
+	got, err := rt.readConfigfile(filepath.Join("..", "..", "tests", funcName+".yaml"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -140,7 +140,7 @@ func TestConfigAddWarning(t *testing.T) {
 func TestConfigSimplePostrunCommand(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	rt := NewRuntime(Options{})
-	got, err := rt.readConfigfile(filepath.Join("tests", funcName+".yaml"))
+	got, err := rt.readConfigfile(filepath.Join("..", "..", "tests", funcName+".yaml"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -165,7 +165,7 @@ func TestConfigSimplePostrunCommand(t *testing.T) {
 func TestConfigPostrunCommand(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	rt := NewRuntime(Options{})
-	got, err := rt.readConfigfile(filepath.Join("tests", funcName+".yaml"))
+	got, err := rt.readConfigfile(filepath.Join("..", "..", "tests", funcName+".yaml"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -175,7 +175,7 @@ func TestConfigPostrunCommand(t *testing.T) {
 		Basedir: "/tmp/example", PrivateKey: "", ForceForgeVersions: false, Prefix: "true",
 		AutoCorrectEnvironmentNames: "correct_and_warn"}
 
-	postrunCommand := []string{"tests/postrun.sh", "$modifiedenvs"}
+	postrunCommand := []string{"../../tests/postrun.sh", "$modifiedenvs"}
 	expected := ConfigSettings{
 		CacheDir: "/tmp/g10k", ForgeCacheDir: "/tmp/g10k/forge",
 		ModulesCacheDir: "/tmp/g10k/modules", EnvCacheDir: "/tmp/g10k/environments",
@@ -190,7 +190,7 @@ func TestConfigPostrunCommand(t *testing.T) {
 func TestConfigDeploy(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	rt := NewRuntime(Options{})
-	got, err := rt.readConfigfile(filepath.Join("tests", funcName+".yaml"))
+	got, err := rt.readConfigfile(filepath.Join("..", "..", "tests", funcName+".yaml"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -216,7 +216,7 @@ func TestConfigDeploy(t *testing.T) {
 func TestResolveConfigAddWarning(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	rt := NewRuntime(Options{})
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigAddWarning.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigAddWarning.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Branch = "nonExistingBranch"
 		mustResolvePuppetEnvironment(rt, false, "")
@@ -243,7 +243,7 @@ func TestResolveConfigAddWarning(t *testing.T) {
 func TestResolveConfigAddError(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	rt := NewRuntime(Options{})
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigAddError.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigAddError.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Branch = "nonExistingBranch"
 		mustResolvePuppetEnvironment(rt, false, "")
@@ -276,7 +276,7 @@ func TestResolveStatic(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	rt.purgeDir("./cache", "TestResolveStatic()")
 	rt.purgeDir("./example", "TestResolveStatic()")
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigStatic.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigStatic.yaml")
 	// increase maxworker to finish the test quicker
 	rt.Config.Maxworker = 500
 	rt.Branch = "static"
@@ -285,7 +285,7 @@ func TestResolveStatic(t *testing.T) {
 	// remove timestamps from .g10k-deploy.json otherwise hash sum would always differ
 	removeTimestampsFromDeployfile(rt, "example/example_static/.g10k-deploy.json")
 
-	cmd := exec.Command(path, "-vv", "-l", "-r", "-a", "-k", "tests/hashdeep_example_static.hashdeep", "./example")
+	cmd := exec.Command(path, "-vv", "-l", "-r", "-a", "-k", "../../tests/hashdeep_example_static.hashdeep", "./example")
 	out, err := cmd.CombinedOutput()
 	exitCode := 0
 	if msg, ok := err.(*exec.ExitError); ok { // there is error code
@@ -301,7 +301,7 @@ func TestResolveStatic(t *testing.T) {
 
 	rt.purgeDir("example/example_static/external_modules/stdlib/spec/unit/facter/util", "TestResolveStatic()")
 
-	cmd = exec.Command("hashdeep", "-l", "-r", "-a", "-k", "tests/hashdeep_example_static.hashdeep", "./example")
+	cmd = exec.Command("hashdeep", "-l", "-r", "-a", "-k", "../../tests/hashdeep_example_static.hashdeep", "./example")
 	out, err = cmd.CombinedOutput()
 	exitCode = 0
 	if msg, ok := err.(*exec.ExitError); ok { // there is error code
@@ -331,7 +331,7 @@ func TestResolveStaticSkiplist(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	rt.purgeDir("./cache", "TestResolvStaticSkiplist()")
 	rt.purgeDir("./example", "TestResolvStaticSkiplist()")
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigStaticSkiplist.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigStaticSkiplist.yaml")
 	// increase maxworker to finish the test quicker
 	rt.Config.Maxworker = 500
 	rt.Branch = "skiplist"
@@ -340,7 +340,7 @@ func TestResolveStaticSkiplist(t *testing.T) {
 	// remove timestamps from .g10k-deploy.json otherwise hash sum would always differ
 	removeTimestampsFromDeployfile(rt, "example/example_skiplist/.g10k-deploy.json")
 
-	cmd := exec.Command(path, "-vv", "-l", "-r", "-a", "-k", "tests/hashdeep_example_static_skiplist.hashdeep", "./example")
+	cmd := exec.Command(path, "-vv", "-l", "-r", "-a", "-k", "../../tests/hashdeep_example_static_skiplist.hashdeep", "./example")
 	out, err := cmd.CombinedOutput()
 	exitCode := 0
 	if msg, ok := err.(*exec.ExitError); ok { // there is error code
@@ -367,7 +367,7 @@ func TestResolveStaticSkiplist(t *testing.T) {
 
 	rt.purgeDir("example/example_skiplist/Puppetfile", "TestResolveStaticSkiplist()")
 
-	cmd = exec.Command(path, "-l", "-r", "-a", "-k", "tests/hashdeep_example_static_skiplist.hashdeep", "./example")
+	cmd = exec.Command(path, "-l", "-r", "-a", "-k", "../../tests/hashdeep_example_static_skiplist.hashdeep", "./example")
 	out, err = cmd.CombinedOutput()
 	exitCode = 0
 	if msg, ok := err.(*exec.ExitError); ok { // there is error code
@@ -383,7 +383,7 @@ func TestResolveStaticSkiplist(t *testing.T) {
 func TestConfigGlobalAllowFail(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	rt := NewRuntime(Options{})
-	rt.Config = mustReadConfigfile(t, rt, filepath.Join("tests", funcName+".yaml"))
+	rt.Config = mustReadConfigfile(t, rt, filepath.Join("..", "..", "tests", funcName+".yaml"))
 
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
@@ -413,7 +413,7 @@ func TestConfigGlobalAllowFailForge(t *testing.T) {
 	t.Skip("skipping for now")
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	rt := NewRuntime(Options{})
-	rt.Config = mustReadConfigfile(t, rt, filepath.Join("tests", "TestConfigGlobalAllowFail.yaml"))
+	rt.Config = mustReadConfigfile(t, rt, filepath.Join("..", "..", "tests", "TestConfigGlobalAllowFail.yaml"))
 
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
@@ -441,7 +441,7 @@ func TestConfigGlobalAllowFailForge(t *testing.T) {
 
 func TestInvalidFilesizeForgemodule(t *testing.T) {
 	rt := NewRuntime(Options{})
-	ts := spinUpFakeForge(t, "tests/fake-forge/invalid-filesize-puppetlabs-ntp-metadata.json")
+	ts := spinUpFakeForge(t, "../../tests/fake-forge/invalid-filesize-puppetlabs-ntp-metadata.json")
 	defer ts.Close()
 
 	f := ForgeModule{version: "6.0.0", name: "ntp", author: "puppetlabs",
@@ -497,7 +497,7 @@ func TestInvalidFilesizeForgemodule(t *testing.T) {
 
 func TestInvalidMd5sumForgemodule(t *testing.T) {
 	rt := NewRuntime(Options{})
-	ts := spinUpFakeForge(t, "tests/fake-forge/invalid-md5sum-puppetlabs-ntp-metadata.json")
+	ts := spinUpFakeForge(t, "../../tests/fake-forge/invalid-md5sum-puppetlabs-ntp-metadata.json")
 	defer ts.Close()
 	f := ForgeModule{version: "6.0.0", name: "ntp", author: "puppetlabs",
 		baseURL: ts.URL, sha256sum: "a988a172a3edde6ac2a26d0e893faa88d37bc47465afc50d55225a036906c944"}
@@ -545,7 +545,7 @@ func TestInvalidMd5sumForgemodule(t *testing.T) {
 
 func TestInvalidSha256sumForgemodule(t *testing.T) {
 	rt := NewRuntime(Options{})
-	ts := spinUpFakeForge(t, "tests/fake-forge/invalid-sha256sum-puppetlabs-ntp-metadata.json")
+	ts := spinUpFakeForge(t, "../../tests/fake-forge/invalid-sha256sum-puppetlabs-ntp-metadata.json")
 	defer ts.Close()
 	f := ForgeModule{version: "6.0.0", name: "ntp", author: "puppetlabs",
 		baseURL: ts.URL, sha256sum: "a988a172a3edde6ac2a26d0e893faa88d37bc47465afc50d55225a036906c944"}
@@ -604,13 +604,13 @@ func spinUpFakeForge(t *testing.T, metadataFile string) *httptest.Server {
 			}
 			_, _ = fmt.Fprint(w, string(body))
 		case "/v3/modules/puppetlabs-ntp":
-			body, err := os.ReadFile("tests/fake-forge/latest-puppetlabs-ntp-metadata.json")
+			body, err := os.ReadFile("../../tests/fake-forge/latest-puppetlabs-ntp-metadata.json")
 			if err != nil {
 				t.Error(err)
 			}
 			_, _ = fmt.Fprint(w, string(body))
 		case "/v3/files/puppetlabs-ntp-6.0.0.tar.gz":
-			body, err := os.ReadFile("tests/fake-forge/fake-puppetlabs-ntp-6.0.0.tar.gz")
+			body, err := os.ReadFile("../../tests/fake-forge/fake-puppetlabs-ntp-6.0.0.tar.gz")
 			if err != nil {
 				t.Error(err)
 			}
@@ -625,7 +625,7 @@ func spinUpFakeForge(t *testing.T, metadataFile string) *httptest.Server {
 
 func TestModuleDirOverride(t *testing.T) {
 	rt := NewRuntime(Options{})
-	got := readTestPuppetfile(t, rt, "tests/TestReadPuppetfile", false)
+	got := readTestPuppetfile(t, rt, "../../tests/TestReadPuppetfile", false)
 	//fmt.Println(got.forgeModules["apt"].moduleDir)
 	if got.forgeModules["apt"].moduleDir != "external_modules" {
 		t.Error("Expected 'external_modules' for module dir, but got", got.forgeModules["apt"].moduleDir)
@@ -634,7 +634,7 @@ func TestModuleDirOverride(t *testing.T) {
 		t.Error("Expected 'modules' for module dir, but got", got.gitModules["another_module"].moduleDir)
 	}
 	rt.ModuleDir = "foobar"
-	got = readTestPuppetfile(t, rt, "tests/TestReadPuppetfile", false)
+	got = readTestPuppetfile(t, rt, "../../tests/TestReadPuppetfile", false)
 	if got.forgeModules["apt"].moduleDir != "foobar" {
 		t.Error("Expected '", rt.ModuleDir, "' for module dir, but got", got.forgeModules["apt"].moduleDir)
 	}
@@ -644,7 +644,7 @@ func TestModuleDirOverride(t *testing.T) {
 func TestResolveConfigExitIfUnreachable(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	rt := NewRuntime(Options{})
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigExitIfUnreachable.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigExitIfUnreachable.yaml")
 	rt.purgeDir(rt.Config.CacheDir, "TestResolveConfigExitIfUnreachable()")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Branch = "single"
@@ -673,7 +673,7 @@ func TestResolveConfigExitIfUnreachable(t *testing.T) {
 func TestResolveConfigExitIfUnreachableFalse(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	rt := NewRuntime(Options{})
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigExitIfUnreachableFalse.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigExitIfUnreachableFalse.yaml")
 	rt.purgeDir(rt.Config.CacheDir, "TestResolveConfigExitIfUnreachableFalse()")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Branch = "single"
@@ -703,7 +703,7 @@ func TestResolveConfigExitIfUnreachableFalse(t *testing.T) {
 func TestConfigUseCacheFallback(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, filepath.Join("tests", funcName+".yaml"))
+	rt.Config = mustReadConfigfile(t, rt, filepath.Join("..", "..", "tests", funcName+".yaml"))
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Branch = "single_fail"
 		mustResolvePuppetEnvironment(rt, false, "")
@@ -754,7 +754,7 @@ func TestConfigUseCacheFallback(t *testing.T) {
 func TestEnvFullSyncIfModuleWasTemporarilyNotAvailable(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	rt := NewRuntime(Options{})
-	rt.Config = mustReadConfigfile(t, rt, filepath.Join("tests", funcName+".yaml"))
+	rt.Config = mustReadConfigfile(t, rt, filepath.Join("..", "..", "tests", funcName+".yaml"))
 	rt.Branch = "single_git"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Info = true
@@ -839,7 +839,7 @@ func TestEnvFullSyncIfModuleWasTemporarilyNotAvailable(t *testing.T) {
 func TestConfigUseCacheFallbackFalse(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, filepath.Join("tests", funcName+".yaml"))
+	rt.Config = mustReadConfigfile(t, rt, filepath.Join("..", "..", "tests", funcName+".yaml"))
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Branch = "single_fail"
 		mustResolvePuppetEnvironment(rt, false, "")
@@ -890,7 +890,7 @@ func TestConfigUseCacheFallbackFalse(t *testing.T) {
 func TestReadPuppetfileUseCacheFallback(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigUseCacheFallback.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigUseCacheFallback.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
 		rt.Branch = "single_fail_forge"
@@ -935,7 +935,7 @@ func TestReadPuppetfileUseCacheFallback(t *testing.T) {
 func TestReadPuppetfileUseCacheFallbackFalse(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigUseCacheFallback.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigUseCacheFallback.yaml")
 	rt.purgeDir("/tmp/example", funcName)
 	rt.purgeDir(rt.Config.ForgeCacheDir, funcName)
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
@@ -968,7 +968,7 @@ func TestReadPuppetfileUseCacheFallbackFalse(t *testing.T) {
 func TestResolvePuppetfileInstallPath(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigUseCacheFallback.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigUseCacheFallback.yaml")
 	rt.purgeDir("/tmp/example", funcName)
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Branch = "install_path"
@@ -1009,7 +1009,7 @@ func TestResolvePuppetfileInstallPath(t *testing.T) {
 func TestResolvePuppetfileInstallPathTwice(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigUseCacheFallback.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigUseCacheFallback.yaml")
 	rt.purgeDir("/tmp/example", funcName)
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Branch = "install_path"
@@ -1051,7 +1051,7 @@ func TestResolvePuppetfileInstallPathTwice(t *testing.T) {
 func TestResolvePuppetfileSingleModuleForge(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigUseCacheFallback.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigUseCacheFallback.yaml")
 	sensuDir := "/tmp/example/single_module/modules/sensu"
 	metadataFile := sensuDir + "/metadata.json"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
@@ -1105,7 +1105,7 @@ func TestResolvePuppetfileSingleModuleForge(t *testing.T) {
 func TestResolvePuppetfileSingleModuleGit(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigUseCacheFallback.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigUseCacheFallback.yaml")
 	concatDir := "/tmp/example/single_module/modules/concat"
 	metadataFile := concatDir + "/metadata.json"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
@@ -1159,7 +1159,7 @@ func TestResolvePuppetfileSingleModuleGit(t *testing.T) {
 func TestResolvePuppetfileFallback(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigPrefix.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigPrefix.yaml")
 	aptDir := "/tmp/example/foobar_fallback/modules/apt"
 	metadataFile := aptDir + "/metadata.json"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
@@ -1209,7 +1209,7 @@ func TestResolvePuppetfileFallback(t *testing.T) {
 func TestResolvePuppetfileDefaultBranch(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigPrefix.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigPrefix.yaml")
 	apacheDir := "/tmp/example/foobar_default_branch/modules/apache"
 	metadataFile := apacheDir + "/metadata.json"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
@@ -1259,7 +1259,7 @@ func TestResolvePuppetfileDefaultBranch(t *testing.T) {
 func TestResolvePuppetfileControlBranch(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigPrefix.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigPrefix.yaml")
 	testDir := "/tmp/example/foobar_control_branch_foobar/modules/g10k_testmodule"
 	initFile := filepath.Join(testDir, "manifests/init.pp")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
@@ -1306,7 +1306,7 @@ func TestResolvePuppetfileControlBranch(t *testing.T) {
 func TestResolvePuppetfileControlBranchDefault(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigPrefix.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigPrefix.yaml")
 	apacheDir := "/tmp/example/foobar_control_branch_default/modules/apache"
 	metadataFile := filepath.Join(apacheDir, "metadata.json")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
@@ -1356,7 +1356,7 @@ func TestResolvePuppetfileControlBranchDefault(t *testing.T) {
 func TestConfigRetryGitCommands(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, filepath.Join("tests", funcName+".yaml"))
+	rt.Config = mustReadConfigfile(t, rt, filepath.Join("..", "..", "tests", funcName+".yaml"))
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Branch = "single_git"
 		mustResolvePuppetEnvironment(rt, false, "")
@@ -1398,7 +1398,7 @@ func TestConfigRetryGitCommands(t *testing.T) {
 func TestConfigRetryGitCommandsFail(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, filepath.Join("tests", "TestConfigRetryGitCommands.yaml"))
+	rt.Config = mustReadConfigfile(t, rt, filepath.Join("../../tests", "TestConfigRetryGitCommands.yaml"))
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
 		rt.Branch = "invalid_git_object"
@@ -1431,7 +1431,7 @@ func TestConfigRetryGitCommandsFail(t *testing.T) {
 func TestResolvePuppetfileLocalModules(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigPrefix.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigPrefix.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.purgeDir("/tmp/example/", funcName)
 		rt.Debug = true
@@ -1480,7 +1480,7 @@ func TestResolvePuppetfileLocalModules(t *testing.T) {
 func TestResolvePuppetfileInvalidGitObject(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigPrefix.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigPrefix.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
 		rt.Branch = "invalid_git_object"
@@ -1512,7 +1512,7 @@ func TestUnTarPreserveTimestamp(t *testing.T) {
 	rt := NewRuntime(Options{})
 	rt.purgeDir("/tmp/example", "TestUnTarPreserveTimestamp()")
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigPrefix.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigPrefix.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
 		rt.Branch = "master"
@@ -1561,7 +1561,7 @@ func TestUnTarPreserveTimestamp(t *testing.T) {
 func TestSupportOldGitWithoutObjectSyntax(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigGitObjectSyntaxNotSupported.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigGitObjectSyntaxNotSupported.yaml")
 	aptDir := "/tmp/example/foobar_fallback/modules/apt"
 	metadataFile := aptDir + "/metadata.json"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
@@ -1611,7 +1611,7 @@ func TestSupportOldGitWithoutObjectSyntax(t *testing.T) {
 func TestSupportOldGitWithoutObjectSyntaxParameter(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true, GitObjectSyntaxNotSupported: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigPrefix.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigPrefix.yaml")
 	aptDir := "/tmp/example/foobar_fallback/modules/apt"
 	metadataFile := aptDir + "/metadata.json"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
@@ -1661,7 +1661,7 @@ func TestSupportOldGitWithoutObjectSyntaxParameter(t *testing.T) {
 func TestAutoCorrectEnvironmentNamesDefault(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, filepath.Join("tests", funcName+".yaml"))
+	rt.Config = mustReadConfigfile(t, rt, filepath.Join("..", "..", "tests", funcName+".yaml"))
 	firewallDir := "/tmp/example/single_autocorrect___fooo/modules/firewall"
 	metadataFile := firewallDir + "/metadata.json"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
@@ -1697,7 +1697,7 @@ func TestAutoCorrectEnvironmentNamesDefault(t *testing.T) {
 func TestAutoCorrectEnvironmentNamesWarn(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, filepath.Join("tests", funcName+".yaml"))
+	rt.Config = mustReadConfigfile(t, rt, filepath.Join("..", "..", "tests", funcName+".yaml"))
 	firewallDir := "/tmp/example/single_autocorrect___fooo/modules/firewall"
 	metadataFile := firewallDir + "/metadata.json"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
@@ -1733,7 +1733,7 @@ func TestAutoCorrectEnvironmentNamesWarn(t *testing.T) {
 func TestAutoCorrectEnvironmentNamesError(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, filepath.Join("tests", funcName+".yaml"))
+	rt.Config = mustReadConfigfile(t, rt, filepath.Join("..", "..", "tests", funcName+".yaml"))
 	firewallDir := "/tmp/example/single_autocorrect-%-fooo/modules/firewall"
 	metadataFile := firewallDir + "/metadata.json"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
@@ -1769,7 +1769,7 @@ func TestAutoCorrectEnvironmentNamesError(t *testing.T) {
 func TestLastCheckedFile(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigPrefix.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigPrefix.yaml")
 	lastCheckedFile := "/tmp/g10k/forge/puppetlabs-inifile-latest-last-checked"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Branch = "single_cache"
@@ -1836,7 +1836,7 @@ func TestLastCheckedFile(t *testing.T) {
 func TestSimplePostrunCommand(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigSimplePostrunCommand.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigSimplePostrunCommand.yaml")
 
 	touchFile := "/tmp/g10kfoobar"
 	rt.purgeDir(touchFile, funcName)
@@ -1874,7 +1874,7 @@ func TestPostrunCommand(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	rt.NeedSyncDirs = append(rt.NeedSyncDirs, "")
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigPostrunCommand.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigPostrunCommand.yaml")
 
 	postrunLogfile := "/tmp/postrun.log"
 	rt.purgeDir(postrunLogfile, funcName)
@@ -1923,7 +1923,7 @@ func TestPostrunCommandDirs(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	rt.NeedSyncDirs = append(rt.NeedSyncDirs, "")
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigPostrunCommandDirs.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigPostrunCommandDirs.yaml")
 
 	postrunLogfile := "/tmp/postrun.log"
 	rt.purgeDir(postrunLogfile, funcName)
@@ -1973,7 +1973,7 @@ func TestPostrunCommandDirs(t *testing.T) {
 func TestMultipleModuledirs(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigPrefix.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigPrefix.yaml")
 	moduleDir1File := "/tmp/example/foobar_multiple_moduledir/external_modules/stdlib/metadata.json"
 	moduleDir2File := "/tmp/example/foobar_multiple_moduledir/base_modules/apt/metadata.json"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
@@ -2027,7 +2027,7 @@ func TestMultipleModuledirs(t *testing.T) {
 func TestFailedGit(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigRetryGitCommands.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigRetryGitCommands.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Branch = "single_fail"
 		mustResolvePuppetEnvironment(rt, false, "")
@@ -2072,7 +2072,7 @@ func TestCheckDirPermissions(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	cacheDir := "/tmp/g10k"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
-		rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigPrefix.yaml")
+		rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigPrefix.yaml")
 		rt.Branch = "single"
 		mustResolvePuppetEnvironment(rt, false, "")
 		return
@@ -2113,13 +2113,16 @@ func TestPurgeStalePuppetfileOnly(t *testing.T) {
 	cacheDir := "/tmp/g10k"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
-		rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigFullworkingPurgePuppetfile.yaml")
+		rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigFullworkingPurgePuppetfile.yaml")
 		rt.Branch = ""
 		mustResolvePuppetEnvironment(rt, false, "")
 		rt.createOrPurgeDir("/tmp/full/full_master/modules/stale_module_directory_that_should_be_purged", funcName)
 		mustResolvePuppetEnvironment(rt, false, "")
 		return
 	}
+
+	rt.purgeDir(cacheDir, funcName)
+	rt.purgeDir("/tmp/full", funcName)
 
 	cmd := exec.Command(os.Args[0], "-test.run="+funcName+"$")
 	cmd.Env = append(os.Environ(), "TEST_FOR_CRASH_"+funcName+"=1")
@@ -2170,11 +2173,13 @@ func TestPurgeStaleDeploymentOnly(t *testing.T) {
 	cacheDir := "/tmp/g10k"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
-		rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigFullworkingPurgeDeployment.yaml")
+		rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigFullworkingPurgeDeployment.yaml")
 		rt.Branch = ""
 		mustResolvePuppetEnvironment(rt, false, "")
 		return
 	}
+	rt.purgeDir(cacheDir, funcName)
+	rt.purgeDir("/tmp/full", funcName)
 	rt.createOrPurgeDir("/tmp/full/full_stale/stale_directory_that_should_be_purged", funcName)
 	rt.createOrPurgeDir("/tmp/full/full_stale/stale_dir", funcName)
 	f, _ := os.Create("/tmp/full/full_stale/stale_dir/stale_file")
@@ -2193,7 +2198,7 @@ func TestPurgeStaleDeploymentOnly(t *testing.T) {
 
 	expectedExitCode := 0
 	if expectedExitCode != exitCode {
-		t.Errorf("terminated with %v, but we expected exit status %v", exitCode, expectedExitCode)
+		t.Errorf("terminated with %v, but we expected exit status %v\nOutput: %s", exitCode, expectedExitCode, string(out))
 	}
 	// fmt.Println(string(out))
 
@@ -2235,11 +2240,13 @@ func TestPurgeStaleDeploymentOnlyWithAllowList(t *testing.T) {
 	cacheDir := "/tmp/g10k"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
-		rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigFullworkingPurgeDeploymentWithAllowList.yaml")
+		rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigFullworkingPurgeDeploymentWithAllowList.yaml")
 		rt.Branch = ""
 		mustResolvePuppetEnvironment(rt, false, "")
 		return
 	}
+	rt.purgeDir(cacheDir, funcName)
+	rt.purgeDir("/tmp/full", funcName)
 	rt.createOrPurgeDir("/tmp/full/full_master/modules/stale_module_directory_that_should_not_be_purged", funcName)
 	rt.createOrPurgeDir("/tmp/full/full_master/stale_directory_that_should_not_be_purged", funcName)
 	rt.createOrPurgeDir("/tmp/full/full_stale/stale_directory_that_should_be_purged", funcName)
@@ -2314,7 +2321,7 @@ func TestEnvironmentParameter(t *testing.T) {
 	cacheDir := "/tmp/g10k"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
-		rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigFullworkingAndExampleDifferentPrefix.yaml")
+		rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigFullworkingAndExampleDifferentPrefix.yaml")
 		rt.Environment = "full_master"
 		rt.Branch = ""
 		mustResolvePuppetEnvironment(rt, false, "")
@@ -2368,7 +2375,7 @@ func TestEnvironmentParameter(t *testing.T) {
 func TestSkipPurgingWithMultipleSources(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/both.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/both.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
 		rt.Environment = "example_single"
@@ -2436,7 +2443,7 @@ func TestSkipPurgingWithMultipleSources(t *testing.T) {
 	removeTimestampsFromDeployfile(rt, "/tmp/out/full_single/.g10k-deploy.json")
 	removeTimestampsFromDeployfile(rt, "/tmp/out/example_single_git/.g10k-deploy.json")
 
-	cmd = exec.Command(path, "-vv", "-l", "-r", "-a", "-k", "tests/hashdeep_both_multiple.hashdeep", "/tmp/out")
+	cmd = exec.Command(path, "-vv", "-l", "-r", "-a", "-k", "../../tests/hashdeep_both_multiple.hashdeep", "/tmp/out")
 	out, err = cmd.CombinedOutput()
 	exitCode = 0
 	if msg, ok := err.(*exec.ExitError); ok { // there is error code
@@ -2457,7 +2464,7 @@ func TestSymlink(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	rt.purgeDir("/tmp/g10k", "TestSymlink()")
 	rt.purgeDir("/tmp/out", "TestSymlink()")
-	rt.Config = mustReadConfigfile(t, rt, "tests/both.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/both.yaml")
 	// increase maxworker to finish the test quicker
 	rt.Config.Maxworker = 500
 	rt.Environment = "full_symlinks"
@@ -2471,7 +2478,7 @@ func TestSymlink(t *testing.T) {
 		// remove timestamps from .g10k-deploy.json otherwise hash sum would always differ
 		removeTimestampsFromDeployfile(rt, "/tmp/out/full_symlinks/.g10k-deploy.json")
 
-		cmd := exec.Command(path, "-vv", "-l", "-r", "-a", "-k", "tests/hashdeep_both_symlinks.hashdeep", "/tmp/out")
+		cmd := exec.Command(path, "-vv", "-l", "-r", "-a", "-k", "../../tests/hashdeep_both_symlinks.hashdeep", "/tmp/out")
 		out, err := cmd.CombinedOutput()
 		exitCode := 0
 		if msg, ok := err.(*exec.ExitError); ok { // there is error code
@@ -2500,7 +2507,7 @@ func TestSymlink(t *testing.T) {
 
 		rt.purgeDir("/tmp/out/full_symlinks/modules/testmodule/files/docs/another_dir/file", "TestResolveStatic()")
 
-		cmd = exec.Command("hashdeep", "-l", "-r", "-a", "-k", "tests/hashdeep_both_symlinks.hashdeep", "/tmp/out")
+		cmd = exec.Command("hashdeep", "-l", "-r", "-a", "-k", "../../tests/hashdeep_both_symlinks.hashdeep", "/tmp/out")
 		out, err = cmd.CombinedOutput()
 		exitCode = 0
 		if msg, ok := err.(*exec.ExitError); ok { // there is error code
@@ -2524,7 +2531,7 @@ func TestSymlink(t *testing.T) {
 func TestAutoCorrectEnvironmentNamesPurge(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/autocorrect.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/autocorrect.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = false
 		rt.Info = true
@@ -2587,7 +2594,7 @@ func TestAutoCorrectEnvironmentNamesPurge(t *testing.T) {
 func TestUnresolveableModuleReferenceOutputGit(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/failingEnvGit.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/failingEnvGit.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = false
 		rt.Info = true
@@ -2628,7 +2635,7 @@ func TestUnresolveableModuleReferenceOutputGit(t *testing.T) {
 func TestUnresolveableModuleReferenceOutputForge(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/failingEnvForge.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/failingEnvForge.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = false
 		rt.Info = true
@@ -2671,7 +2678,7 @@ func TestUnresolveableModuleReferenceOutputForge(t *testing.T) {
 func TestCloneGitModules(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigFullworkingCloneGitModules.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigFullworkingCloneGitModules.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
 		rt.Environment = ""
@@ -2744,13 +2751,13 @@ func TestCloneGitModules(t *testing.T) {
 }
 
 func TestPrivateGithubRepository(t *testing.T) {
-	path := "tests/github-test-private/github-test-private"
+	path := "../../tests/github-test-private/github-test-private"
 	if !fileExists(path) {
 		t.Skip("Skipping TestPrivateGithubRepository test, because the test SSH key '" + path + "' is missing")
 	}
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	rt := NewRuntime(Options{Quiet: true})
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigPrivateGithub.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigPrivateGithub.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
 		rt.Environment = ""
@@ -2792,7 +2799,7 @@ func TestPrivateGithubRepository(t *testing.T) {
 func TestBranchFilterCommand(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigFullworkingBranchFilter.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigFullworkingBranchFilter.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
 		rt.Environment = ""
@@ -2850,7 +2857,7 @@ func TestBranchFilterCommand(t *testing.T) {
 func TestBranchFilterRegex(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigFullworkingBranchFilterRegex.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigFullworkingBranchFilterRegex.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
 		rt.Environment = ""
@@ -2905,9 +2912,9 @@ func TestBranchFilterRegex(t *testing.T) {
 }
 
 func TestResolvePuppetfileUseSSHAgent(t *testing.T) {
-	rt := NewRuntime(Options{Quiet: true, ConfigFile: "tests/TestConfigUseSSHAgent.yaml"})
+	rt := NewRuntime(Options{Quiet: true, ConfigFile: "../../tests/TestConfigUseSSHAgent.yaml"})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigUseSSHAgent.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigUseSSHAgent.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.purgeDir("/tmp/example/", funcName)
 		rt.purgeDir("/tmp/g10k/", funcName)
@@ -2938,11 +2945,11 @@ func TestResolvePuppetfileUseSSHAgent(t *testing.T) {
 
 	expectedLines := []string{
 		"DEBUG git repo url git@local.git.server:foo/git_module_with_ssh_agent.git with loaded SSH keys from ssh-agent",
-		"DEBUG git repo url git@github.com:foobar/github_module_without_ssh_add.git with SSH key tests/test-fake-key",
-		"DEBUG git repo url git@local.git.server:bar/git_module_with_ssh_add.git with SSH key tests/test-fake-key",
+		"DEBUG git repo url git@github.com:foobar/github_module_without_ssh_add.git with SSH key ../../tests/test-fake-key",
+		"DEBUG git repo url git@local.git.server:bar/git_module_with_ssh_add.git with SSH key ../../tests/test-fake-key",
 		"DEBUG executeCommand(): Executing git clone --mirror git@local.git.server:foo/git_module_with_ssh_agent.git /tmp/g10k/modules/git@local.git.server-foo_git_module_with_ssh_agent.git",
 		"DEBUG executeCommand(): Executing git clone --mirror git@github.com:foobar/github_module_without_ssh_add.git /tmp/g10k/modules/git@github.com-foobar_github_module_without_ssh_add.git",
-		"DEBUG executeCommand(): Executing ssh-agent bash -c '" + sshAddCmd + " tests/test-fake-key; git clone --mirror git@local.git.server:bar/git_module_with_ssh_add.git /tmp/g10k/modules/git@local.git.server-bar_git_module_with_ssh_add.git'",
+		"DEBUG executeCommand(): Executing ssh-agent bash -c '" + sshAddCmd + " ../../tests/test-fake-key; git clone --mirror git@local.git.server:bar/git_module_with_ssh_add.git /tmp/g10k/modules/git@local.git.server-bar_git_module_with_ssh_add.git'",
 	}
 
 	for _, expectedLine := range expectedLines {
@@ -2955,7 +2962,7 @@ func TestResolvePuppetfileUseSSHAgent(t *testing.T) {
 func TestResolvePuppetfileAutoDetectDefaultBranch(t *testing.T) {
 	rt := NewRuntime(Options{Quiet: true})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigUseCacheFallback.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigUseCacheFallback.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		//rt.Debug = true
 		rt.Branch = "single_git_non_master_as_default"
@@ -2984,7 +2991,7 @@ func TestResolvePuppetfileAutoDetectDefaultBranch(t *testing.T) {
 func TestPrecedenceConfig(t *testing.T) {
 	rt := NewRuntime(Options{})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigPuppetfilePrecedence.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigPuppetfilePrecedence.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
 		rt.Branch = "single_forge"
@@ -3020,7 +3027,7 @@ func TestPrecedenceConfig(t *testing.T) {
 func TestPrecedencePuppetfile(t *testing.T) {
 	rt := NewRuntime(Options{})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, "tests/TestConfigPuppetfilePrecedence.yaml")
+	rt.Config = mustReadConfigfile(t, rt, "../../tests/TestConfigPuppetfilePrecedence.yaml")
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
 		rt.Branch = "single_forge_precedence"
@@ -3056,7 +3063,7 @@ func TestPrecedencePuppetfile(t *testing.T) {
 func TestPurgeControlRepoExceptModuledir(t *testing.T) {
 	rt := NewRuntime(Options{})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, filepath.Join("tests", "TestConfigUseCacheFallback.yaml"))
+	rt.Config = mustReadConfigfile(t, rt, filepath.Join("../../tests", "TestConfigUseCacheFallback.yaml"))
 	rt.Branch = "purge_control_repo_except_moduledir"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
@@ -3138,7 +3145,7 @@ func TestPurgeControlRepoExceptModuledir(t *testing.T) {
 func TestStripComponentString(t *testing.T) {
 	rt := NewRuntime(Options{})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, filepath.Join("tests", "TestConfigStripComponentString.yaml"))
+	rt.Config = mustReadConfigfile(t, rt, filepath.Join("../../tests", "TestConfigStripComponentString.yaml"))
 	rt.Branch = ""
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
@@ -3191,7 +3198,7 @@ func TestStripComponentString(t *testing.T) {
 func TestStripComponentRegex(t *testing.T) {
 	rt := NewRuntime(Options{})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, filepath.Join("tests", "TestConfigStripComponentRegex.yaml"))
+	rt.Config = mustReadConfigfile(t, rt, filepath.Join("../../tests", "TestConfigStripComponentRegex.yaml"))
 	rt.Branch = ""
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
@@ -3244,7 +3251,7 @@ func TestStripComponentRegex(t *testing.T) {
 func TestStripComponentConflict(t *testing.T) {
 	rt := NewRuntime(Options{})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, filepath.Join("tests", "TestConfigStripComponentStringConflict.yaml"))
+	rt.Config = mustReadConfigfile(t, rt, filepath.Join("../../tests", "TestConfigStripComponentStringConflict.yaml"))
 	rt.Branch = ""
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
@@ -3282,7 +3289,7 @@ func TestStripComponentConflict(t *testing.T) {
 func TestNoProxy(t *testing.T) {
 	rt := NewRuntime(Options{})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, filepath.Join("tests", "TestConfigPrefix.yaml"))
+	rt.Config = mustReadConfigfile(t, rt, filepath.Join("../../tests", "TestConfigPrefix.yaml"))
 	rt.Branch = "no_proxy"
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
@@ -3321,7 +3328,7 @@ func TestNoProxy(t *testing.T) {
 func TestMultipleSourcesWithSameBrancheName(t *testing.T) {
 	rt := NewRuntime(Options{})
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
-	rt.Config = mustReadConfigfile(t, rt, filepath.Join("tests", "TestConfig2SourcesSameBranchNameDiffBaseDir.yaml"))
+	rt.Config = mustReadConfigfile(t, rt, filepath.Join("../../tests", "TestConfig2SourcesSameBranchNameDiffBaseDir.yaml"))
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.Debug = true
 		rt.Info = true

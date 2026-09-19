@@ -1,7 +1,6 @@
-package main
+package g10k
 
 import (
-	"flag"
 	"fmt"
 	"os"
 	"os/exec"
@@ -254,56 +253,6 @@ type DeployResult struct {
 	GitURL             string    `json:"git_url"`
 }
 
-func main() {
-
-	var (
-		configFileFlag = flag.String("config", "", "which config file to use")
-		versionFlag    = flag.Bool("version", false, "show build time and version number")
-		options        Options
-	)
-
-	flag.StringVar(&options.Branch, "branch", "", "which git branch of the Puppet environment to update. Just the branch name, e.g. master, qa, dev")
-	flag.StringVar(&options.Environment, "environment", "", "which Puppet environment to update. Source name inside the config + '_' + branch name, e.g. foo_master, foo_qa, foo_dev")
-	flag.BoolVar(&options.Tags, "tags", false, "to pull tags as well as branches")
-	flag.StringVar(&options.OutputName, "outputname", "", "overwrite the environment name if -branch is specified")
-	flag.StringVar(&options.Module, "module", "", "which module of the Puppet environment to update, e.g. stdlib")
-	flag.StringVar(&options.ModuleDir, "moduledir", "", "allows overriding of Puppetfile specific moduledir setting, the folder in which Puppet modules will be extracted")
-	flag.StringVar(&options.CacheDir, "cachedir", "", "allows overriding of the g10k config file cachedir setting, the folder in which g10k will download git repositories and Forge modules")
-	flag.IntVar(&options.MaxWorker, "maxworker", 50, "how many Goroutines are allowed to run in parallel for Git and Forge module resolving")
-	flag.IntVar(&options.MaxExtractWorker, "maxextractworker", 20, "how many Goroutines are allowed to run in parallel for local Git and Forge module extracting processes (git clone, untar and gunzip)")
-	flag.BoolVar(&options.PFMode, "puppetfile", false, "install all modules from Puppetfile in cwd")
-	flag.StringVar(&options.PFLocation, "puppetfilelocation", "./Puppetfile", "which Puppetfile to use in -puppetfile mode")
-	flag.BoolVar(&options.CloneGit, "clonegit", false, "populate the Puppet environment with a git clone of each git Puppet module. Helpful when developing locally with -puppetfile")
-	flag.BoolVar(&options.Force, "force", false, "purge the Puppet environment directory and do a full sync")
-	flag.BoolVar(&options.DryRun, "dryrun", false, "do not modify anything, just print what would be changed")
-	flag.BoolVar(&options.Validate, "validate", false, "only validate given configuration and exit")
-	flag.BoolVar(&options.UseMove, "usemove", false, "do not use hardlinks to populate your Puppet environments with Puppetlabs Forge modules. Instead uses simple move commands and purges the Forge cache directory after each run! (Useful for g10k runs inside a Docker container)")
-	flag.BoolVar(&options.Check4Update, "check4update", false, "only check if the is newer version of the Puppet module avaialable. Does implicitly set dryrun to true")
-	flag.BoolVar(&options.CheckSum, "checksum", false, "get the md5 check sum for each Puppetlabs Forge module and verify the integrity of the downloaded archive. Increases g10k run time!")
-	flag.BoolVar(&options.Debug, "debug", false, "log debug output, defaults to false")
-	flag.BoolVar(&options.Verbose, "verbose", false, "log verbose output, defaults to false")
-	flag.BoolVar(&options.Info, "info", false, "log info output, defaults to false")
-	flag.BoolVar(&options.Quiet, "quiet", false, "no output, defaults to false")
-	flag.BoolVar(&options.UseCacheFallback, "usecachefallback", false, "if g10k should try to use its cache for sources and modules instead of failing")
-	flag.BoolVar(&options.RetryGitCommands, "retrygitcommands", false, "if g10k should purge the local repository and retry a failed git command (clone or remote update) instead of failing")
-	flag.BoolVar(&options.GitObjectSyntaxNotSupported, "gitobjectsyntaxnotsupported", false, "if your git version is too old to support reference syntax like master^{object} use this setting to revert to the older syntax")
-	flag.Parse()
-
-	options.ConfigFile = *configFileFlag
-	version := *versionFlag
-
-	if version {
-		fmt.Println("g10k ", options.BuildVersion, " Build time:", options.BuildTime, "UTC")
-		os.Exit(0)
-	}
-
-	exitCode, err := Run(options)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(exitCode)
-	}
-}
-
 func Run(opts Options) (int, error) {
 	if opts.Check4Update {
 		opts.DryRun = true
@@ -370,7 +319,7 @@ func Run(opts Options) (int, error) {
 		forgeCachedir := rt.checkDirAndCreate(filepath.Join(cachedir, "forge"), "default in pfMode")
 		modulesCacheDir := rt.checkDirAndCreate(filepath.Join(cachedir, "modules"), "default in pfMode")
 		envsCacheDir := rt.checkDirAndCreate(filepath.Join(cachedir, "environments"), "default in pfMode")
-		rt.Config = ConfigSettings{CacheDir: cachedir, ForgeCacheDir: forgeCachedir, ModulesCacheDir: modulesCacheDir, EnvCacheDir: envsCacheDir, Sources: sm, ForgeBaseURL: "https://forgeapi.puppet.com", Maxworker: rt.MaxWorker, UseCacheFallback: rt.UseCacheFallback, MaxExtractworker: rt.MaxExtractWorker, RetryGitCommands: rt.RetryGitCommands, GitObjectSyntaxNotSupported: rt.GitObjectSyntaxNotSupported}
+		rt.Config = ConfigSettings{CacheDir: cachedir, ForgeCacheDir: forgeCachedir, ModulesCacheDir: modulesCacheDir, EnvCacheDir: envsCacheDir, Sources: sm, Timeout: 5, ForgeBaseURL: "https://forgeapi.puppet.com", Maxworker: rt.MaxWorker, UseCacheFallback: rt.UseCacheFallback, MaxExtractworker: rt.MaxExtractWorker, RetryGitCommands: rt.RetryGitCommands, GitObjectSyntaxNotSupported: rt.GitObjectSyntaxNotSupported}
 		// default purge_levels
 		rt.Config.PurgeLevels = []string{"puppetfile"}
 		if rt.CloneGit {

@@ -1,5 +1,5 @@
 *.swp
-g10k
+/g10k
 *.upx
 .modules/
 example/
