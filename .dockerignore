@@ -1,0 +1,8 @@
+.git
+.github
+dist
+tests
+g10k
+coverage.txt
+pkg/g10k/cache
+pkg/g10k/example
