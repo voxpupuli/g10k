@@ -89,10 +89,13 @@ clean:
 	rm -rf g10k dist coverage.txt pkg/g10k/cache pkg/g10k/example
 
 build-image:
-	docker build -t g10k:${BUILDVERSION} .
+	docker build \
+	--build-arg BUILDVERSION=${BUILDVERSION} \
+	--build-arg BUILDTIME=${BUILDTIME} \
+	-t g10k:${BUILDVERSION} .
 
 update-deps:
 	go get -u ./...
 	go mod tidy
 
-.PHONY: all build lint vet imports test clean
+.PHONY: all build lint vet imports test clean build-image update-deps

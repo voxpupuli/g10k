@@ -76,6 +76,26 @@ Tagged releases are built by GitHub Actions with GoReleaser.
 - If you are using a private Git or Forge server think about adjusting the `-maxworker` parameter/config setting before DOSing your own infrastructure ;) (default 50)
 - To protect your local machine use `-maxextractworker` parameter/config setting with wich you can limit the number of Goroutines that are allowed to run in parallel for local Git and Forge module extracting processes (git clone, untar and gunzip) (default 20)
 
+## container image
+
+Tagged releases are also published as a container image to the GitHub Container
+Registry:
+
+```
+docker run --rm ghcr.io/voxpupuli/g10k:latest -version
+```
+
+Available tags are `latest` plus the `MAJOR`, `MAJOR.MINOR` and `MAJOR.MINOR.PATCH`
+of every release (pre-releases do not update `latest`). Images are built for
+`linux/amd64` and `linux/arm64`.
+
+The image runs as the unprivileged user `g10k` (uid 1000) and uses `/code` as its
+working directory, so mount your control repo there:
+
+```
+docker run --rm -v "$PWD:/code" ghcr.io/voxpupuli/g10k:latest -puppetfile
+```
+
 ## installation of g10k via Puppet module
 
 User @Conzar was so nice and shared his g10k Puppet module that you can check out here:
@@ -574,6 +594,9 @@ BUILDTIME=2026-07-02_12:00:00 make build BUILDVERSION=v0.0.0-dev
 
 # exercise the release packaging locally without publishing anything
 goreleaser build --snapshot --clean
+
+# build the container image locally
+make build-image BUILDVERSION=v0.0.0-dev
 ```
 
 # execute example with debug output
