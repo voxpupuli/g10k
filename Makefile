@@ -85,6 +85,9 @@ ifeq ($(UNAME), Linux)
 	go test -race -coverprofile=coverage.txt -covermode=atomic -v ./...
 endif
 
+generate-parser:
+	go generate ./...
+
 clean:
 	rm -rf g10k dist coverage.txt pkg/g10k/cache pkg/g10k/example
 
@@ -95,4 +98,4 @@ update-deps:
 	go get -u ./...
 	go mod tidy
 
-.PHONY: all build lint vet imports test clean
+.PHONY: all build lint vet imports test generate-parser clean

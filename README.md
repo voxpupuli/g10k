@@ -565,6 +565,14 @@ See #166 for the discussion and #167 for the merge request.
 
 # building
 
+The generated Puppetfile parser is committed. After changing
+`pkg/g10k/puppetfile_parser.y`, install `goyacc` if needed and regenerate it:
+
+```sh
+go install golang.org/x/tools/cmd/goyacc@latest
+make generate-parser
+```
+
 ```
 # build a local binary with a fake version string
 make build BUILDVERSION=v0.0.0-dev
