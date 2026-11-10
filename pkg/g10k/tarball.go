@@ -273,7 +273,7 @@ func verifyTarballChecksum(r io.Reader, expected string) (bool, error) {
 	return strings.EqualFold(hex.EncodeToString(h.Sum(nil)), expected), nil
 }
 
-func downloadTarball(client *http.Client, source string, target io.Writer) error {
+func downloadTarball(client *http.Client, source string, target io.Writer) (resultErr error) {
 	u, err := url.Parse(source)
 	if err != nil {
 		return fmt.Errorf("invalid tarball source: %w", err)
@@ -306,7 +306,7 @@ func downloadTarball(client *http.Client, source string, target io.Writer) error
 		if err != nil {
 			return fmt.Errorf("download tarball: %w", err)
 		}
-		defer resp.Body.Close()
+		defer joinTarballCloseError(&resultErr, resp.Body, "close tarball response")
 		if resp.StatusCode != http.StatusOK {
 			return fmt.Errorf("download tarball: HTTP %s", resp.Status)
 		}
@@ -316,6 +316,12 @@ func downloadTarball(client *http.Client, source string, target io.Writer) error
 		return nil
 	default:
 		return fmt.Errorf("unsupported tarball source scheme %q", u.Scheme)
+	}
+}
+
+func joinTarballCloseError(resultErr *error, closer io.Closer, context string) {
+	if err := closer.Close(); err != nil {
+		*resultErr = errors.Join(*resultErr, fmt.Errorf("%s: %w", context, err))
 	}
 }
 

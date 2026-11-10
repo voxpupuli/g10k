@@ -11,22 +11,22 @@ import (
 	"strings"
 )
 
-func (rt *Runtime) extractTarball(archive, target string, stripRoot bool) error {
+func (rt *Runtime) extractTarball(archive, target string, stripRoot bool) (resultErr error) {
 	f, err := os.Open(archive)
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer joinTarballCloseError(&resultErr, f, "close tarball archive")
 	gz, err := gzip.NewReader(f)
 	if err != nil {
 		return err
 	}
-	defer gz.Close()
+	defer joinTarballCloseError(&resultErr, gz, "close tarball gzip reader")
 	root, err := os.OpenRoot(target)
 	if err != nil {
 		return err
 	}
-	defer root.Close()
+	defer joinTarballCloseError(&resultErr, root, "close tarball extraction root")
 	reader := tar.NewReader(gz)
 	top := ""
 	for {
@@ -75,7 +75,7 @@ func (rt *Runtime) extractTarball(archive, target string, stripRoot bool) error 
 			if err := root.MkdirAll(localName, 0o755); err != nil {
 				return fmt.Errorf("create directory %q: %w", name, err)
 			}
-		case tar.TypeReg, tar.TypeRegA:
+		case tar.TypeReg:
 			file, err := root.OpenFile(localName, os.O_WRONLY|os.O_CREATE|os.O_EXCL, os.FileMode(h.Mode)&0o777)
 			if err != nil {
 				return fmt.Errorf("create file %q: %w", name, err)

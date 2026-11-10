@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"compress/gzip"
 	"crypto/sha256"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -339,6 +340,72 @@ func TestTarballSafeLinks(t *testing.T) {
 		data, err := os.ReadFile(filepath.Join(target, name))
 		require.NoError(t, err)
 		require.Equal(t, "content", string(data))
+	}
+}
+
+func TestTarballExtractsLegacyRegularFile(t *testing.T) {
+	archive := testTarball(t, archiveEntry{name: "file", content: "legacy"})
+	gz, err := gzip.NewReader(bytes.NewReader(archive))
+	require.NoError(t, err)
+	raw, err := io.ReadAll(gz)
+	require.NoError(t, err)
+	require.NoError(t, gz.Close())
+
+	// Rewrite the regular-file header to use the original NUL type flag.
+	raw[156] = 0
+	copy(raw[148:156], "        ")
+	var checksum int
+	for _, b := range raw[:512] {
+		checksum += int(b)
+	}
+	copy(raw[148:156], fmt.Sprintf("%06o\x00 ", checksum))
+	var compressed bytes.Buffer
+	writer := gzip.NewWriter(&compressed)
+	_, err = writer.Write(raw)
+	require.NoError(t, err)
+	require.NoError(t, writer.Close())
+
+	tmp := t.TempDir()
+	file := filepath.Join(tmp, "archive")
+	target := filepath.Join(tmp, "target")
+	require.NoError(t, os.WriteFile(file, compressed.Bytes(), 0o600))
+	require.NoError(t, os.Mkdir(target, 0o755))
+	require.NoError(t, tarballTestRuntime(t, Options{}).extractTarball(file, target, false))
+	data, err := os.ReadFile(filepath.Join(target, "file"))
+	require.NoError(t, err)
+	require.Equal(t, "legacy", string(data))
+}
+
+type tarballTestTransportFunc func(*http.Request) (*http.Response, error)
+
+func (f tarballTestTransportFunc) RoundTrip(req *http.Request) (*http.Response, error) {
+	return f(req)
+}
+
+type tarballTestCloseErrorBody struct {
+	io.Reader
+	err error
+}
+
+func (b tarballTestCloseErrorBody) Close() error { return b.err }
+
+func TestTarballDownloadReportsCloseErrors(t *testing.T) {
+	closeErr := errors.New("close failed")
+	for _, status := range []int{http.StatusOK, http.StatusNotFound} {
+		t.Run(http.StatusText(status), func(t *testing.T) {
+			client := &http.Client{Transport: tarballTestTransportFunc(func(*http.Request) (*http.Response, error) {
+				return &http.Response{
+					StatusCode: status,
+					Status:     http.StatusText(status),
+					Body:       tarballTestCloseErrorBody{Reader: strings.NewReader("content"), err: closeErr},
+				}, nil
+			})}
+			err := downloadTarball(client, "https://example.test/archive", io.Discard)
+			require.ErrorIs(t, err, closeErr)
+			if status != http.StatusOK {
+				require.ErrorContains(t, err, http.StatusText(status))
+			}
+		})
 	}
 }
 

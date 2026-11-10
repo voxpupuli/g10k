@@ -73,7 +73,7 @@ func (s *pfParserState) handleForgeModule(moduleName string, attrs []puppetfilep
 	name := comp[1]
 
 	if _, ok := s.puppetFile.tarballModules[name]; ok {
-		return fmt.Errorf("Error: Duplicate module found in %s for module %s line: %s", s.pfPath, name, line)
+		return fmt.Errorf("duplicate module found in %s for module %s line: %s", s.pfPath, name, line)
 	}
 	if _, ok := s.puppetFile.forgeModules[name]; ok {
 		return fmt.Errorf("Error: Duplicate forge module found in %s for module %s/%s line: %s", s.pfPath, author, name, line)
@@ -160,7 +160,7 @@ func (s *pfParserState) handleForgeModule(moduleName string, attrs []puppetfilep
 //nolint:staticcheck // Preserve existing Puppetfile error messages.
 func (s *pfParserState) handleGitModule(moduleName string, attrs []puppetfileparser.Attribute, line string) error {
 	if _, ok := s.puppetFile.tarballModules[moduleName]; ok {
-		return fmt.Errorf("Error: Duplicate module found in %s for module %s line: %s", s.pfPath, moduleName, line)
+		return fmt.Errorf("duplicate module found in %s for module %s line: %s", s.pfPath, moduleName, line)
 	}
 	if strings.Contains(moduleName, "-") {
 		s.rt.Warnf("Warning: Found invalid character '-' in Puppet module name " + moduleName + " in " + s.pfPath + " line: " + line + "\n See module guidelines: https://docs.puppet.com/puppet/latest/reference/lang_reserved.html#modules")

@@ -21,9 +21,9 @@ func TestParserRejectsInvalidTarballs(t *testing.T) {
 		{"invalid repository", "mod 'apache', :github_tarball => '../evil'\n", "invalid github_tarball repository"},
 		{"duplicate tarballs", "mod 'a/name', type: 'tarball', source: 'url'\nmod 'b/name', type: 'tarball', source: 'url'\n", "duplicate module"},
 		{"forge then tarball", "mod 'a/name'\nmod 'b/name', type: 'tarball', source: 'url'\n", "duplicate module"},
-		{"tarball then forge", "mod 'a/name', type: 'tarball', source: 'url'\nmod 'b/name'\n", "Duplicate module"},
+		{"tarball then forge", "mod 'a/name', type: 'tarball', source: 'url'\nmod 'b/name'\n", "duplicate module"},
 		{"git then tarball", "mod 'name', :git => 'url'\nmod 'a/name', type: 'tarball', source: 'url'\n", "duplicate module"},
-		{"tarball then git", "mod 'a/name', type: 'tarball', source: 'url'\nmod 'name', :git => 'url'\n", "Duplicate module"},
+		{"tarball then git", "mod 'a/name', type: 'tarball', source: 'url'\nmod 'name', :git => 'url'\n", "duplicate module"},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			path := filepath.Join(t.TempDir(), "Puppetfile")
