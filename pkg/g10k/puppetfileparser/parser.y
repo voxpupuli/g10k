@@ -100,6 +100,15 @@ attr:
 	{
 		$$ = Attribute{Value: $1, IsBareValue: true}
 	}
+| WORD value
+	{
+		lex := pfyylex.(*pfLexer)
+		if len($1) < 2 || $1[len($1)-1] != ':' {
+			lex.Error("syntax error")
+			return 1
+		}
+		$$ = Attribute{Name: $1[:len($1)-1], Value: $2, IsKeyword: true}
+	}
 ;
 
 value:

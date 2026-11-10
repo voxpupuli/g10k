@@ -42,6 +42,18 @@ func (rt *Runtime) newPFParserState(pfPath string, source string, branch string,
 
 func (s *pfParserState) HandleModule(moduleName string, attrs []puppetfileparser.Attribute, line string) error {
 	moduleName = strings.TrimSpace(moduleName)
+	_, isTarball, err := puppetfileparser.ParseTarball(moduleName, attrs)
+	if err != nil {
+		return fmt.Errorf("%s in %s line: %s", err, s.pfPath, line)
+	}
+	if isTarball {
+		return fmt.Errorf("Error: Tarball module %s is not supported in %s line: %s", moduleName, s.pfPath, line)
+	}
+	for _, attr := range attrs {
+		if attr.IsKeyword {
+			return &puppetfileparser.SyntaxError{Line: line}
+		}
+	}
 	if strings.Contains(moduleName, "/") || strings.Contains(moduleName, "-") {
 		return s.handleForgeModule(moduleName, attrs, line)
 	}

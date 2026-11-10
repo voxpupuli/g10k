@@ -48,7 +48,7 @@ const pfyyEofCode = 1
 const pfyyErrCode = 2
 const pfyyInitialStackSize = 16
 
-//line parser.y:120
+//line parser.y:129
 
 //line yacctab:1
 var pfyyExca = [...]int8{
@@ -64,39 +64,42 @@ const pfyyLast = 30
 var pfyyAct = [...]int8{
 	8, 14, 22, 9, 10, 11, 12, 13, 24, 25,
 	23, 7, 4, 5, 6, 20, 17, 3, 16, 15,
-	27, 26, 19, 2, 1, 21, 18, 0, 29, 28,
+	27, 26, 19, 2, 1, 21, 28, 18, 30, 29,
 }
 
 var pfyyPact = [...]int16{
 	-1000, 7, -1000, -1000, -8, -8, -8, -10, 9, -1000,
 	-1000, -1000, 8, 6, 14, -1000, -1000, -1000, 5, -3,
-	-1000, 13, -1000, 11, -1000, -1000, -3, -8, -1000, -1000,
+	-1000, 13, -1000, 11, -1000, -8, -3, -8, -1000, -1000,
+	-1000,
 }
 
 var pfyyPgo = [...]int8{
-	0, 0, 2, 26, 25, 24, 23,
+	0, 0, 2, 27, 25, 24, 23,
 }
 
 var pfyyR1 = [...]int8{
 	0, 5, 5, 6, 6, 6, 6, 6, 3, 3,
-	4, 4, 2, 2, 2, 2, 1, 1, 1,
+	4, 4, 2, 2, 2, 2, 2, 1, 1, 1,
 }
 
 var pfyyR2 = [...]int8{
 	0, 0, 2, 1, 3, 3, 3, 4, 0, 2,
-	1, 3, 3, 1, 1, 1, 1, 1, 1,
+	1, 3, 3, 1, 1, 1, 2, 1, 1, 1,
 }
 
 var pfyyChk = [...]int16{
 	-1000, -5, -6, 10, 5, 6, 7, 4, -1, 11,
 	12, 13, -1, -1, 11, 10, 10, 10, -3, 8,
-	10, -4, -2, 13, 11, 12, 8, 9, -2, -1,
+	10, -4, -2, 13, 11, 12, 8, 9, -1, -2,
+	-1,
 }
 
 var pfyyDef = [...]int8{
-	1, -2, 2, 3, 0, 0, 0, 0, 0, 16,
-	17, 18, 0, 0, 8, 4, 5, 6, 0, 0,
-	7, 9, 10, 13, 14, 15, 0, 0, 11, 12,
+	1, -2, 2, 3, 0, 0, 0, 0, 0, 17,
+	18, 19, 0, 0, 8, 4, 5, 6, 0, 0,
+	7, 9, 10, 13, 14, 15, 0, 0, 16, 11,
+	12,
 }
 
 var pfyyTok1 = [...]int8{
@@ -538,20 +541,31 @@ pfyydefault:
 			pfyyVAL.attr = Attribute{Value: pfyyDollar[1].str, IsBareValue: true}
 		}
 	case 16:
-		pfyyDollar = pfyyS[pfyypt-1 : pfyypt+1]
-//line parser.y:107
+		pfyyDollar = pfyyS[pfyypt-2 : pfyypt+1]
+//line parser.y:104
 		{
-			pfyyVAL.str = pfyyDollar[1].str
+			lex := pfyylex.(*pfLexer)
+			if len(pfyyDollar[1].str) < 2 || pfyyDollar[1].str[len(pfyyDollar[1].str)-1] != ':' {
+				lex.Error("syntax error")
+				return 1
+			}
+			pfyyVAL.attr = Attribute{Name: pfyyDollar[1].str[:len(pfyyDollar[1].str)-1], Value: pfyyDollar[2].str, IsKeyword: true}
 		}
 	case 17:
 		pfyyDollar = pfyyS[pfyypt-1 : pfyypt+1]
-//line parser.y:111
+//line parser.y:116
 		{
 			pfyyVAL.str = pfyyDollar[1].str
 		}
 	case 18:
 		pfyyDollar = pfyyS[pfyypt-1 : pfyypt+1]
-//line parser.y:115
+//line parser.y:120
+		{
+			pfyyVAL.str = pfyyDollar[1].str
+		}
+	case 19:
+		pfyyDollar = pfyyS[pfyypt-1 : pfyypt+1]
+//line parser.y:124
 		{
 			pfyyVAL.str = ":" + pfyyDollar[1].str
 		}

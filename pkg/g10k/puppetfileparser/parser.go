@@ -5,11 +5,15 @@ package puppetfileparser
 import "fmt"
 
 // Attribute is a module argument. A bare value has IsBareValue set; a symbol
-// without an arrow has Name set and HasArrow false.
+// without an arrow has Name set and both HasArrow and IsKeyword false.
+// A keyword followed by whitespace has IsKeyword set. For compatibility,
+// an attached value (for example, type:'tarball') remains a bare value;
+// ParseTarball recognizes that spelling in direct tarball declarations.
 type Attribute struct {
 	Name        string
 	Value       string
 	HasArrow    bool
+	IsKeyword   bool
 	IsBareValue bool
 }
 

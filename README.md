@@ -580,6 +580,10 @@ g10k; the handler is responsible for interpreting declarations and resolving
 modules. Handler errors stop parsing and previously emitted events are not
 rolled back.
 
+The parser recognizes direct-URL and GitHub tarball declarations through
+`ParseTarball`. The g10k runtime currently rejects tarball declarations:
+downloading and deploying them is not yet supported.
+
 ```
 # build a local binary with a fake version string
 make build BUILDVERSION=v0.0.0-dev
