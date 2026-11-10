@@ -48,6 +48,7 @@ func (s *pfParserState) HandleModule(moduleName string, attrs []puppetfileparser
 	return s.handleGitModule(moduleName, attrs, line)
 }
 
+//nolint:staticcheck // Preserve existing Puppetfile error messages.
 func (s *pfParserState) handleForgeModule(moduleName string, attrs []puppetfileparser.Attribute, line string) error {
 	comp := strings.Split(moduleName, "/")
 	if len(comp) != 2 {
@@ -141,6 +142,7 @@ func (s *pfParserState) handleForgeModule(moduleName string, attrs []puppetfilep
 	return nil
 }
 
+//nolint:staticcheck // Preserve existing Puppetfile error messages.
 func (s *pfParserState) handleGitModule(moduleName string, attrs []puppetfileparser.Attribute, line string) error {
 	if strings.Contains(moduleName, "-") {
 		s.rt.Warnf("Warning: Found invalid character '-' in Puppet module name " + moduleName + " in " + s.pfPath + " line: " + line + "\n See module guidelines: https://docs.puppet.com/puppet/latest/reference/lang_reserved.html#modules")
@@ -178,6 +180,7 @@ func (s *pfParserState) handleGitModule(moduleName string, attrs []puppetfilepar
 	return nil
 }
 
+//nolint:staticcheck // Preserve existing Puppetfile error messages.
 func (s *pfParserState) parseGitAttributes(moduleName string, attrs []puppetfileparser.Attribute, line string) (GitModule, bool, error) {
 	gm := GitModule{moduleDir: s.currentModuleDir}
 	seenConflicting := make([]string, 0, 3)
@@ -276,6 +279,8 @@ func (s *pfParserState) finalize(sshKey string) Puppetfile {
 }
 
 // ParsePuppetfile parses a Puppetfile using the runtime's module settings.
+//
+//nolint:staticcheck // Preserve existing Puppetfile error messages.
 func (rt *Runtime) ParsePuppetfile(pfPath string, sshKey string, source string, branch string, forceForgeVersions bool) (Puppetfile, error) {
 	rawContent, err := os.ReadFile(pfPath)
 	if err != nil {
