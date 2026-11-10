@@ -13,10 +13,10 @@ func TestParserRejectsUndeployedTarballs(t *testing.T) {
 		input string
 		want  string
 	}{
-		{"direct", "mod 'puppetlabs-apache', type: 'tarball', source: 'https://example.test/a.tar.gz'\n", "Tarball module puppetlabs-apache is not supported"},
-		{"attached keywords", "mod 'apache', type:'tarball', source:'url'\n", "Tarball module apache is not supported"},
-		{"github", "mod 'puppetlabs-apache', '0.6.0', :github_tarball => 'puppetlabs/puppetlabs-apache'\n", "Tarball module puppetlabs-apache is not supported"},
-		{"simple name", "mod 'apache', :github_tarball => 'owner/repo'\n", "Tarball module apache is not supported"},
+		{"direct", "mod 'puppetlabs-apache', type: 'tarball', source: 'https://example.test/a.tar.gz'\n", "tarball module puppetlabs-apache is not supported"},
+		{"attached keywords", "mod 'apache', type:'tarball', source:'url'\n", "tarball module apache is not supported"},
+		{"github", "mod 'puppetlabs-apache', '0.6.0', :github_tarball => 'puppetlabs/puppetlabs-apache'\n", "tarball module puppetlabs-apache is not supported"},
+		{"simple name", "mod 'apache', :github_tarball => 'owner/repo'\n", "tarball module apache is not supported"},
 		{"mixed git", "mod 'author/name', :git => 'repo', :github_tarball => 'owner/repo'\n", "invalid tarball attribute"},
 		{"invalid digest", "mod 'author/name', type: 'tarball', source: 'url', version: 'wrong'\n", "SHA-256"},
 		{"missing source", "mod 'apache', type: 'tarball'\n", "source is required"},

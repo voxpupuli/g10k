@@ -47,7 +47,7 @@ func (s *pfParserState) HandleModule(moduleName string, attrs []puppetfileparser
 		return fmt.Errorf("%s in %s line: %s", err, s.pfPath, line)
 	}
 	if isTarball {
-		return fmt.Errorf("Error: Tarball module %s is not supported in %s line: %s", moduleName, s.pfPath, line)
+		return fmt.Errorf("tarball module %s is not supported in %s line: %s", moduleName, s.pfPath, line)
 	}
 	for _, attr := range attrs {
 		if attr.IsKeyword {
