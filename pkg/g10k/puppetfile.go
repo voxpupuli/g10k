@@ -223,7 +223,9 @@ func (rt *Runtime) resolvePuppetEnvironment(tags bool, outputNameTag string) err
 	}
 	//fmt.Println("allPuppetfiles: ", allPuppetfiles, len(allPuppetfiles))
 	//fmt.Println("allPuppetfiles[0]: ", allPuppetfiles["postinstall"])
-	rt.resolvePuppetfile(allPuppetfiles)
+	if err := rt.resolvePuppetfile(allPuppetfiles); err != nil {
+		return err
+	}
 	// fmt.Printf("%+v\n", allEnvironments)
 	if len(rt.Module) == 0 {
 		rt.purgeUnmanagedContent(allBasedirs, allEnvironments)
@@ -243,7 +245,10 @@ func (rt *Runtime) resolveSourcePrefix(source string, sa Source) string {
 	}
 }
 
-func (rt *Runtime) resolvePuppetfile(allPuppetfiles map[string]Puppetfile) {
+func (rt *Runtime) resolvePuppetfile(allPuppetfiles map[string]Puppetfile) error {
+	if err := rt.resolveTarballModules(allPuppetfiles); err != nil {
+		return err
+	}
 	wg := sizedwaitgroup.New(rt.Config.MaxExtractworker)
 	exisitingModuleDirs := make(map[string]struct{})
 	uniqueGitModules := make(map[string]GitModule)
@@ -327,6 +332,13 @@ func (rt *Runtime) resolvePuppetfile(allPuppetfiles map[string]Puppetfile) {
 			}
 			rt.Mutex.Unlock()
 		}
+		rt.Mutex.Lock()
+		for name, module := range pf.tarballModules {
+			if rt.Module == "" || rt.Module == name {
+				delete(exisitingModuleDirs, normalizeDir(filepath.Join(pf.workDir, module.moduleDir, name)))
+			}
+		}
+		rt.Mutex.Unlock()
 
 		for gitName, gitModule := range pf.gitModules {
 			moduleDir := filepath.Join(pf.workDir, gitModule.moduleDir)
@@ -479,7 +491,7 @@ func (rt *Runtime) resolvePuppetfile(allPuppetfiles map[string]Puppetfile) {
 			rt.writeStructJSONFile(deployFile, dr)
 		}
 	}
-
+	return nil
 }
 
 func (rt *Runtime) skipBasedOnFilterCommand(branch string, sourceName string, sa Source, workDir string) bool {

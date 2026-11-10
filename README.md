@@ -196,6 +196,37 @@ Usage of ./g10k:
 
 Regarding anything usage/workflow you really can just use the great [puppetlabs/r10k](https://github.com/puppetlabs/r10k/blob/master/doc/dynamic-environments.mkd) docs as the [Puppetfile](https://github.com/puppetlabs/r10k/blob/master/doc/puppetfile.mkd) etc. are all intentionally kept unchanged.
 
+## Tarball modules
+
+Direct tarballs use the r10k syntax. The optional `version` (or `checksum`)
+is the SHA-256 digest of the compressed archive:
+
+```ruby
+mod 'puppetlabs-apache',
+  type: 'tarball',
+  source: 'https://repo.example.com/puppetlabs-apache.tar.gz',
+  version: 'aedd6dc1a5136c6a1a1ec2f285df2a70b0fe4c9effb254b5a1f58116e4c1659e'
+```
+
+The source can be an HTTP(S) URL, a `file://` URL, or a local path. Direct
+archives are unpacked as-is into the module directory; they should not
+contain a wrapping directory. Without a digest, the archive is cached by
+source URL and is not refreshed until the URL changes or the cache is removed.
+With a digest, g10k checks both downloaded and cached files before use.
+
+GitHub archives also support librarian-puppet notation:
+
+```ruby
+mod 'puppetlabs-apache', '0.6.0',
+  :github_tarball => 'puppetlabs/puppetlabs-apache'
+```
+
+The version is a GitHub ref, not a checksum; if omitted GitHub's default
+branch is used. GitHub's top-level archive directory is stripped. GitHub
+archives are cached by repository and ref and are not refreshed until the
+ref changes or the cache is removed. Tarball caches are stored in the `tarball`
+subdirectory of g10k's cache directory.
+
 ## Using g10k behind a proxy
 
 Set the environment variables `http_proxy` or `https_proxy` to make g10k use a proxy.
@@ -581,8 +612,7 @@ modules. Handler errors stop parsing and previously emitted events are not
 rolled back.
 
 The parser recognizes direct-URL and GitHub tarball declarations through
-`ParseTarball`. The g10k runtime currently rejects tarball declarations:
-downloading and deploying them is not yet supported.
+`ParseTarball`.
 
 ```
 # build a local binary with a fake version string

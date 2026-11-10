@@ -7,20 +7,23 @@ import (
 	"testing"
 )
 
-func TestParserRejectsUndeployedTarballs(t *testing.T) {
+func TestParserRejectsInvalidTarballs(t *testing.T) {
 	for _, tt := range []struct {
 		name  string
 		input string
 		want  string
 	}{
-		{"direct", "mod 'puppetlabs-apache', type: 'tarball', source: 'https://example.test/a.tar.gz'\n", "tarball module puppetlabs-apache is not supported"},
-		{"attached keywords", "mod 'apache', type:'tarball', source:'url'\n", "tarball module apache is not supported"},
-		{"github", "mod 'puppetlabs-apache', '0.6.0', :github_tarball => 'puppetlabs/puppetlabs-apache'\n", "tarball module puppetlabs-apache is not supported"},
-		{"simple name", "mod 'apache', :github_tarball => 'owner/repo'\n", "tarball module apache is not supported"},
 		{"mixed git", "mod 'author/name', :git => 'repo', :github_tarball => 'owner/repo'\n", "invalid tarball attribute"},
 		{"invalid digest", "mod 'author/name', type: 'tarball', source: 'url', version: 'wrong'\n", "SHA-256"},
 		{"missing source", "mod 'apache', type: 'tarball'\n", "source is required"},
 		{"other keyword", "mod 'author/name', source: 'url'\n", "invalid setting"},
+		{"unsafe name", "mod '../evil', type: 'tarball', source: 'url'\n", "invalid tarball module name"},
+		{"invalid repository", "mod 'apache', :github_tarball => '../evil'\n", "invalid github_tarball repository"},
+		{"duplicate tarballs", "mod 'a/name', type: 'tarball', source: 'url'\nmod 'b/name', type: 'tarball', source: 'url'\n", "duplicate module"},
+		{"forge then tarball", "mod 'a/name'\nmod 'b/name', type: 'tarball', source: 'url'\n", "duplicate module"},
+		{"tarball then forge", "mod 'a/name', type: 'tarball', source: 'url'\nmod 'b/name'\n", "Duplicate module"},
+		{"git then tarball", "mod 'name', :git => 'url'\nmod 'a/name', type: 'tarball', source: 'url'\n", "duplicate module"},
+		{"tarball then git", "mod 'a/name', type: 'tarball', source: 'url'\nmod 'name', :git => 'url'\n", "Duplicate module"},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			path := filepath.Join(t.TempDir(), "Puppetfile")

@@ -2,6 +2,7 @@ package g10k
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -65,16 +66,19 @@ type Options struct {
 // Construct one per invocation with NewRuntime(opts).
 type Runtime struct {
 	Options
-	Config ConfigSettings
-	Mutex  sync.Mutex
-	empty  struct{}
+	Config        ConfigSettings
+	tarballClient *http.Client
+	Mutex         sync.Mutex
+	empty         struct{}
 
-	SyncGitCount       int
-	SyncForgeCount     int
-	NeedSyncGitCount   int
-	NeedSyncForgeCount int
-	NeedSyncDirs       []string
-	NeedSyncEnvs       map[string]struct{}
+	SyncGitCount         int
+	SyncForgeCount       int
+	SyncTarballCount     int
+	NeedSyncGitCount     int
+	NeedSyncForgeCount   int
+	NeedSyncTarballCount int
+	NeedSyncDirs         []string
+	NeedSyncEnvs         map[string]struct{}
 
 	StartTime             time.Time
 	SyncGitTime           float64
@@ -185,6 +189,7 @@ type Puppetfile struct {
 	forgeCacheTTL     time.Duration
 	forgeModules      map[string]ForgeModule
 	gitModules        map[string]GitModule
+	tarballModules    map[string]TarballModule
 	privateKey        string
 	source            string
 	sourceBranch      string
@@ -225,6 +230,16 @@ type GitModule struct {
 	local             bool
 	moduleDir         string
 	useSSHAgent       bool
+}
+
+// TarballModule contains the source and deployment settings of an archive module.
+type TarballModule struct {
+	name       string
+	source     string
+	checksum   string
+	githubRepo string
+	version    string
+	moduleDir  string
 }
 
 // ForgeResult is returned by queryForgeAPI and contains if and which version of the Puppetlabs Forge module needs to be downloaded
@@ -333,7 +348,9 @@ func Run(opts Options) (int, error) {
 		puppetfile.workDir = ""
 		pfm := make(map[string]Puppetfile)
 		pfm["cmdlineparam"] = puppetfile
-		rt.resolvePuppetfile(pfm)
+		if err := rt.resolvePuppetfile(pfm); err != nil {
+			return 1, err
+		}
 		return rt.finish(target)
 	}
 	return 1, fmt.Errorf("you need to specify at least a config file or use the Puppetfile mode")
@@ -353,8 +370,11 @@ func (rt *Runtime) finish(target string) (int, error) {
 			rt.Warnf(strings.TrimSuffix(rt.forgeModuleDeprecationNotice, "\n"))
 		}
 		fmt.Println("Synced", target, "with", rt.SyncGitCount, "git repositories and", rt.SyncForgeCount, "Forge modules in "+strconv.FormatFloat(time.Since(rt.StartTime).Seconds(), 'f', 1, 64)+"s with git ("+strconv.FormatFloat(rt.SyncGitTime, 'f', 1, 64)+"s sync, I/O", strconv.FormatFloat(rt.IoGitTime, 'f', 1, 64)+"s) and Forge ("+strconv.FormatFloat(rt.SyncForgeTime, 'f', 1, 64)+"s query+download, I/O", strconv.FormatFloat(rt.IoForgeTime, 'f', 1, 64)+"s) using", strconv.Itoa(rt.Config.Maxworker), "resolve and", strconv.Itoa(rt.Config.MaxExtractworker), "extract workers")
+		if rt.SyncTarballCount > 0 {
+			fmt.Println("Processed", rt.SyncTarballCount, "tarball modules")
+		}
 	}
-	if rt.DryRun && (rt.NeedSyncForgeCount > 0 || rt.NeedSyncGitCount > 0) {
+	if rt.DryRun && (rt.NeedSyncForgeCount > 0 || rt.NeedSyncGitCount > 0 || rt.NeedSyncTarballCount > 0) {
 		return 1, nil
 	}
 

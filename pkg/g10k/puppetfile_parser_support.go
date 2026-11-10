@@ -42,12 +42,12 @@ func (rt *Runtime) newPFParserState(pfPath string, source string, branch string,
 
 func (s *pfParserState) HandleModule(moduleName string, attrs []puppetfileparser.Attribute, line string) error {
 	moduleName = strings.TrimSpace(moduleName)
-	_, isTarball, err := puppetfileparser.ParseTarball(moduleName, attrs)
+	tarball, isTarball, err := puppetfileparser.ParseTarball(moduleName, attrs)
 	if err != nil {
 		return fmt.Errorf("%s in %s line: %s", err, s.pfPath, line)
 	}
 	if isTarball {
-		return fmt.Errorf("tarball module %s is not supported in %s line: %s", moduleName, s.pfPath, line)
+		return s.handleTarballModule(tarball, line)
 	}
 	for _, attr := range attrs {
 		if attr.IsKeyword {
@@ -72,6 +72,9 @@ func (s *pfParserState) handleForgeModule(moduleName string, attrs []puppetfilep
 	author := comp[0]
 	name := comp[1]
 
+	if _, ok := s.puppetFile.tarballModules[name]; ok {
+		return fmt.Errorf("Error: Duplicate module found in %s for module %s line: %s", s.pfPath, name, line)
+	}
 	if _, ok := s.puppetFile.forgeModules[name]; ok {
 		return fmt.Errorf("Error: Duplicate forge module found in %s for module %s/%s line: %s", s.pfPath, author, name, line)
 	}
@@ -156,6 +159,9 @@ func (s *pfParserState) handleForgeModule(moduleName string, attrs []puppetfilep
 
 //nolint:staticcheck // Preserve existing Puppetfile error messages.
 func (s *pfParserState) handleGitModule(moduleName string, attrs []puppetfileparser.Attribute, line string) error {
+	if _, ok := s.puppetFile.tarballModules[moduleName]; ok {
+		return fmt.Errorf("Error: Duplicate module found in %s for module %s line: %s", s.pfPath, moduleName, line)
+	}
 	if strings.Contains(moduleName, "-") {
 		s.rt.Warnf("Warning: Found invalid character '-' in Puppet module name " + moduleName + " in " + s.pfPath + " line: " + line + "\n See module guidelines: https://docs.puppet.com/puppet/latest/reference/lang_reserved.html#modules")
 	}
