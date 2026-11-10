@@ -1,4 +1,4 @@
-DEPS = $(wildcard pkg/g10k/*.go cmd/g10k/*.go)
+DEPS = $(wildcard pkg/g10k/*.go pkg/g10k/puppetfileparser/*.go cmd/g10k/*.go)
 BUILDVERSION ?= $(shell git describe --tags --dirty --always 2>/dev/null || echo dev)
 BUILDTIME ?= $(shell date -u '+%Y-%m-%d_%H:%M:%S')
 UNAME := $(shell uname)

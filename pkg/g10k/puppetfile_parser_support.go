@@ -1,25 +1,17 @@
 package g10k
 
-//go:generate goyacc -o puppetfile_parser.go -p pfyy puppetfile_parser.y
-
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
-	"time"
-)
 
-type pfAttribute struct {
-	Name        string
-	Value       string
-	HasArrow    bool
-	IsBareValue bool
-}
+	"github.com/voxpupuli/g10k/pkg/g10k/puppetfileparser"
+)
 
 type pfParserState struct {
 	rt               *Runtime
-	err              error
 	pfPath           string
 	source           string
 	branch           string
@@ -48,28 +40,7 @@ func (rt *Runtime) newPFParserState(pfPath string, source string, branch string,
 	}
 }
 
-func (s *pfParserState) handleModuledir(value string) {
-	if len(s.rt.ModuleDir) != 0 {
-		return
-	}
-	s.currentModuleDir = normalizeDir(value)
-	s.moduleDirs = append(s.moduleDirs, s.currentModuleDir)
-}
-
-func (s *pfParserState) handleForgeBaseURL(value string) {
-	s.puppetFile.forgeBaseURL = value
-}
-
-func (s *pfParserState) handleForgeCacheTTL(value string, line string) error {
-	ttl, err := time.ParseDuration(value)
-	if err != nil {
-		return fmt.Errorf("error: Can not convert value %s of parameter forge.cacheTtl %s to a golang Duration. valid time units are 300ms, 1.5h or 2h45m. In %s line: %s", value, value, s.pfPath, line)
-	}
-	s.puppetFile.forgeCacheTTL = ttl
-	return nil
-}
-
-func (s *pfParserState) handleMod(moduleName string, attrs []pfAttribute, line string) error {
+func (s *pfParserState) HandleModule(moduleName string, attrs []puppetfileparser.Attribute, line string) error {
 	moduleName = strings.TrimSpace(moduleName)
 	if strings.Contains(moduleName, "/") || strings.Contains(moduleName, "-") {
 		return s.handleForgeModule(moduleName, attrs, line)
@@ -77,7 +48,7 @@ func (s *pfParserState) handleMod(moduleName string, attrs []pfAttribute, line s
 	return s.handleGitModule(moduleName, attrs, line)
 }
 
-func (s *pfParserState) handleForgeModule(moduleName string, attrs []pfAttribute, line string) error {
+func (s *pfParserState) handleForgeModule(moduleName string, attrs []puppetfileparser.Attribute, line string) error {
 	comp := strings.Split(moduleName, "/")
 	if len(comp) != 2 {
 		comp = strings.Split(moduleName, "-")
@@ -170,7 +141,7 @@ func (s *pfParserState) handleForgeModule(moduleName string, attrs []pfAttribute
 	return nil
 }
 
-func (s *pfParserState) handleGitModule(moduleName string, attrs []pfAttribute, line string) error {
+func (s *pfParserState) handleGitModule(moduleName string, attrs []puppetfileparser.Attribute, line string) error {
 	if strings.Contains(moduleName, "-") {
 		s.rt.Warnf("Warning: Found invalid character '-' in Puppet module name " + moduleName + " in " + s.pfPath + " line: " + line + "\n See module guidelines: https://docs.puppet.com/puppet/latest/reference/lang_reserved.html#modules")
 	}
@@ -207,7 +178,7 @@ func (s *pfParserState) handleGitModule(moduleName string, attrs []pfAttribute, 
 	return nil
 }
 
-func (s *pfParserState) parseGitAttributes(moduleName string, attrs []pfAttribute, line string) (GitModule, bool, error) {
+func (s *pfParserState) parseGitAttributes(moduleName string, attrs []puppetfileparser.Attribute, line string) (GitModule, bool, error) {
 	gm := GitModule{moduleDir: s.currentModuleDir}
 	seenConflicting := make([]string, 0, 3)
 	seenKeys := make(map[string]bool)
@@ -304,151 +275,25 @@ func (s *pfParserState) finalize(sshKey string) Puppetfile {
 	return s.puppetFile
 }
 
-type pfLexer struct {
-	lines       []string
-	lineIdx     int
-	col         int
-	currentLine string
-	logicalLine string
-	pfPath      string
-	state       *pfParserState
-}
-
-func newPFLexer(input string, pfPath string, state *pfParserState) *pfLexer {
-	return &pfLexer{lines: strings.Split(input, "\n"), pfPath: pfPath, state: state}
-}
-
-func (l *pfLexer) Error(_ string) {
-	if len(strings.TrimSpace(l.currentLine)) == 0 {
-		l.state.err = fmt.Errorf("Error: Could not interpret Puppetfile %s", l.pfPath)
-	} else if l.state.rt.DryRun {
-		l.state.err = fmt.Errorf("Error: Could not interpret line: %s In %s", l.currentLine, l.pfPath)
-	} else {
-		l.state.err = fmt.Errorf("Error: Trailing comma or invalid setting for module found in %s line: %s", l.pfPath, l.currentLine)
-	}
-}
-
-func (l *pfLexer) Lex(lval *pfyySymType) int {
-	for {
-		if l.lineIdx >= len(l.lines) {
-			return 0
-		}
-		line := l.lines[l.lineIdx]
-		l.currentLine = line
-		if l.col >= len(line) {
-			effectiveLine := strings.TrimSpace(stripPuppetComment(line))
-			if len(effectiveLine) > 0 {
-				l.logicalLine += effectiveLine
-			}
-			l.lineIdx++
-			l.col = 0
-			if len(effectiveLine) == 0 {
-				continue
-			}
-			if strings.HasSuffix(effectiveLine, ",") {
-				continue
-			}
-			if len(l.logicalLine) > 0 {
-				l.currentLine = l.logicalLine
-				l.logicalLine = ""
-			}
-			return NEWLINE
-		}
-
-		for l.col < len(line) && (line[l.col] == ' ' || line[l.col] == '\t' || line[l.col] == '\r') {
-			l.col++
-		}
-		if l.col >= len(line) {
-			continue
-		}
-		if line[l.col] == '#' {
-			l.col = len(line)
-			continue
-		}
-
-		if line[l.col] == ',' {
-			l.col++
-			return COMMA
-		}
-		if l.col+1 < len(line) && line[l.col] == '=' && line[l.col+1] == '>' {
-			l.col += 2
-			return ARROW
-		}
-		if line[l.col] == '\'' || line[l.col] == '"' {
-			q := line[l.col]
-			l.col++
-			start := l.col
-			for l.col < len(line) && line[l.col] != q {
-				l.col++
-			}
-			if l.col >= len(line) {
-				lval.str = line[start:]
-				return STRING
-			}
-			lval.str = line[start:l.col]
-			l.col++
-			return STRING
-		}
-		if line[l.col] == ':' {
-			l.col++
-			start := l.col
-			for l.col < len(line) && isSymbolChar(line[l.col]) {
-				l.col++
-			}
-			lval.str = line[start:l.col]
-			return SYMBOL
-		}
-
-		start := l.col
-		for l.col < len(line) && !isDelimiter(line[l.col]) {
-			l.col++
-		}
-		word := line[start:l.col]
-		switch word {
-		case "mod":
-			return MOD
-		case "moduledir":
-			return MODULEDIR
-		case "forge.baseUrl", "forge.baseURL":
-			return FORGEBASEURL
-		case "forge.cacheTtl", "forge.cacheTTL":
-			return FORGECACHETTL
-		default:
-			lval.str = word
-			return WORD
-		}
-	}
-}
-
-func stripPuppetComment(line string) string {
-	if strings.Contains(line, "#") {
-		return strings.Split(line, "#")[0]
-	}
-	return line
-}
-
-func isDelimiter(c byte) bool {
-	return c == ' ' || c == '\t' || c == '\r' || c == ',' || c == '\n'
-}
-
-func isSymbolChar(c byte) bool {
-	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_' || c == '-'
-}
-
 // ParsePuppetfile parses a Puppetfile using the runtime's module settings.
 func (rt *Runtime) ParsePuppetfile(pfPath string, sshKey string, source string, branch string, forceForgeVersions bool) (Puppetfile, error) {
 	rawContent, err := os.ReadFile(pfPath)
 	if err != nil {
 		return Puppetfile{}, fmt.Errorf("ParsePuppetfile(): Error while opening Puppetfile %s Error: %w", pfPath, err)
 	}
-	content := string(rawContent)
 	state := rt.newPFParserState(pfPath, source, branch, forceForgeVersions)
-	lexer := newPFLexer(content, pfPath, state)
-	if pfyyParse(lexer) != 0 && state.err == nil {
-		lexer.Error("syntax error")
-	}
-	if state.err != nil {
-		return Puppetfile{}, state.err
+	if err := puppetfileparser.Parse(string(rawContent), state); err != nil {
+		var syntaxErr *puppetfileparser.SyntaxError
+		if errors.As(err, &syntaxErr) {
+			if len(strings.TrimSpace(syntaxErr.Line)) == 0 {
+				err = fmt.Errorf("Error: Could not interpret Puppetfile %s", pfPath)
+			} else if rt.DryRun {
+				err = fmt.Errorf("Error: Could not interpret line: %s In %s", syntaxErr.Line, pfPath)
+			} else {
+				err = fmt.Errorf("Error: Trailing comma or invalid setting for module found in %s line: %s", pfPath, syntaxErr.Line)
+			}
+		}
+		return Puppetfile{}, err
 	}
 	return state.finalize(sshKey), nil
 }

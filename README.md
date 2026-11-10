@@ -566,12 +566,19 @@ See #166 for the discussion and #167 for the merge request.
 # building
 
 The generated Puppetfile parser is committed. After changing
-`pkg/g10k/puppetfile_parser.y`, install `goyacc` if needed and regenerate it:
+`pkg/g10k/puppetfileparser/parser.y`, regenerate it using the `goyacc` version
+pinned in `go.mod`:
 
 ```sh
-go install golang.org/x/tools/cmd/goyacc@latest
 make generate-parser
 ```
+
+The `pkg/g10k/puppetfileparser` package can also be used independently. Its
+`Parse` function accepts Puppetfile text and a `Handler`, and reports
+directives and module attributes in order. It parses the syntax supported by
+g10k; the handler is responsible for interpreting declarations and resolving
+modules. Handler errors stop parsing and previously emitted events are not
+rolled back.
 
 ```
 # build a local binary with a fake version string
