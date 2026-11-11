@@ -19,4 +19,7 @@ require (
 	github.com/tidwall/match v1.2.0 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
+	golang.org/x/tools v0.41.0 // indirect
 )
+
+tool golang.org/x/tools/cmd/goyacc

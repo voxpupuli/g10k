@@ -1,11 +1,11 @@
 %{
-package g10k
+package puppetfileparser
 %}
 
 %union {
 	str   string
-	attr  pfAttribute
-	attrs []pfAttribute
+	attr  Attribute
+	attrs []Attribute
 }
 
 %token MOD MODULEDIR FORGEBASEURL FORGECACHETTL
@@ -30,26 +30,32 @@ line:
 | MODULEDIR value NEWLINE
 	{
 		lex := pfyylex.(*pfLexer)
-		lex.state.handleModuledir($2)
+		lex.err = lex.handler.HandleModuleDir($2)
+		if lex.err != nil {
+			return 1
+		}
 	}
 | FORGEBASEURL value NEWLINE
 	{
 		lex := pfyylex.(*pfLexer)
-		lex.state.handleForgeBaseURL($2)
+		lex.err = lex.handler.HandleForgeBaseURL($2)
+		if lex.err != nil {
+			return 1
+		}
 	}
 | FORGECACHETTL value NEWLINE
 	{
 		lex := pfyylex.(*pfLexer)
-		lex.state.err = lex.state.handleForgeCacheTTL($2, lex.currentLine)
-		if lex.state.err != nil {
+		lex.err = lex.handler.HandleForgeCacheTTL($2, lex.currentLine)
+		if lex.err != nil {
 			return 1
 		}
 	}
 | MOD STRING opt_attrs NEWLINE
 	{
 		lex := pfyylex.(*pfLexer)
-		lex.state.err = lex.state.handleMod($2, $3, lex.currentLine)
-		if lex.state.err != nil {
+		lex.err = lex.handler.HandleModule($2, $3, lex.currentLine)
+		if lex.err != nil {
 			return 1
 		}
 	}
@@ -69,7 +75,7 @@ opt_attrs:
 attr_list:
 	attr
 	{
-		$$ = []pfAttribute{$1}
+		$$ = []Attribute{$1}
 	}
 | attr_list COMMA attr
 	{
@@ -80,19 +86,28 @@ attr_list:
 attr:
 	SYMBOL ARROW value
 	{
-		$$ = pfAttribute{Name: $1, Value: $3, HasArrow: true}
+		$$ = Attribute{Name: $1, Value: $3, HasArrow: true}
 	}
 | SYMBOL
 	{
-		$$ = pfAttribute{Name: $1, Value: "", HasArrow: false}
+		$$ = Attribute{Name: $1, Value: "", HasArrow: false}
 	}
 | STRING
 	{
-		$$ = pfAttribute{Value: $1, IsBareValue: true}
+		$$ = Attribute{Value: $1, IsBareValue: true}
 	}
 | WORD
 	{
-		$$ = pfAttribute{Value: $1, IsBareValue: true}
+		$$ = Attribute{Value: $1, IsBareValue: true}
+	}
+| WORD value
+	{
+		lex := pfyylex.(*pfLexer)
+		if len($1) < 2 || $1[len($1)-1] != ':' {
+			lex.Error("syntax error")
+			return 1
+		}
+		$$ = Attribute{Name: $1[:len($1)-1], Value: $2, IsKeyword: true}
 	}
 ;
 

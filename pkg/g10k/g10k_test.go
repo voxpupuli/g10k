@@ -361,7 +361,9 @@ func TestInvalidFilesizeForgemodule(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.checkDirAndCreate(rt.Config.ForgeCacheDir, "TestInvalidMetadataForgemodule")
-		rt.resolvePuppetfile(pfm)
+		if err := rt.resolvePuppetfile(pfm); err != nil {
+			t.Fatal(err)
+		}
 		return
 	}
 
@@ -416,7 +418,9 @@ func TestInvalidMd5sumForgemodule(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.checkDirAndCreate(rt.Config.ForgeCacheDir, "TestInvalidMd5sumForgemodule")
-		rt.resolvePuppetfile(pfm)
+		if err := rt.resolvePuppetfile(pfm); err != nil {
+			t.Fatal(err)
+		}
 		return
 	}
 
@@ -464,7 +468,9 @@ func TestInvalidSha256sumForgemodule(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt.checkDirAndCreate(rt.Config.ForgeCacheDir, "TestInvalidSha256sumForgemodule")
-		rt.resolvePuppetfile(pfm)
+		if err := rt.resolvePuppetfile(pfm); err != nil {
+			t.Fatal(err)
+		}
 		return
 	}
 
