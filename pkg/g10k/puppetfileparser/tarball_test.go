@@ -6,10 +6,48 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/stretchr/testify/require"
 	"github.com/voxpupuli/g10k/pkg/g10k/puppetfileparser"
 )
 
 const digest = "aedd6dc1a5136c6a1a1ec2f285df2a70b0fe4c9effb254b5a1f58116e4c1659e"
+
+func TestTarballStripComponents(t *testing.T) {
+	for _, tt := range []struct {
+		attribute string
+		count     int
+		wantError string
+	}{
+		{"strip_components: 0", 0, ""},
+		{"strip_components: 2", 2, ""},
+		{"strip_components:1", 1, ""},
+		{":strip_components => 3", 3, ""},
+		{"strip_components: -1", 0, "non-negative integer"},
+		{"strip_components: 1.5", 0, "non-negative integer"},
+		{"strip_components: 'abc'", 0, "non-negative integer"},
+		{"strip_components: ''", 0, "non-negative integer"},
+		{"strip_components: 999999999999999999999999", 0, "non-negative integer"},
+		{"strip_components: 1, strip_components: 2", 0, "duplicate"},
+	} {
+		t.Run(tt.attribute, func(t *testing.T) {
+			h := &recordingHandler{}
+			require.NoError(t, puppetfileparser.Parse("mod 'apache', type: 'tarball', source: 'url', "+tt.attribute+"\n", h))
+			got, ok, err := puppetfileparser.ParseTarball(h.events[0].value, h.events[0].attrs)
+			require.True(t, ok)
+			if tt.wantError != "" {
+				require.ErrorContains(t, err, tt.wantError)
+				return
+			}
+			require.NoError(t, err)
+			require.Equal(t, tt.count, got.StripComponents)
+		})
+	}
+	h := &recordingHandler{}
+	require.NoError(t, puppetfileparser.Parse("mod 'apache', :github_tarball => 'owner/repo', strip_components: 1\n", h))
+	_, ok, err := puppetfileparser.ParseTarball(h.events[0].value, h.events[0].attrs)
+	require.True(t, ok)
+	require.ErrorContains(t, err, "invalid tarball attribute")
+}
 
 func TestTarballDeclarations(t *testing.T) {
 	for _, tt := range []struct {
