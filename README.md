@@ -194,7 +194,7 @@ Usage of ./g10k:
         show build time and version number
 ```
 
-Regarding anything usage/workflow you really can just use the great [puppetlabs/r10k](https://github.com/puppetlabs/r10k/blob/master/doc/dynamic-environments.mkd) docs as the [Puppetfile](https://github.com/puppetlabs/r10k/blob/master/doc/puppetfile.mkd) etc. are all intentionally kept unchanged.
+Regarding usage/workflow you can use the great [puppetlabs/r10k](https://github.com/puppetlabs/r10k/blob/master/doc/dynamic-environments.mkd) docs, including the [Puppetfile](https://github.com/puppetlabs/r10k/blob/master/doc/puppetfile.mkd), except for the g10k-specific extensions documented below.
 
 ## Tarball modules
 
@@ -209,8 +209,26 @@ mod 'puppetlabs-apache',
 ```
 
 The source can be an HTTP(S) URL, a `file://` URL, or a local path. Direct
-archives are unpacked as-is into the module directory; they should not
-contain a wrapping directory. Without a digest, the archive is cached by
+archives are unpacked as-is into the module directory by default. To remove
+wrapping directories, set `strip_components` to a non-negative integer:
+
+```ruby
+mod 'puppetlabs-apache',
+  type: 'tarball',
+  source: 'https://repo.example.com/puppetlabs-apache.tar.gz',
+  strip_components: 1
+```
+
+Like GNU tar's `--strip-components`, this removes the specified number of
+leading path components; entries with too few components are skipped.
+For example, `apache-1.0/manifests/init.pp` becomes `manifests/init.pp` with
+`strip_components: 1`. The default is `0` (no stripping). This option is a
+deliberate g10k extension to r10k's tarball syntax, motivated by
+[puppetlabs/r10k#1285](https://github.com/puppetlabs/r10k/pull/1285).
+It is not supported for `github_tarball`, which retains its automatic
+single-root stripping.
+
+Without a digest, the archive is cached by
 source URL and is not refreshed until the URL changes or the cache is removed.
 With a digest, g10k checks both downloaded and cached files before use.
 
