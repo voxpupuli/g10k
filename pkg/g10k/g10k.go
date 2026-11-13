@@ -232,6 +232,11 @@ type GitModule struct {
 	useSSHAgent       bool
 }
 
+// hasExplicitRef reports whether an explicit branch, commit, tag, or ref was set on the module.
+func (gm GitModule) hasExplicitRef() bool {
+	return len(gm.branch) > 0 || len(gm.commit) > 0 || len(gm.tag) > 0 || len(gm.ref) > 0
+}
+
 // TarballModule contains the source and deployment settings of an archive module.
 type TarballModule struct {
 	name       string

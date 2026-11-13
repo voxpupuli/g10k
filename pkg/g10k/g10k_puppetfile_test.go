@@ -607,3 +607,27 @@ func TestReadPuppetfileSSHKeyAlreadyLoaded(t *testing.T) {
 
 	assert.True(t, equalPuppetfile(rt, got, expected))
 }
+
+// TestReadPuppetfileBranchWithDefaultBranch verifies that a Puppetfile entry with both
+// :branch and :default_branch is parsed correctly: branch is stored in GitModule.branch
+// and default_branch is stored in GitModule.fallback.
+func TestReadPuppetfileBranchWithDefaultBranch(t *testing.T) {
+	rt := NewRuntime(Options{Quiet: true})
+	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
+	got := readTestPuppetfile(t, rt, "../../tests/"+funcName, false)
+
+	fallbackMap := make([]string, 1)
+	fallbackMap[0] = "master"
+
+	fm := make(map[string]ForgeModule)
+	gm := make(map[string]GitModule)
+	gm["g10k_testmodule"] = GitModule{
+		git:      "https://github.com/xorpaul/g10k_testmodule.git",
+		branch:   "control_branch_foobar",
+		fallback: fallbackMap,
+	}
+
+	expected := Puppetfile{source: "test", gitModules: gm, forgeModules: fm}
+
+	assert.True(t, equalPuppetfile(rt, got, expected))
+}
