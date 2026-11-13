@@ -432,7 +432,7 @@ func (rt *Runtime) resolvePuppetfile(allPuppetfiles map[string]Puppetfile) error
 					}
 				}
 
-				if !success && !rt.Config.IgnoreUnreachableModules {
+				if !success && !rt.Config.IgnoreUnreachableModules && !pf.gitModules[gitName].ignoreUnreachable {
 					rt.Fatalf("Failed to resolve git module '" + gitName + "' with repository " + gitModule.git + " and branch/reference '" + tree + "' used in control repository branch '" + pf.sourceBranch + "' or Puppet environment '" + env + "'")
 				}
 
