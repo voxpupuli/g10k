@@ -42,6 +42,7 @@ func main() {
 	flag.BoolVar(&opts.Verbose, "verbose", false, "log verbose output, defaults to false")
 	flag.BoolVar(&opts.Info, "info", false, "log info output, defaults to false")
 	flag.BoolVar(&opts.Quiet, "quiet", false, "no output, defaults to false")
+	flag.StringVar(&opts.Report, "report", "", "write a JSON report of the deployed environments and modules (versions, commits, state) to the given file")
 	flag.BoolVar(&opts.UseCacheFallback, "usecachefallback", false, "if g10k should try to use its cache for sources and modules instead of failing")
 	flag.BoolVar(&opts.RetryGitCommands, "retrygitcommands", false, "if g10k should purge the local repository and retry a failed git command...")
 	flag.BoolVar(&opts.GitObjectSyntaxNotSupported, "gitobjectsyntaxnotsupported", false, "if your git version is too old to support reference syntax like master^{object}...")

@@ -178,6 +178,8 @@ Usage of ./g10k:
         which Puppetfile to use in -puppetfile mode (default "./Puppetfile")
   -quiet
         no output, defaults to false
+  -report string
+        write a JSON report of the deployed environments and modules (versions, commits, state) to the given file
   -retrygitcommands
         if g10k should purge the local repository and retry a failed git command (clone or remote update) instead of failing
   -tags
@@ -226,6 +228,35 @@ branch is used. GitHub's top-level archive directory is stripped. GitHub
 archives are cached by repository and ref and are not refreshed until the
 ref changes or the cache is removed. Tarball caches are stored in the `tarball`
 subdirectory of g10k's cache directory.
+
+## Deployment report
+
+`-report <file>` writes a JSON report of what is on disk once the run is finished: one entry per environment
+(control repo commit, deploy status, Puppetfile checksum) with every module declared in its Puppetfile.
+The file is written atomically after the run, also together with `-dryrun` and `-check4update`.
+
+```
+g10k -config /etc/g10k.yaml -report /var/lib/g10k/report.json
+g10k -puppetfile -report report.json
+```
+
+Each module has a `state`:
+
+- `deployed`: the module is present and matches the Puppetfile
+- `outdated`: Forge module whose installed version differs from the pinned one, or from the latest one for `latest` (the latest version is only known if the Forge was queried during the run, e.g. with `-check4update`)
+- `missing`: the module directory (or `metadata.json` for Forge modules) does not exist
+- `local`: git module declared with `:local => true`
+
+Forge modules report `declared_version`, `deployed_version` and `latest_version`. Git modules report the `url`, the requested
+`ref` and the deployed `commit` (from `.latest_commit`, not available with `clone_git_modules`). `ref` is the branch, tag or commit
+g10k really deployed, not the one requested: with `:branch => :control_branch` and `:default_branch` it is the default branch
+when the control branch does not exist in the module repository. It is empty when nothing was deployed. Tarball modules report their
+`source`, `version` or `checksum`. Tarball and git modules are only checked for presence, not for content.
+Passwords and query strings in URLs are replaced by `REDACTED`.
+
+The report only lists the environments handled by the run: with `-branch`, `-environment` or `-module` only the matching
+ones, and sources that could not be reached are skipped (with a warning). The report is not written when g10k exits
+with a fatal error, so an older file stays untouched: check `generated_at` when monitoring it.
 
 ## Using g10k behind a proxy
 
