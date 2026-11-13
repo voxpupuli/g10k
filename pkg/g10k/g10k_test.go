@@ -3289,14 +3289,18 @@ func TestResolvePuppetfileBranchPriorityOverDefaultBranch(t *testing.T) {
 
 	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
 		rt, pfm := setup(true)
-		rt.resolvePuppetfile(pfm)
+		if err := rt.resolvePuppetfile(pfm); err != nil {
+			t.Fatal(err)
+		}
 		return
 	}
 
 	rt, pfm := setup(false)
 	rt.purgeDir(basedir, funcName)
 	rt.checkDirAndCreate(basedir, "basedir")
-	rt.resolvePuppetfile(pfm)
+	if err := rt.resolvePuppetfile(pfm); err != nil {
+		t.Fatal(err)
+	}
 
 	if !fileExists(moduleDir) {
 		t.Errorf("expected module directory is missing: %s — :branch should have resolved successfully", moduleDir)
