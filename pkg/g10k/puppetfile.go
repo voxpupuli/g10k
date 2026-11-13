@@ -30,6 +30,8 @@ func (rt *Runtime) sourceSanityCheck(source string, sa Source) {
 func (rt *Runtime) resolvePuppetEnvironment(tags bool, outputNameTag string) error {
 	wg := sizedwaitgroup.New(rt.Config.MaxExtractworker + 1)
 	allPuppetfiles := make(map[string]Puppetfile)
+	// environments without a Puppetfile, only needed for the -report option
+	envsWithoutPuppetfile := make(map[string]Puppetfile)
 	allEnvironments := make(map[string]bool)
 	allBasedirs := make(map[string]bool)
 	foundMatch := false
@@ -179,6 +181,9 @@ func (rt *Runtime) resolvePuppetEnvironment(tags bool, outputNameTag string) err
 									dr.GitURL = sa.Remote
 									rt.writeStructJSONFile(deployFile, dr)
 								}
+								rt.Mutex.Lock()
+								envsWithoutPuppetfile[env] = Puppetfile{source: source, workDir: normalizeDir(targetDir), controlRepoBranch: branch, gitURL: sa.Remote}
+								rt.Mutex.Unlock()
 							} else {
 								puppetfile, err := rt.readPuppetfile(pf, sa.PrivateKey, source, branch, sa.ForceForgeVersions)
 								if err != nil {
@@ -230,6 +235,7 @@ func (rt *Runtime) resolvePuppetEnvironment(tags bool, outputNameTag string) err
 	if len(rt.Module) == 0 {
 		rt.purgeUnmanagedContent(allBasedirs, allEnvironments)
 	}
+	rt.collectReport(allPuppetfiles, envsWithoutPuppetfile)
 	return nil
 }
 
@@ -428,6 +434,10 @@ func (rt *Runtime) resolvePuppetfile(allPuppetfiles map[string]Puppetfile) error
 					if !success && !rt.Config.IgnoreUnreachableModules {
 						rt.Fatalf("Failed to resolve git module '" + gitName + "' with repository " + gitModule.git + " and branch/reference '" + tree + "' used in control repository branch '" + pf.sourceBranch + "' or Puppet environment '" + env + "'")
 					}
+				}
+
+				if success {
+					rt.recordResolvedGitRef(targetDir, gitModule.tree)
 				}
 
 				// remove this module from the exisitingModuleDirs map

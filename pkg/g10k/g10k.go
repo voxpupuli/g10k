@@ -54,6 +54,8 @@ type Options struct {
 	Verbose bool
 	Info    bool
 	Quiet   bool
+	// Report is the path of a JSON file describing the deployed environments and modules, see Report
+	Report string
 	// workers
 	MaxWorker        int
 	MaxExtractWorker int
@@ -92,6 +94,8 @@ type Runtime struct {
 	LatestForgeModules           *LatestForgeModules
 	forgeModuleDeprecationNotice string
 	ValidationMessages           []string
+	reportEnvironments           []ReportEnvironment
+	resolvedGitRefs              map[string]string
 }
 
 // NewRuntime takes in an Options struct and returns a
@@ -277,6 +281,10 @@ func Run(opts Options) (int, error) {
 		return 1, fmt.Errorf("could not find `git` executable in PATH")
 	}
 
+	if err := checkReportPath(opts.Report); err != nil {
+		return 1, err
+	}
+
 	rt := NewRuntime(opts)
 
 	if opts.ConfigFile != "" {
@@ -351,6 +359,7 @@ func Run(opts Options) (int, error) {
 		if err := rt.resolvePuppetfile(pfm); err != nil {
 			return 1, err
 		}
+		rt.collectReport(pfm)
 		return rt.finish(target)
 	}
 	return 1, fmt.Errorf("you need to specify at least a config file or use the Puppetfile mode")
@@ -364,6 +373,12 @@ func (rt *Runtime) finish(target string) (int, error) {
 
 	rt.Debugf("Forge response JSON parsing took " + strconv.FormatFloat(rt.ForgeJSONParseTime, 'f', 4, 64) + " seconds")
 	rt.Debugf("Forge modules metadata.json parsing took " + strconv.FormatFloat(rt.metadataJSONParseTime, 'f', 4, 64) + " seconds")
+
+	if rt.Report != "" {
+		if err := rt.writeReport(target); err != nil {
+			return 1, err
+		}
+	}
 
 	if !rt.Check4Update && !rt.Quiet {
 		if len(rt.forgeModuleDeprecationNotice) > 0 {
