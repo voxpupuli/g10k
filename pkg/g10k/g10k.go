@@ -33,6 +33,7 @@ type Options struct {
 	// filters
 	Branch      string // former branchParam
 	Environment string // former environmentParam
+	Commit      string // former commitParam — pin control-repo checkout to this SHA
 	Module      string // former moduleParam
 	OutputName  string // former outputNameParam
 	ModuleDir   string // former moduleDirParam
@@ -288,6 +289,9 @@ func Run(opts Options) (int, error) {
 		}
 		if opts.OutputName != "" && opts.Branch == "" {
 			return 1, fmt.Errorf("error: -outputname specified without a branch")
+		}
+		if opts.Commit != "" && opts.Branch == "" && opts.Environment == "" {
+			return 1, fmt.Errorf("error: -commit specified without -branch or -environment")
 		}
 		if opts.UseCacheFallback {
 			rt.Config.UseCacheFallback = true

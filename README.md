@@ -148,6 +148,8 @@ Usage of ./g10k:
         get the md5 check sum for each Puppetlabs Forge module and verify the integrity of the downloaded archive. Increases g10k run time!
   -clonegit
         populate the Puppet environment with a git clone of each git Puppet module. Helpful when developing locally with -puppetfile
+  -commit string
+        pin the control-repo checkout to this commit SHA instead of the branch tip. Requires -branch or -environment
   -config string
         which config file to use
   -debug
