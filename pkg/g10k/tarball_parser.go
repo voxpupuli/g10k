@@ -38,11 +38,15 @@ func (s *pfParserState) handleTarballModule(declaration puppetfileparser.Tarball
 			return fmt.Errorf("invalid github_tarball version %q in %s line: %s", declaration.Version, s.pfPath, line)
 		}
 	}
-	module := TarballModule{name: name, source: declaration.Source, githubRepo: declaration.GitHubRepository, moduleDir: s.currentModuleDir}
+	module := TarballModule{
+		name: name, source: declaration.Source, githubRepo: declaration.GitHubRepository,
+		moduleDir: s.currentModuleDir, stripComponents: declaration.StripComponents,
+	}
 	if module.githubRepo == "" {
 		module.checksum = declaration.Version
 	} else {
 		module.version = declaration.Version
+		module.stripComponents = 1
 	}
 	if s.puppetFile.tarballModules == nil {
 		s.puppetFile.tarballModules = make(map[string]TarballModule)

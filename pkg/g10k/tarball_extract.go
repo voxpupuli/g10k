@@ -11,7 +11,10 @@ import (
 	"strings"
 )
 
-func (rt *Runtime) extractTarball(archive, target string, stripRoot bool) (resultErr error) {
+func (rt *Runtime) extractTarball(archive, target string, stripComponents int) (resultErr error) {
+	if stripComponents < 0 {
+		return fmt.Errorf("strip_components must be a non-negative integer")
+	}
 	f, err := os.Open(archive)
 	if err != nil {
 		return err
@@ -28,7 +31,6 @@ func (rt *Runtime) extractTarball(archive, target string, stripRoot bool) (resul
 	}
 	defer joinTarballCloseError(&resultErr, root, "close tarball extraction root")
 	reader := tar.NewReader(gz)
-	top := ""
 	for {
 		h, err := reader.Next()
 		if err == io.EOF {
@@ -41,21 +43,14 @@ func (rt *Runtime) extractTarball(archive, target string, stripRoot bool) (resul
 		if err != nil {
 			return err
 		}
-		if stripRoot {
-			parts := strings.SplitN(name, "/", 2)
-			if top == "" {
-				top = parts[0]
+		if stripComponents > 0 {
+			name, err = stripTarballEntryName(h.Name, stripComponents)
+			if err != nil {
+				return err
 			}
-			if parts[0] != top {
-				return fmt.Errorf("GitHub archive contains multiple root directories")
-			}
-			if len(parts) == 1 {
-				if h.Typeflag != tar.TypeDir {
-					return fmt.Errorf("GitHub archive has a non-directory root %q", h.Name)
-				}
+			if name == "" {
 				continue
 			}
-			name = parts[1]
 		}
 		if name == "." {
 			if h.Typeflag != tar.TypeDir {
@@ -101,12 +96,14 @@ func (rt *Runtime) extractTarball(archive, target string, stripRoot bool) (resul
 			if err != nil {
 				return err
 			}
-			if stripRoot {
-				prefix := top + "/"
-				if !strings.HasPrefix(link, prefix) {
-					return fmt.Errorf("invalid GitHub archive hardlink %q", h.Linkname)
+			if stripComponents > 0 {
+				link, err = stripTarballEntryName(h.Linkname, stripComponents)
+				if err != nil {
+					return err
 				}
-				link = strings.TrimPrefix(link, prefix)
+				if link == "" {
+					continue
+				}
 			}
 			if err := root.Link(filepath.FromSlash(link), localName); err != nil {
 				return fmt.Errorf("create hardlink %q: %w", name, err)
@@ -115,13 +112,69 @@ func (rt *Runtime) extractTarball(archive, target string, stripRoot bool) (resul
 			return fmt.Errorf("unsupported tar entry type %d for %q", h.Typeflag, name)
 		}
 	}
-	if stripRoot && top == "" {
-		return fmt.Errorf("empty GitHub archive")
-	}
 	if _, err := io.Copy(io.Discard, gz); err != nil {
 		return fmt.Errorf("finish gzip stream: %w", err)
 	}
 	return nil
+}
+
+func validateGitHubTarballRoot(archive string) (resultErr error) {
+	f, err := os.Open(archive)
+	if err != nil {
+		return err
+	}
+	defer joinTarballCloseError(&resultErr, f, "close tarball archive")
+	gz, err := gzip.NewReader(f)
+	if err != nil {
+		return err
+	}
+	defer joinTarballCloseError(&resultErr, gz, "close tarball gzip reader")
+	reader := tar.NewReader(gz)
+	top := ""
+	for {
+		h, err := reader.Next()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return err
+		}
+		name, err := tarballEntryName(h.Name)
+		if err != nil {
+			return err
+		}
+		parts := strings.SplitN(name, "/", 2)
+		if top == "" {
+			top = parts[0]
+		}
+		if parts[0] != top {
+			return fmt.Errorf("GitHub archive contains multiple root directories")
+		}
+		if len(parts) == 1 && h.Typeflag != tar.TypeDir {
+			return fmt.Errorf("GitHub archive has a non-directory root %q", h.Name)
+		}
+		if h.Typeflag == tar.TypeLink {
+			link, err := tarballEntryName(h.Linkname)
+			if err != nil {
+				return err
+			}
+			if !strings.HasPrefix(link, top+"/") {
+				return fmt.Errorf("invalid GitHub archive hardlink %q", h.Linkname)
+			}
+		}
+	}
+	if top == "" {
+		return fmt.Errorf("empty GitHub archive")
+	}
+	return nil
+}
+
+func stripTarballEntryName(name string, count int) (string, error) {
+	parts := strings.FieldsFunc(name, func(r rune) bool { return r == '/' })
+	if len(parts) <= count {
+		return "", nil
+	}
+	return tarballEntryName(strings.Join(parts[count:], "/"))
 }
 
 func tarballEntryName(name string) (string, error) {

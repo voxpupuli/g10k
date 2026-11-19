@@ -234,12 +234,13 @@ type GitModule struct {
 
 // TarballModule contains the source and deployment settings of an archive module.
 type TarballModule struct {
-	name       string
-	source     string
-	checksum   string
-	githubRepo string
-	version    string
-	moduleDir  string
+	name            string
+	source          string
+	checksum        string
+	githubRepo      string
+	version         string
+	moduleDir       string
+	stripComponents int
 }
 
 // ForgeResult is returned by queryForgeAPI and contains if and which version of the Puppetlabs Forge module needs to be downloaded

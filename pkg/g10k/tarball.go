@@ -139,7 +139,7 @@ func (rt *Runtime) syncTarballModule(archive string, module TarballModule, workD
 	if err := os.Chmod(stage, 0o755); err != nil {
 		return fmt.Errorf("set extraction directory permissions: %w", err)
 	}
-	if err := rt.extractTarball(archive, stage, module.githubRepo != ""); err != nil {
+	if err := rt.extractTarball(archive, stage, module.stripComponents); err != nil {
 		return fmt.Errorf("extract archive: %w", err)
 	}
 	expected, err := SnapshotDirectory(stage)
@@ -253,13 +253,21 @@ func (rt *Runtime) tarballCache(client *http.Client, module TarballModule, valid
 	return cacheFile, func() {}, nil
 }
 
-func (rt *Runtime) validateTarballArchive(archive string, stripRoot bool) error {
+func (rt *Runtime) validateTarballArchive(archive string, githubArchive bool) error {
+	// Direct archives are shared by deployments with different strip counts.
+	stripComponents := 0
+	if githubArchive {
+		if err := validateGitHubTarballRoot(archive); err != nil {
+			return err
+		}
+		stripComponents = 1
+	}
 	validationDir, err := os.MkdirTemp("", ".g10k-tarball-validation-")
 	if err != nil {
 		return fmt.Errorf("create archive validation directory: %w", err)
 	}
 	defer rt.cleanupTarballTemp(validationDir)
-	return rt.extractTarball(archive, validationDir, stripRoot)
+	return rt.extractTarball(archive, validationDir, stripComponents)
 }
 
 func verifyTarballChecksum(r io.Reader, expected string) (bool, error) {

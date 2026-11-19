@@ -110,6 +110,146 @@ func TestTarballAcceptanceDirectCacheAndPurge(t *testing.T) {
 	require.EqualValues(t, 1, requests.Load())
 }
 
+func TestTarballAcceptanceStripComponents(t *testing.T) {
+	archive := testTarball(t,
+		archiveEntry{name: "README", content: "skipped when stripping"},
+		archiveEntry{name: "wrapper/", kind: tar.TypeDir},
+		archiveEntry{name: "wrapper/package/", kind: tar.TypeDir},
+		archiveEntry{name: "wrapper/package/manifests/init.pp", content: "class apache {}"},
+		archiveEntry{name: "wrapper/package/manifests/link.pp", kind: tar.TypeSymlink, link: "init.pp"},
+		archiveEntry{name: "wrapper/package/hard.pp", kind: tar.TypeLink, link: "wrapper/package/manifests/init.pp"},
+		archiveEntry{name: "wrapper/package/spec/test.rb", content: "skip"},
+	)
+	var requests atomic.Int32
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		requests.Add(1)
+		_, _ = w.Write(archive)
+	}))
+	defer server.Close()
+	rt := tarballTestRuntime(t, Options{Quiet: true})
+	rt.Config.PurgeSkiplist = []string{"spec"}
+	pfs := make(map[string]Puppetfile)
+	for count := 0; count <= 2; count++ {
+		env := fmt.Sprint(count)
+		pfs[env] = parseTestTarballPuppetfile(t, rt, t.TempDir(), fmt.Sprintf(
+			"mod 'apache', type: 'tarball', source: '%s', strip_components: %d\n", server.URL, count))
+	}
+	require.NoError(t, rt.resolvePuppetfile(pfs))
+	for count, prefix := range []string{"wrapper/package", "package", ""} {
+		module := filepath.Join(pfs[fmt.Sprint(count)].workDir, "modules", "apache")
+		for _, name := range []string{"manifests/init.pp", "manifests/link.pp", "hard.pp"} {
+			data, err := os.ReadFile(filepath.Join(module, prefix, name))
+			require.NoError(t, err)
+			require.Equal(t, "class apache {}", string(data))
+		}
+		if count > 0 {
+			require.NoFileExists(t, filepath.Join(module, "README"))
+		}
+	}
+	module := filepath.Join(pfs["2"].workDir, "modules", "apache")
+	require.NoDirExists(t, filepath.Join(module, "spec"))
+	require.EqualValues(t, 1, requests.Load())
+
+	// Changing only the strip count must redeploy from the shared archive.
+	pfs["2"] = parseTestTarballPuppetfile(t, rt, pfs["2"].workDir, fmt.Sprintf(
+		"mod 'apache', type: 'tarball', source: '%s', strip_components: 1\n", server.URL))
+	require.NoError(t, rt.resolvePuppetfile(pfs))
+	require.FileExists(t, filepath.Join(module, "package", "manifests", "init.pp"))
+	require.NoDirExists(t, filepath.Join(module, "manifests"))
+	require.EqualValues(t, 1, requests.Load())
+}
+
+func TestTarballStrippedExtraction(t *testing.T) {
+	for _, tt := range []struct {
+		name    string
+		entries []archiveEntry
+		count   int
+		want    string
+		wantErr string
+	}{
+		{
+			name: "leading dot counts as a component",
+			entries: []archiveEntry{
+				{name: "./", kind: tar.TypeDir},
+				{name: "./wrapper/file", content: "ok"},
+			},
+			count: 1, want: "wrapper/file",
+		},
+		{
+			name: "too few components",
+			entries: []archiveEntry{
+				{name: "wrapper/file", content: "skip"},
+			},
+			count: 3,
+		},
+		{
+			name: "multiple roots allowed",
+			entries: []archiveEntry{
+				{name: "one/file", content: "ok"},
+				{name: "two/other", content: "ok"},
+			},
+			count: 1, want: "file",
+		},
+		{
+			name: "collision after stripping",
+			entries: []archiveEntry{
+				{name: "one/file", content: "ok"},
+				{name: "two/file", content: "bad"},
+			},
+			count: 1, wantErr: "create file",
+		},
+		{
+			name: "symlink escapes stripped root",
+			entries: []archiveEntry{
+				{name: "wrapper/link", kind: tar.TypeSymlink, link: "../escape"},
+			},
+			count: 1, wantErr: "unsafe symlink",
+		},
+		{
+			name: "traversal exposed by stripping",
+			entries: []archiveEntry{
+				{name: "wrapper/../escape", content: "bad"},
+			},
+			count: 1, wantErr: "unsafe tar entry",
+		},
+		{
+			name: "hardlink traversal exposed by stripping",
+			entries: []archiveEntry{
+				{name: "wrapper/link", kind: tar.TypeLink, link: "wrapper/../escape"},
+			},
+			count: 1, wantErr: "unsafe tar entry",
+		},
+		{
+			name: "unsafe entry cannot be stripped away",
+			entries: []archiveEntry{
+				{name: "../escape", content: "bad"},
+			},
+			count: 3, wantErr: "unsafe tar entry",
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			archive := filepath.Join(t.TempDir(), "archive")
+			require.NoError(t, os.WriteFile(archive, testTarball(t, tt.entries...), 0o600))
+			target := t.TempDir()
+			err := tarballTestRuntime(t, Options{Quiet: true}).extractTarball(archive, target, tt.count)
+			if tt.wantErr != "" {
+				require.ErrorContains(t, err, tt.wantErr)
+				return
+			}
+			require.NoError(t, err)
+			if tt.want != "" {
+				data, err := os.ReadFile(filepath.Join(target, tt.want))
+				require.NoError(t, err)
+				require.Equal(t, "ok", string(data))
+			} else {
+				entries, err := os.ReadDir(target)
+				require.NoError(t, err)
+				require.Empty(t, entries)
+			}
+		})
+	}
+}
+
 type githubTestTransport struct {
 	server *url.URL
 	base   http.RoundTripper
@@ -335,7 +475,7 @@ func TestTarballSafeLinks(t *testing.T) {
 	target := filepath.Join(tmp, "target")
 	require.NoError(t, os.WriteFile(file, archive, 0o600))
 	require.NoError(t, os.Mkdir(target, 0o755))
-	require.NoError(t, tarballTestRuntime(t, Options{}).extractTarball(file, target, false))
+	require.NoError(t, tarballTestRuntime(t, Options{}).extractTarball(file, target, 0))
 	for _, name := range []string{"dir/link", "hard"} {
 		data, err := os.ReadFile(filepath.Join(target, name))
 		require.NoError(t, err)
@@ -370,7 +510,7 @@ func TestTarballExtractsLegacyRegularFile(t *testing.T) {
 	target := filepath.Join(tmp, "target")
 	require.NoError(t, os.WriteFile(file, compressed.Bytes(), 0o600))
 	require.NoError(t, os.Mkdir(target, 0o755))
-	require.NoError(t, tarballTestRuntime(t, Options{}).extractTarball(file, target, false))
+	require.NoError(t, tarballTestRuntime(t, Options{}).extractTarball(file, target, 0))
 	data, err := os.ReadFile(filepath.Join(target, "file"))
 	require.NoError(t, err)
 	require.Equal(t, "legacy", string(data))
@@ -483,15 +623,13 @@ func TestTarballExtractionSafety(t *testing.T) {
 	for _, tt := range []struct {
 		name    string
 		entries []archiveEntry
-		strip   bool
 	}{
-		{"traversal", []archiveEntry{{name: "../escape", content: "bad"}}, false},
-		{"absolute", []archiveEntry{{name: "/escape", content: "bad"}}, false},
-		{"symlink escape", []archiveEntry{{name: "link", kind: tar.TypeSymlink, link: "../escape"}}, false},
-		{"hardlink escape", []archiveEntry{{name: "link", kind: tar.TypeLink, link: "../escape"}}, false},
-		{"symlink parent", []archiveEntry{{name: "link", kind: tar.TypeSymlink, link: "../escape"}, {name: "link/file", content: "bad"}}, false},
-		{"github multiple roots", []archiveEntry{{name: "one/a", content: "a"}, {name: "two/b", content: "b"}}, true},
-		{"device", []archiveEntry{{name: "device", kind: tar.TypeChar}}, false},
+		{"traversal", []archiveEntry{{name: "../escape", content: "bad"}}},
+		{"absolute", []archiveEntry{{name: "/escape", content: "bad"}}},
+		{"symlink escape", []archiveEntry{{name: "link", kind: tar.TypeSymlink, link: "../escape"}}},
+		{"hardlink escape", []archiveEntry{{name: "link", kind: tar.TypeLink, link: "../escape"}}},
+		{"symlink parent", []archiveEntry{{name: "link", kind: tar.TypeSymlink, link: "../escape"}, {name: "link/file", content: "bad"}}},
+		{"device", []archiveEntry{{name: "device", kind: tar.TypeChar}}},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			tmp := t.TempDir()
@@ -499,9 +637,38 @@ func TestTarballExtractionSafety(t *testing.T) {
 			require.NoError(t, os.WriteFile(archive, testTarball(t, tt.entries...), 0o600))
 			target := filepath.Join(tmp, "target")
 			require.NoError(t, os.Mkdir(target, 0o755))
-			require.Error(t, tarballTestRuntime(t, Options{}).extractTarball(archive, target, tt.strip))
+			require.Error(t, tarballTestRuntime(t, Options{}).extractTarball(archive, target, 0))
 			_, err := os.Stat(filepath.Join(tmp, "escape"))
 			require.ErrorIs(t, err, os.ErrNotExist)
+		})
+	}
+
+}
+
+func TestTarballGitHubRootValidation(t *testing.T) {
+	for _, tt := range []struct {
+		name    string
+		entries []archiveEntry
+		wantErr string
+	}{
+		{"empty", nil, "empty GitHub archive"},
+		{"multiple roots", []archiveEntry{{name: "one/a"}, {name: "two/b"}}, "multiple root directories"},
+		{"file root", []archiveEntry{{name: "file"}}, "non-directory root"},
+		{"hardlink outside root", []archiveEntry{{name: "root/link", kind: tar.TypeLink, link: "other/file"}}, "invalid GitHub archive hardlink"},
+		{"valid links", []archiveEntry{
+			{name: "root/file", content: "ok"},
+			{name: "root/link", kind: tar.TypeLink, link: "root/file"},
+		}, ""},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			archive := filepath.Join(t.TempDir(), "archive")
+			require.NoError(t, os.WriteFile(archive, testTarball(t, tt.entries...), 0o600))
+			err := tarballTestRuntime(t, Options{Quiet: true}).validateTarballArchive(archive, true)
+			if tt.wantErr != "" {
+				require.ErrorContains(t, err, tt.wantErr)
+			} else {
+				require.NoError(t, err)
+			}
 		})
 	}
 }

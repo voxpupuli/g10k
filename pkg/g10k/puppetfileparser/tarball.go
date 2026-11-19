@@ -3,6 +3,7 @@ package puppetfileparser
 import (
 	"encoding/hex"
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -14,6 +15,7 @@ type Tarball struct {
 	Source           string
 	Version          string
 	GitHubRepository string
+	StripComponents  int
 }
 
 // ParseTarball interprets module attributes as a tarball declaration.
@@ -72,6 +74,12 @@ func ParseTarball(name string, attrs []Attribute) (Tarball, bool, error) {
 			}
 		case direct && key == "source":
 			result.Source = attr.Value
+		case direct && key == "strip_components":
+			count, err := strconv.Atoi(attr.Value)
+			if err != nil || count < 0 {
+				return Tarball{}, true, fmt.Errorf("module %q: strip_components must be a non-negative integer", name)
+			}
+			result.StripComponents = count
 		case key == "version":
 			result.Version = attr.Value
 		case github && key == "github_tarball":
