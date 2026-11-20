@@ -92,7 +92,7 @@ clean:
 	rm -rf g10k dist coverage.txt pkg/g10k/cache pkg/g10k/example
 
 build-image:
-	docker build -t g10k:${BUILDVERSION} .
+	docker build --build-arg VERSION="${BUILDVERSION}" -t g10k:${BUILDVERSION} .
 
 update-deps:
 	go get -u ./...

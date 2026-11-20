@@ -76,6 +76,22 @@ Tagged releases are built by GitHub Actions with GoReleaser.
 - If you are using a private Git or Forge server think about adjusting the `-maxworker` parameter/config setting before DOSing your own infrastructure ;) (default 50)
 - To protect your local machine use `-maxextractworker` parameter/config setting with wich you can limit the number of Goroutines that are allowed to run in parallel for local Git and Forge module extracting processes (git clone, untar and gunzip) (default 20)
 
+## Container images
+
+GitHub Container Registry images are published for Linux `amd64` and `arm64`.
+Use `ghcr.io/voxpupuli/g10k:latest` for the latest stable release, or use the
+exact Git tag (including the `v` prefix) for a specific release or release
+candidate. Release candidates do not update `latest`.
+
+```sh
+docker run --rm ghcr.io/voxpupuli/g10k:latest -version
+```
+
+The image runs as `g10k` (UID/GID `10001`) and uses `/code` as its working
+directory. When mounting deployment or cache directories, make sure they are
+writable by that user. To build an image from a local checkout, run
+`make build-image` with Docker BuildKit enabled.
+
 ## installation of g10k via Puppet module
 
 User @Conzar was so nice and shared his g10k Puppet module that you can check out here:
