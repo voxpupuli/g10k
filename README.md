@@ -149,7 +149,7 @@ Usage of ./g10k:
   -clonegit
         populate the Puppet environment with a git clone of each git Puppet module. Helpful when developing locally with -puppetfile
   -commit string
-        pin the control-repo checkout to this commit SHA instead of the branch tip. Requires -branch or -environment
+        pin the control-repo checkout to this commit SHA instead of the branch tip. Requires -branch or -environment. After updating the control repository, g10k verifies that the SHA exists and resolves to the requested commit before deploying
   -config string
         which config file to use
   -debug
