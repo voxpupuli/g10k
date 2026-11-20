@@ -22,6 +22,7 @@ func main() {
 
 	flag.StringVar(&opts.Branch, "branch", "", "which git branch of the Puppet environment to update. Just the branch name, e.g. master, qa, dev")
 	flag.StringVar(&opts.Environment, "environment", "", "which Puppet environment to update. Source name inside the config + '_' + branch name, e.g. foo_master, foo_qa, foo_dev")
+	flag.StringVar(&opts.Commit, "commit", "", "pin the control-repo checkout to this commit SHA instead of the branch tip. Requires -branch or -environment")
 	flag.BoolVar(&opts.Tags, "tags", false, "to pull tags as well as branches")
 	flag.StringVar(&opts.OutputName, "outputname", "", "overwrite the environment name if -branch is specified")
 	flag.StringVar(&opts.Module, "module", "", "which module of the Puppet environment to update, e.g. stdlib")

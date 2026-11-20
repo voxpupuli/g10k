@@ -312,6 +312,42 @@ func (rt *Runtime) syncToModuleDir(gitModule GitModule, srcDir string, targetDir
 	return true
 }
 
+// commitMatchesExpected reports whether resolved (full SHA from git) matches
+// the user-supplied expected value (full or abbreviated SHA).
+func commitMatchesExpected(resolved, expected string) bool {
+	expected = strings.ToLower(strings.TrimSpace(expected))
+	resolved = strings.ToLower(strings.TrimSpace(resolved))
+	if expected == "" || resolved == "" {
+		return false
+	}
+	return resolved == expected || strings.HasPrefix(resolved, expected)
+}
+
+// resolveAndValidateCommit looks up expectedCommit in gitDir after a mirror/update
+// and ensures the resolved object is the commit that was requested.
+// It returns the full 40-character SHA on success and Fatals otherwise.
+func (rt *Runtime) resolveAndValidateCommit(gitDir, expectedCommit string) string {
+	revParseCmd := "git --git-dir " + gitDir + " rev-parse --verify '" + expectedCommit
+	if !rt.Config.GitObjectSyntaxNotSupported {
+		revParseCmd += "^{commit}'"
+	} else {
+		revParseCmd += "'"
+	}
+
+	er := rt.executeCommand(revParseCmd, "", rt.Config.Timeout, false, false)
+	if er.returnCode != 0 {
+		rt.Fatalf("specified commit '" + expectedCommit + "' could not be found in " + gitDir + " after updating the repository")
+	}
+
+	resolved := strings.TrimSpace(er.output)
+	if !commitMatchesExpected(resolved, expectedCommit) {
+		rt.Fatalf("specified commit '" + expectedCommit + "' resolved to unexpected object '" + resolved + "'")
+	}
+
+	rt.Debugf("Validated -commit " + expectedCommit + " resolves to " + resolved + " in " + gitDir)
+	return resolved
+}
+
 func (rt *Runtime) detectDefaultBranch(gitDir string) string {
 	remoteShowOriginCmd := "git ls-remote --symref " + gitDir
 	er := rt.executeCommand(remoteShowOriginCmd, "", rt.Config.Timeout, false, false)

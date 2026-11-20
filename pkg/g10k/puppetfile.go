@@ -56,6 +56,13 @@ func (rt *Runtime) resolvePuppetEnvironment(tags bool, outputNameTag string) err
 			controlRepoGit.privateKey = sa.PrivateKey
 			if success := rt.doMirrorOrUpdate(controlRepoGit, workDir, 0); success {
 
+				// After the control repo is updated, resolve -commit to a full SHA and
+				// confirm it matches what was requested before deploying any environment.
+				resolvedCommit := ""
+				if len(rt.Commit) > 0 {
+					resolvedCommit = rt.resolveAndValidateCommit(workDir, rt.Commit)
+				}
+
 				// get all branches
 				er := rt.executeCommand("git --git-dir "+workDir+" branch", "", rt.Config.Timeout, false, false)
 				outputBranches := er.output
@@ -160,7 +167,13 @@ func (rt *Runtime) resolvePuppetEnvironment(tags bool, outputNameTag string) err
 							env := strings.ReplaceAll(strings.Replace(targetDir, sa.Basedir, "", 1), "/", "")
 							if len(rt.Module) == 0 {
 								gitModule := GitModule{}
-								gitModule.tree = branch
+								// Environment directory is still named after the branch, but
+								// -commit pins the control-repo content to that SHA (e.g. from a webhook).
+								if len(resolvedCommit) > 0 {
+									gitModule.tree = resolvedCommit
+								} else {
+									gitModule.tree = branch
+								}
 								rt.syncToModuleDir(gitModule, workDir, targetDir, env)
 							}
 							pf := filepath.Join(targetDir, "Puppetfile")
