@@ -41,6 +41,26 @@ nfpms:
       - g10k
     bindir: /usr/bin
 
+dockers_v2:
+  - ids:
+      - g10k
+    images:
+      - ghcr.io/voxpupuli/g10k
+    tags:
+      - "{{ .Tag }}"
+      - "{{ if and (not .Prerelease) (not .IsSnapshot) }}latest{{ end }}"
+    platforms:
+      - linux/amd64
+      - linux/arm64
+    extra_files:
+      - LICENSE
+    flags:
+      - "--target=release"
+    labels:
+      org.opencontainers.image.version: "{{ .Version }}"
+      org.opencontainers.image.revision: "{{ .FullCommit }}"
+      org.opencontainers.image.created: "{{ .Date }}"
+
 checksum:
   name_template: checksums.txt
 
