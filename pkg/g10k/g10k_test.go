@@ -3250,3 +3250,83 @@ func TestMultipleSourcesWithSameBrancheName(t *testing.T) {
 	}
 
 }
+
+// TestResolvePuppetfileBranchPriorityOverDefaultBranch verifies that when a non-link git module
+// has both :branch and :default_branch set, the explicit :branch takes priority and is attempted
+// first. If :branch resolves successfully, :default_branch should never be tried.
+func TestResolvePuppetfileBranchPriorityOverDefaultBranch(t *testing.T) {
+	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
+
+	basedir := "/tmp/test_branch_priority_over_default_branch/"
+	moduleDir := filepath.Join(basedir, "modules", "g10k_testmodule")
+	moduleCacheDir := "/tmp/g10k/modules/https-__github.com_xorpaul_g10k_testmodule.git"
+
+	setup := func(debug bool) (*Runtime, map[string]Puppetfile) {
+		rt := NewRuntime(Options{Quiet: true, Debug: debug})
+		sm := make(map[string]Source)
+		sm["test"] = Source{Basedir: basedir}
+		rt.Config = ConfigSettings{
+			CacheDir:         "/tmp/g10k",
+			ForgeCacheDir:    "/tmp/g10k/forge",
+			ModulesCacheDir:  "/tmp/g10k/modules",
+			EnvCacheDir:      "/tmp/g10k/environments",
+			Sources:          sm,
+			ForgeBaseURL:     "https://forgeapi.puppet.com",
+			Maxworker:        50,
+			MaxExtractworker: 20,
+		}
+		rt.checkDirAndCreate("/tmp/g10k", "cachedir")
+		rt.checkDirAndCreate("/tmp/g10k/forge", "forgecachedir")
+		rt.checkDirAndCreate("/tmp/g10k/modules", "modulescachedir")
+		rt.checkDirAndCreate("/tmp/g10k/environments", "envscachedir")
+		rt.checkDirAndCreate(basedir, "basedir")
+		puppetfile := readTestPuppetfile(t, rt, "../../tests/"+funcName, false)
+		puppetfile.workDir = basedir
+		pfm := make(map[string]Puppetfile)
+		pfm["test"] = puppetfile
+		return rt, pfm
+	}
+
+	if os.Getenv("TEST_FOR_CRASH_"+funcName) == "1" {
+		rt, pfm := setup(true)
+		if err := rt.resolvePuppetfile(pfm); err != nil {
+			t.Fatal(err)
+		}
+		return
+	}
+
+	rt, pfm := setup(false)
+	rt.purgeDir(basedir, funcName)
+	rt.checkDirAndCreate(basedir, "basedir")
+	if err := rt.resolvePuppetfile(pfm); err != nil {
+		t.Fatal(err)
+	}
+
+	if !fileExists(moduleDir) {
+		t.Errorf("expected module directory is missing: %s — :branch should have resolved successfully", moduleDir)
+	}
+
+	cmd := exec.Command(os.Args[0], "-test.run="+funcName+"$")
+	cmd.Env = append(os.Environ(), "TEST_FOR_CRASH_"+funcName+"=1")
+	out, err := cmd.CombinedOutput()
+
+	exitCode := 0
+	if msg, ok := err.(*exec.ExitError); ok {
+		exitCode = msg.Sys().(syscall.WaitStatus).ExitStatus()
+	}
+
+	if exitCode != 0 {
+		t.Errorf("terminated with %v, but we expected exit status 0. Output: %s", exitCode, string(out))
+	}
+
+	// Verify that the explicit :branch ("control_branch_foobar") was tried first
+	if !strings.Contains(string(out), "Trying to resolve "+moduleCacheDir+" with branch control_branch_foobar") {
+		t.Errorf("expected explicit :branch to be tried first, but it was not found in output: %s", string(out))
+	}
+
+	// Verify that :default_branch ("nonexistent_default_branch") was never attempted,
+	// since the primary :branch succeeded.
+	if strings.Contains(string(out), "Trying to resolve "+moduleCacheDir+" with branch nonexistent_default_branch") {
+		t.Errorf(":default_branch was tried even though the primary :branch resolved successfully. output: %s", string(out))
+	}
+}
