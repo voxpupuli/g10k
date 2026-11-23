@@ -120,12 +120,22 @@ func (rt *Runtime) readConfigfile(configFile string) (ConfigSettings, error) {
 		config.WriteLock = config.Deploy.WriteLock
 		config.GenerateTypes = config.Deploy.GenerateTypes
 		config.PuppetPath = config.Deploy.PuppetPath
+		config.PuppetConf = config.Deploy.PuppetConf
 		config.PurgeSkiplist = config.Deploy.PurgeSkiplist
 		config.Deploy = emptyDeploy
 	}
 
 	if len(config.PurgeLevels) == 0 {
 		config.PurgeLevels = []string{"deployment", "puppetfile"}
+	}
+
+	if config.GenerateTypes {
+		if len(config.PuppetPath) == 0 {
+			config.PuppetPath = "/opt/puppetlabs/bin/puppet"
+		}
+		if len(config.PuppetConf) == 0 {
+			config.PuppetConf = "/etc/puppetlabs/puppet/puppet.conf"
+		}
 	}
 
 	for source, sa := range config.Sources {

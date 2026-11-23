@@ -1,0 +1,13 @@
+---
+:cachedir: '/tmp/g10k'
+
+deploy:
+  generate_types: true
+  puppet_path: '/usr/local/bin/puppet'
+  puppet_conf: '/opt/puppet/conf/puppet.conf'
+
+sources:
+  full:
+    remote: 'https://github.com/xorpaul/g10k-fullworking-env.git'
+    basedir: '/tmp/full/'
+    prefix: true

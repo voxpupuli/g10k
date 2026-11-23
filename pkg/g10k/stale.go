@@ -99,20 +99,27 @@ func (rt *Runtime) checkRemoteSourceOfEnvironment(environmentDir string, configS
 	return false
 }
 
-func (rt *Runtime) purgeControlRepoExceptModuledir(dir string, moduleDir string) {
-	moduleDir = filepath.Join(dir, moduleDir)
-
+// purgeControlRepoPreserving removes every top-level entry of dir except the
+// given absolute paths (and their subdirectories). This is used to resync a
+// control repo environment without destroying content that g10k itself
+// generated, such as the moduledir or, if not subject to the "resource_types"
+// purge_level, the Puppet generated types cache ".resource_types".
+func (rt *Runtime) purgeControlRepoPreserving(dir string, preserve []string) {
 	globPath := filepath.Join(dir, "*")
 	rt.Debugf("Glob'ing with path " + globPath)
 	folders, _ := filepath.Glob(globPath)
 	for _, folder := range folders {
-		if folder == moduleDir || strings.HasPrefix(folder, moduleDir) {
-			continue
-		} else {
-			rt.Debugf("deleting " + folder)
-			rt.purgeDir(folder, "purgeControlRepoExceptModuledir")
+		preserved := false
+		for _, p := range preserve {
+			if folder == p || strings.HasPrefix(folder, p) {
+				preserved = true
+				break
+			}
 		}
-
+		if preserved {
+			continue
+		}
+		rt.Debugf("deleting " + folder)
+		rt.purgeDir(folder, "purgeControlRepoPreserving")
 	}
-
 }

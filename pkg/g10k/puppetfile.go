@@ -490,6 +490,10 @@ func (rt *Runtime) resolvePuppetfile(allPuppetfiles map[string]Puppetfile) error
 			dr.GitURL = pf.gitURL
 			rt.writeStructJSONFile(deployFile, dr)
 		}
+		// emulate r10k's deploy.generate_types, which only runs after an
+		// environment has been successfully deployed
+		// https://github.com/puppetlabs/r10k/blob/main/doc/dynamic-environments/configuration.mkd#generate_types
+		rt.generateTypesForEnvironment(filepath.Dir(pf.workDir), filepath.Base(pf.workDir))
 	}
 	return nil
 }
