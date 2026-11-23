@@ -61,17 +61,17 @@ func (rt *Runtime) extractTarball(archive, target string, stripComponents int) (
 		if rt.matchSkiplistContent(name) {
 			continue
 		}
-		if err := root.MkdirAll(filepath.FromSlash(path.Dir(name)), 0o755); err != nil {
+		if err := root.MkdirAll(filepath.FromSlash(path.Dir(name)), rt.maskExtractMode(0o755)); err != nil {
 			return fmt.Errorf("create parent for %q: %w", name, err)
 		}
 		localName := filepath.FromSlash(name)
 		switch h.Typeflag {
 		case tar.TypeDir:
-			if err := root.MkdirAll(localName, 0o755); err != nil {
+			if err := root.MkdirAll(localName, rt.maskExtractMode(0o755)); err != nil {
 				return fmt.Errorf("create directory %q: %w", name, err)
 			}
 		case tar.TypeReg:
-			file, err := root.OpenFile(localName, os.O_WRONLY|os.O_CREATE|os.O_EXCL, os.FileMode(h.Mode)&0o777)
+			file, err := root.OpenFile(localName, os.O_WRONLY|os.O_CREATE|os.O_EXCL, rt.maskExtractMode(os.FileMode(h.Mode)))
 			if err != nil {
 				return fmt.Errorf("create file %q: %w", name, err)
 			}

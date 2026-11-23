@@ -9,6 +9,16 @@ import (
 	"strings"
 )
 
+// maskExtractMode applies the configured extract_umask to a source mode.
+// A umask only removes permission bits, so files that ship with the execute bit
+// (e.g. fact scripts) keep it, while world/group bits are stripped consistently.
+func (rt *Runtime) maskExtractMode(mode os.FileMode) os.FileMode {
+	if rt.Config.ExtractUmask == 0 {
+		return mode
+	}
+	return mode & ^os.FileMode(rt.Config.ExtractUmask)
+}
+
 func (rt *Runtime) unTar(r io.Reader, targetBaseDir string) {
 	funcName := funcName()
 	tarBallReader := tar.NewReader(r)
@@ -45,11 +55,21 @@ func (rt *Runtime) unTar(r io.Reader, targetBaseDir string) {
 			// handle directory
 			//fmt.Println("Creating directory :", filename)
 			//err = os.MkdirAll(targetFilename, os.FileMode(header.Mode)) // or use 0755 if you prefer
-			err = os.MkdirAll(targetFilename, os.FileMode(0755)) // or use 0755 if you prefer
+			err = os.MkdirAll(targetFilename, rt.maskExtractMode(0o755)) // or use 0755 if you prefer
 
 			if err != nil {
 				rt.Fatalf(funcName + "(): error while MkdirAll() file: " + filename + " Error: " + err.Error())
 
+			}
+
+			// os.MkdirAll already masks the requested mode with the caller's
+			// process umask at creation time, so re-apply the extracted umask
+			// explicitly to keep directory modes independent of that process
+			// umask. Skipped when extract_umask is 0 to preserve prior behavior.
+			if rt.Config.ExtractUmask != 0 {
+				if err = os.Chmod(targetFilename, rt.maskExtractMode(0o755)); err != nil {
+					rt.Fatalf(funcName + "(): error while Chmod() directory: " + filename + " Error: " + err.Error())
+				}
 			}
 
 			err = os.Chtimes(targetFilename, header.AccessTime, header.ModTime)
@@ -70,7 +90,7 @@ func (rt *Runtime) unTar(r io.Reader, targetBaseDir string) {
 			if _, err = io.Copy(writer, tarBallReader); err != nil {
 				rt.Fatalf(funcName + "(): error while io.copy() file: " + filename + " Error: " + err.Error())
 			}
-			if err = os.Chmod(targetFilename, os.FileMode(header.Mode)); err != nil {
+			if err = os.Chmod(targetFilename, rt.maskExtractMode(os.FileMode(header.Mode))); err != nil {
 				rt.Fatalf(funcName + "(): error while Chmod() file: " + filename + " Error: " + err.Error())
 			}
 			if err = os.Chtimes(targetFilename, header.AccessTime, header.ModTime); err != nil {

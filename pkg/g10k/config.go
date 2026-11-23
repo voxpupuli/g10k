@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -40,6 +41,18 @@ func (rt *Runtime) readConfigfile(configFile string) (ConfigSettings, error) {
 	if err != nil {
 		return ConfigSettings{}, fmt.Errorf("YAML unmarshal error: %s", err.Error())
 	}
+
+	// resolve extract_umask: the -extractumask flag takes precedence over the config file
+	// both accept an octal umask such as 022 or 027
+	extractUmaskSource := config.ExtractUmaskString
+	if len(rt.ExtractUmask) > 0 {
+		extractUmaskSource = rt.ExtractUmask
+	}
+	parsedExtractUmask, err := parseExtractUmask(extractUmaskSource)
+	if err != nil {
+		return ConfigSettings{}, err
+	}
+	config.ExtractUmask = parsedExtractUmask
 
 	if len(os.Getenv("g10k_cachedir")) > 0 {
 		cachedir := os.Getenv("g10k_cachedir")
@@ -147,6 +160,24 @@ func (rt *Runtime) readConfigfile(configFile string) (ConfigSettings, error) {
 
 	// fmt.Printf("%+v\n", config)
 	return config, nil
+}
+
+// parseExtractUmask converts an octal umask string (e.g. "022", "0o027") into an
+// integer mask. An empty string yields 0, which means no masking is applied.
+func parseExtractUmask(value string) (int, error) {
+	trimmed := strings.TrimSpace(value)
+	if trimmed == "" {
+		return 0, nil
+	}
+	// accept an optional 0o/0O prefix on top of plain octal digits
+	if strings.HasPrefix(trimmed, "0o") || strings.HasPrefix(trimmed, "0O") {
+		trimmed = trimmed[2:]
+	}
+	mask, err := strconv.ParseInt(trimmed, 8, 32)
+	if err != nil {
+		return 0, fmt.Errorf("invalid extract_umask %q: value must be an octal umask such as 022 or 027", value)
+	}
+	return int(mask), nil
 }
 
 // preparePuppetfile remove whitespace and comment lines from the given Puppetfile and merges Puppetfile resources that are identified with having a , at the end
