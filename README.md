@@ -133,6 +133,7 @@ Then run g10k with: `./g10k -config g10k.yaml`
 - **timeout**: Timeout in seconds for git and forge operations (default: 5)
 - **maxworker**: Number of concurrent workers for git/forge operations (default: 50)
 - **maxextractworker**: Number of concurrent workers for extraction operations (default: 20)
+- **extract_umask**: Force this octal umask (e.g. `027`, `022`) on every extracted module file so permissions are consistent. A umask only removes permission bits, so files that ship with the execute bit (e.g. fact scripts) keep it. Can also be set with the `-extractumask` CLI flag.
 - **forge_base_url**: Custom Forge API URL (default: https://forgeapi.puppet.com)
 - **deploy**: Advanced deployment settings including purge levels and allowlists
   - **purge_levels**: Array controlling what to purge (e.g., `['deployment', 'puppetfile']`)
@@ -176,6 +177,8 @@ Usage of ./g10k:
         purge the Puppet environment directory and do a full sync
   -gitobjectsyntaxnotsupported
         if your git version is too old to support reference syntax like master^{object} use this setting to revert to the older syntax
+  -extractumask string
+        force this octal umask (e.g. 027, 022) on all extracted module files, e.g. 'extract_umask': 027 in the config. A umask only removes bits, so files that ship with the execute bit (e.g. fact scripts) keep it
   -info
         log info output, defaults to false
   -maxextractworker int
@@ -556,6 +559,25 @@ sources:
     remote: 'https://github.com/xorpaul/g10k-environment.git'
     basedir: '/tmp/example/'
 ```
+
+- Force a consistent umask on all extracted module files
+
+By default g10k preserves the exact permissions that ship inside each module archive, which can leave a mix of world-readable and private files across your environments. Set `extract_umask` to apply a umask to every extracted file and directory so permissions are consistent:
+
+```
+---
+:cachedir: '/tmp/g10k'
+
+# remove group write and all other permissions, keep owner/group execute bits
+extract_umask: 027
+
+sources:
+  example:
+    remote: 'https://github.com/xorpaul/g10k-environment.git'
+    basedir: '/tmp/example/'
+```
+
+With `extract_umask: 027` a file that ships as `0644` becomes `0640`, a directory that ships as `0755` becomes `0750`, and a fact script that ships as `0755` becomes `0750` (still executable). Use `022` if you only want to clean up group/other write bits while keeping the files easy to review. This can also be set at runtime with the `-extractumask` flag.
 
 - Added support for r10k-like purge behaviour of stale content
 

@@ -49,6 +49,9 @@ type Options struct {
 	UseCacheFallback            bool
 	RetryGitCommands            bool
 	GitObjectSyntaxNotSupported bool
+	// ExtractUmask is the raw octal umask string passed via the -extractumask flag.
+	// An empty string means "no forced umask" and lets extracted modes pass through unchanged.
+	ExtractUmask string
 	// verbosity
 	Debug   bool
 	Verbose bool
@@ -141,6 +144,10 @@ type ConfigSettings struct {
 	ForgeBaseURL                string         `yaml:"forge_base_url"`
 	ForgeCacheTTLString         string         `yaml:"forge_cache_ttl"`
 	ForgeCacheTTL               time.Duration
+	// ExtractUmaskString is the raw octal umask from the config file (yaml: extract_umask).
+	// ExtractUmask is the parsed integer mask; 0 means no umask is applied.
+	ExtractUmaskString string `yaml:"extract_umask"`
+	ExtractUmask       int
 }
 
 // DeploySettings is a struct for settings for controlling how g10k deploys behave.
@@ -338,6 +345,14 @@ func Run(opts Options) (int, error) {
 		rt.Config = ConfigSettings{CacheDir: cachedir, ForgeCacheDir: forgeCachedir, ModulesCacheDir: modulesCacheDir, EnvCacheDir: envsCacheDir, Sources: sm, Timeout: 5, ForgeBaseURL: "https://forgeapi.puppet.com", Maxworker: rt.MaxWorker, UseCacheFallback: rt.UseCacheFallback, MaxExtractworker: rt.MaxExtractWorker, RetryGitCommands: rt.RetryGitCommands, GitObjectSyntaxNotSupported: rt.GitObjectSyntaxNotSupported}
 		// default purge_levels
 		rt.Config.PurgeLevels = []string{"puppetfile"}
+		// puppetfile mode has no config file, so only the CLI flag can set extract_umask
+		if len(rt.ExtractUmask) > 0 {
+			parsedExtractUmask, err := parseExtractUmask(rt.ExtractUmask)
+			if err != nil {
+				return 1, err
+			}
+			rt.Config.ExtractUmask = parsedExtractUmask
+		}
 		if rt.CloneGit {
 			rt.Config.CloneGitModules = true
 		}
