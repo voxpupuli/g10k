@@ -586,6 +586,45 @@ sources:
     prefix: true
 ```
 
+- Generating Puppet types for environment isolation
+
+g10k supports r10k's `deploy.generate_types` setting, which runs `puppet generate types` for each environment after it has been successfully deployed. This is required for [Puppet environment isolation](https://help.puppet.com/core/current/Content/PuppetCore/environment_isolation.htm), which prevents custom resource type implementations from leaking between environments on the primary server, as documented [here for generate_types](https://github.com/puppetlabs/r10k/blob/master/doc/dynamic-environments/configuration.mkd#generate_types).
+
+```
+---
+deploy:
+  generate_types: true
+  puppet_path: '/opt/puppetlabs/bin/puppet'
+  puppet_conf: '/etc/puppetlabs/puppet/puppet.conf'
+
+sources:
+  example:
+    remote: 'https://github.com/xorpaul/g10k-environment.git'
+    basedir: '/tmp/out/'
+    prefix: true
+```
+
+- `generate_types` (default: `false`): whether to run `puppet generate types` after a successful environment deploy.
+- `puppet_path` (default: `/opt/puppetlabs/bin/puppet`): path to the `puppet` executable used for generating types.
+- `puppet_conf` (default: `/etc/puppetlabs/puppet/puppet.conf`): path to the `puppet.conf` used for generating types, passed to `puppet generate types` as `--config`.
+
+`generate_types` is skipped during `-dryrun` and `-puppetfile` mode. If `puppet_path` is not executable, g10k logs a warning and continues instead of aborting the run.
+
+Generated types are written to an environment's `.resource_types` directory. Because this directory is not part of your control repo, it is wiped like any other unmanaged content whenever g10k resynchronizes a changed control repo environment, same as the `modules` moduledir would be if not otherwise preserved. Add `resource_types` to `purge_levels` to preserve `.resource_types` across these resyncs instead:
+
+```
+---
+deploy:
+  generate_types: true
+  purge_levels: ['deployment', 'puppetfile', 'resource_types']
+
+sources:
+  example:
+    remote: 'https://github.com/xorpaul/g10k-environment.git'
+    basedir: '/tmp/out/'
+    prefix: true
+```
+
 Starting with [v.0.7.1](https://github.com/voxpupuli/g10k/releases/tag/v0.7.1) g10k supports `purge_skiplist` feature to remove unnecessary files from the sync / Puppetservers.
 
 Example:

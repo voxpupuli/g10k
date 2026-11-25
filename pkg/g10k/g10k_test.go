@@ -213,6 +213,50 @@ func TestConfigDeploy(t *testing.T) {
 	assert.Equal(t, expected, got)
 }
 
+func TestConfigGenerateTypes(t *testing.T) {
+	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
+	rt := NewRuntime(Options{})
+	got, err := rt.readConfigfile(filepath.Join("..", "..", "tests", funcName+".yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	s := make(map[string]Source)
+	s["full"] = Source{Remote: "https://github.com/xorpaul/g10k-fullworking-env.git",
+		Basedir: "/tmp/full", Prefix: "true", PrivateKey: "",
+		AutoCorrectEnvironmentNames: "correct_and_warn"}
+
+	expected := ConfigSettings{
+		CacheDir: "/tmp/g10k", ForgeCacheDir: "/tmp/g10k/forge",
+		ModulesCacheDir: "/tmp/g10k/modules", EnvCacheDir: "/tmp/g10k/environments",
+		Git:          Git{privateKey: ""},
+		ForgeBaseURL: "https://forgeapi.puppet.com",
+		Sources:      s, Timeout: 5, Maxworker: 50, MaxExtractworker: 20,
+		PurgeLevels:   []string{"deployment", "puppetfile"},
+		GenerateTypes: true,
+		PuppetPath:    "/usr/local/bin/puppet",
+		PuppetConf:    "/opt/puppet/conf/puppet.conf",
+	}
+
+	assert.Equal(t, expected, got)
+}
+
+func TestConfigGenerateTypesDefaults(t *testing.T) {
+	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
+	rt := NewRuntime(Options{})
+	got, err := rt.readConfigfile(filepath.Join("..", "..", "tests", funcName+".yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// when generate_types is enabled but puppet_path/puppet_conf are not set,
+	// g10k should fall back to the same defaults r10k uses
+	// https://github.com/puppetlabs/r10k/blob/main/doc/dynamic-environments/configuration.mkd#puppet_path
+	assert.True(t, got.GenerateTypes)
+	assert.Equal(t, "/opt/puppetlabs/bin/puppet", got.PuppetPath)
+	assert.Equal(t, "/etc/puppetlabs/puppet/puppet.conf", got.PuppetConf)
+}
+
 func TestResolveConfigAddWarning(t *testing.T) {
 	funcName := strings.Split(funcName(), ".")[len(strings.Split(funcName(), "."))-1]
 	rt := NewRuntime(Options{})

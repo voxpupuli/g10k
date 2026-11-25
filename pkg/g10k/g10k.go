@@ -136,6 +136,7 @@ type ConfigSettings struct {
 	WriteLock                   string         `yaml:"write_lock"`
 	GenerateTypes               bool           `yaml:"generate_types"`
 	PuppetPath                  string         `yaml:"puppet_path"`
+	PuppetConf                  string         `yaml:"puppet_conf"`
 	PurgeSkiplist               []string       `yaml:"purge_skiplist"`
 	CloneGitModules             bool           `yaml:"clone_git_modules"`
 	ForgeBaseURL                string         `yaml:"forge_base_url"`
@@ -152,6 +153,7 @@ type DeploySettings struct {
 	WriteLock                string   `yaml:"write_lock"`
 	GenerateTypes            bool     `yaml:"generate_types"`
 	PuppetPath               string   `yaml:"puppet_path"`
+	PuppetConf               string   `yaml:"puppet_conf"`
 	PurgeSkiplist            []string `yaml:"purge_skiplist"`
 }
 

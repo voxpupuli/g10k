@@ -245,13 +245,27 @@ func (rt *Runtime) syncToModuleDir(gitModule GitModule, srcDir string, targetDir
 				}
 			}
 		}
-		// if so delete everything except the moduledir where the Puppet modules reside
-		// else simply delete the whole dir and check it out again
+		// by default g10k always purges the Puppet generated types cache along with
+		// the rest of the environment, like r10k would. Adding "resource_types" to
+		// purge_levels opts into preserving it across control repo resyncs instead,
+		// see https://puppet.com/docs/puppet/latest/environment_isolation.html
+		protectResourceTypes := stringSliceContains(rt.Config.PurgeLevels, "resource_types")
+		// if so delete everything except the moduledir (and optionally .resource_types)
+		// where the Puppet modules reside, else simply delete the whole dir and check it out again
 		if purgeWholeEnvDir {
-			rt.purgeDir(targetDir, "need to sync")
+			if protectResourceTypes {
+				rt.Infof("Detected control repo change, but trying to preserve " + resourceTypesDirName + " in " + targetDir)
+				rt.purgeControlRepoPreserving(targetDir, []string{filepath.Join(targetDir, resourceTypesDirName)})
+			} else {
+				rt.purgeDir(targetDir, "need to sync")
+			}
 		} else {
+			preserve := []string{filepath.Join(targetDir, moduleDir)}
+			if protectResourceTypes {
+				preserve = append(preserve, filepath.Join(targetDir, resourceTypesDirName))
+			}
 			rt.Infof("Detected control repo change, but trying to preserve module dir " + filepath.Join(targetDir, moduleDir))
-			rt.purgeControlRepoExceptModuledir(targetDir, moduleDir)
+			rt.purgeControlRepoPreserving(targetDir, preserve)
 		}
 
 		if !rt.DryRun && !rt.Config.CloneGitModules || isControlRepo {
