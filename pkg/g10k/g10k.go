@@ -79,6 +79,9 @@ type Runtime struct {
 	NeedSyncTarballCount int
 	NeedSyncDirs         []string
 	NeedSyncEnvs         map[string]struct{}
+	// latestGitUpgradeSeen deduplicates the -check4update tag-upgrade report so a
+	// module that resolves into several Puppet environments is only reported once.
+	latestGitUpgradeSeen map[string]bool
 
 	StartTime             time.Time
 	SyncGitTime           float64
@@ -98,11 +101,12 @@ type Runtime struct {
 // new pointer to a Runtime struct.
 func NewRuntime(opts Options) *Runtime {
 	return &Runtime{
-		Options:            opts,
-		NeedSyncEnvs:       make(map[string]struct{}),
-		UniqueForgeModules: make(map[string]ForgeModule),
-		LatestForgeModules: &LatestForgeModules{m: make(map[string]string)},
-		StartTime:          time.Now(),
+		Options:              opts,
+		NeedSyncEnvs:         make(map[string]struct{}),
+		UniqueForgeModules:   make(map[string]ForgeModule),
+		LatestForgeModules:   &LatestForgeModules{m: make(map[string]string)},
+		latestGitUpgradeSeen: make(map[string]bool),
+		StartTime:            time.Now(),
 	}
 }
 
