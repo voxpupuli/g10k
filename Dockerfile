@@ -8,8 +8,9 @@ LABEL org.opencontainers.image.title="g10k" \
 RUN apk add --no-cache bash ca-certificates git openssh-client-default && \
   addgroup -g 10001 g10k && \
   adduser -D -u 10001 -G g10k -h /home/g10k g10k && \
-  mkdir -p /code /var/cache/g10k && \
-  chown g10k:g10k /code /var/cache/g10k
+  mkdir -p /code /home/g10k/.cache/g10k/forge /home/g10k/.cache/g10k/modules && \
+  chown g10k:g10k /code && \
+  chown -R g10k:g10k /home/g10k
 COPY LICENSE /usr/share/licenses/g10k/LICENSE
 ENV HOME=/home/g10k
 WORKDIR /code
