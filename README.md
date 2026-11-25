@@ -32,6 +32,38 @@ mod 'apache',
 - Most things (git, forge, and copy operations) done in parallel over each branch
 - Optional support for different ssh keys for each source inside the r10k.yaml
 
+### `-check4update` git staleness model
+
+`-check4update` (which implies `-dryrun`) additionally reports git modules whose
+remote has advanced past what is currently deployed. Unlike r10k, g10k
+distinguishes the three git pin types by what "update" means for each:
+
+- **:tag pin** — the pin tracks releases. If the remote has a higher
+  semantic-version tag than the pinned one, g10k prints:
+
+  ```
+  ATTENTION: git module: <name> latest tag: <highest> currently pinned: <pinned>
+  ```
+
+  This mirrors ra10k's `r10k:dependencies` git verification. It is reported even
+  when the pinned tag is already deployed, because the intent is "a newer
+  release exists than the one pinned", not "the deployed commit drifted".
+
+- **:commit pin** — the pin is a fixed anchor and does **not** track releases.
+  A higher semver tag sitting further down the history is not reported, because
+  the commit was intentionally pinned. `-check4update` only reports the usual
+  first-run "need to sync" if the pinned commit was never deployed.
+
+- **:branch pin** — the pin tracks the branch tip. It is reported as stale only
+  when the tip commit has moved past the last deployed commit (commit-drift).
+
+Tag names are compared on their normalised form, so `v1.5.0` and `1.5.0` are
+treated as the same pin; the operator's original name is what is printed.
+
+> The git detection path intentionally relies on a real `git` binary via
+> `executeCommand` and is therefore not self-contained unit testable; only the
+> pure tag comparator `highestSemverTag()` has a dedicated unit test.
+
 ### Pseudo "benchmark"
 
 Using Puppetfile with 4 git repositories and 25 Forge modules

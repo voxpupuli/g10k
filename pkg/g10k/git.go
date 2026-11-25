@@ -1,6 +1,7 @@
 package g10k
 
 import (
+	"github.com/fatih/color"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -9,7 +10,104 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"golang.org/x/mod/semver"
 )
+
+// highestSemverTag returns the highest semantic-version tag from the supplied
+// tag names. It mirrors ra10k's r10k:dependencies behaviour: tags that are not
+// valid semantic versions are ignored, and the original (prefix- and case-
+// preserving) name of the highest match is returned. It returns "" when no tag
+// parses as a semantic version, so callers can tell "no comparable tag" apart
+// from "highest tag is exactly the pinned one".
+func highestSemverTag(tagNames []string) string {
+	bestCanonical := ""
+	bestOriginal := ""
+	for _, tag := range tagNames {
+		canonical := stripVersionPrefix(strings.ToLower(tag))
+		// semver.Valid requires the leading "v"; ra10k strips it before parsing,
+		// so validate against the normalized form but keep the original name.
+		if canonical == "" || !semver.IsValid("v"+canonical) {
+			continue
+		}
+		if bestCanonical == "" || semver.Compare("v"+canonical, "v"+bestCanonical) > 0 {
+			bestCanonical = canonical
+			bestOriginal = tag
+		}
+	}
+	return bestOriginal
+}
+
+// stripVersionPrefix removes a single leading "v"/"V", matching the semver
+// convention where an optional "v" prefixes the version (e.g. v1.2.3).
+func stripVersionPrefix(tag string) string {
+	if len(tag) > 0 && (tag[0] == 'v' || tag[0] == 'V') {
+		return tag[1:]
+	}
+	return tag
+}
+
+// check4GitTagUpgrade records, under -check4update, any git module whose remote
+// has a higher semantic-version tag than the one pinned. It mirrors ra10k's
+// r10k:dependencies git behaviour: it reads the tags from the already-mirrored
+// repository, selects the highest semantic-version tag, and reports the module
+// outdated when that differs from the pinned tag. Unlike the commit-drift check
+// this is meaningful on a first run, because the intent is "a newer release
+// exists than the one pinned". Each module name is reported only once.
+//
+// It only ever runs for :tag pinned modules; the call site in syncToModuleDir
+// gates on gitModule.tag != "". :commit and :branch pins are deliberately
+// excluded: a commit is a fixed anchor that intentionally does not track
+// releases, so a higher tag sitting further down the history is not something
+// the pin asked to track (branch pins instead only report tip drift via the
+// commit-drift check below). Tag names are compared on their normalised form
+// so "v1.5.0" and "1.5.0" count as the same pin, while the operator's original
+// name is what is reported.
+//
+// Testing note: the git-detection path cannot be self-contained unit tested.
+// rt.executeCommand shells out to a real git binary via exec.CommandContext and
+// is not injectable, so this function cannot be driven in isolation; only the
+// pure comparator highestSemverTag() has a dedicated unit test (see git_test.go).
+func (rt *Runtime) check4GitTagUpgrade(gitBaseName string, pinnedTag string, gitDir string) {
+	if rt.latestGitUpgradeSeen[gitBaseName] {
+		return
+	}
+	rt.latestGitUpgradeSeen[gitBaseName] = true
+
+	// gitDir is the module mirror, which already holds all remote tags, so this
+	// needs no extra credentials or network round-trip.
+	er := rt.executeCommand("git --git-dir "+gitDir+" tag -l", "", rt.Config.Timeout, true, false)
+	if er.returnCode != 0 {
+		rt.Debugf("check4GitTagUpgrade(): could not list tags for " + gitBaseName)
+		return
+	}
+	var tagNames []string
+	for _, line := range strings.Split(er.output, "\n") {
+		if tag := strings.TrimSpace(line); tag != "" {
+			tagNames = append(tagNames, tag)
+		}
+	}
+	// Only semver-pinned modules can be measured against a higher semver tag; a
+	// non-semver pin (e.g. "release") is an unrelated anchor and is never
+	// "outdated", so avoid comparing apples to oranges here.
+	if !semver.IsValid("v" + stripVersionPrefix(strings.ToLower(pinnedTag))) {
+		return
+	}
+	pinnedCanonical := stripVersionPrefix(strings.ToLower(pinnedTag))
+	highest := highestSemverTag(tagNames)
+	if highest == "" {
+		return
+	}
+	// Compare on the normalized form so "v1.5.0" and "1.5.0" count as the same
+	// pin, while still reporting the operator's original tag name.
+	if stripVersionPrefix(strings.ToLower(highest)) == pinnedCanonical {
+		return
+	}
+	rt.Mutex.Lock()
+	rt.NeedSyncGitCount++
+	rt.Mutex.Unlock()
+	color.Yellow("ATTENTION: git module: " + gitBaseName + " latest tag: " + highest + " currently pinned: " + pinnedTag)
+}
 
 func (rt *Runtime) resolveGitRepositories(uniqueGitModules map[string]GitModule) {
 	defer rt.timeTrack(time.Now(), funcName())
@@ -189,11 +287,17 @@ func (rt *Runtime) syncToModuleDir(gitModule GitModule, srcDir string, targetDir
 		return false
 	}
 
+	// commitHash is the remote tip this module resolves to. staleOldHash is the
+	// commit last deployed for it; it stays empty on a first run, in which case
+	// the module is not yet "stale", just missing.
+	commitHash := ""
+	staleOldHash := ""
 	if len(er.output) > 0 {
-		commitHash := strings.TrimSuffix(er.output, "\n")
+		commitHash = strings.TrimSuffix(er.output, "\n")
 		if strings.HasPrefix(srcDir, rt.Config.EnvCacheDir) {
 			if fileExists(deployFile) {
 				dr := rt.readDeployResultFile(deployFile)
+				staleOldHash = dr.Signature
 				if dr.Signature == strings.TrimSuffix(er.output, "\n") && dr.DeploySuccess {
 					needToSync = false
 				}
@@ -201,6 +305,7 @@ func (rt *Runtime) syncToModuleDir(gitModule GitModule, srcDir string, targetDir
 		} else {
 			targetHashByte, _ := os.ReadFile(hashFile)
 			targetHash := string(targetHashByte)
+			staleOldHash = targetHash
 			rt.Debugf("string content of " + hashFile + " is: " + targetHash)
 			if targetHash == commitHash {
 				needToSync = false
@@ -211,8 +316,26 @@ func (rt *Runtime) syncToModuleDir(gitModule GitModule, srcDir string, targetDir
 		}
 
 	}
+
+	// -check4update: report tag-pinned modules that have a higher
+	// semantic-version tag on the remote than the pinned one (ra10k
+	// r10k:dependencies style). Placed before the needToSync test on purpose:
+	// a newer release can exist even when the pinned tag is already deployed
+	// (needToSync == false) or on a first run, so it must not depend on it.
+	// Deliberately gated on the pin being a :tag; :commit and :branch pins do
+	// not track releases here and are covered only by the commit-drift check.
+	if rt.Check4Update && gitModule.tag != "" {
+		rt.check4GitTagUpgrade(filepath.Base(targetDir), gitModule.tag, srcDir)
+	}
+
 	if needToSync && er.returnCode == 0 {
 		rt.Mutex.Lock()
+		// -check4update: report a genuinely stale git module whose remote tip has
+		// moved past the last deployed commit, mirroring the forge ATTENTION line.
+		// A first run (no prior deploy) is reported as "need to sync" instead.
+		if rt.Check4Update && len(staleOldHash) > 0 {
+			color.Yellow("ATTENTION: git module: " + filepath.Base(targetDir) + " latest: " + commitHash + " currently deployed: " + staleOldHash)
+		}
 		rt.Infof("Need to sync " + targetDir)
 		rt.NeedSyncDirs = append(rt.NeedSyncDirs, targetDir)
 		if _, ok := rt.NeedSyncEnvs[correspondingPuppetEnvironment]; !ok {
@@ -220,6 +343,7 @@ func (rt *Runtime) syncToModuleDir(gitModule GitModule, srcDir string, targetDir
 		}
 		rt.NeedSyncGitCount++
 		rt.Mutex.Unlock()
+
 		moduleDir := "modules"
 		purgeWholeEnvDir := true
 		// check if it is a control repo and already exists
