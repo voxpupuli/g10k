@@ -606,7 +606,7 @@ func TestConfigUseCacheFallback(t *testing.T) {
 	// get the module to cache it
 	gm := GitModule{}
 	gm.git = "https://github.com/puppetlabs/puppetlabs-firewall.git"
-	rt.doMirrorOrUpdate(gm, "/tmp/g10k/modules/https-__github.com_puppetlabs_puppetlabs-firewall.git", 0)
+	rt.doMirrorOrUpdate(gm, "/tmp/g10k/modules/https-__github.com_puppetlabs_puppetlabs-firewall.git", "", 0)
 
 	// rename the cached module dir to match the otherwise failing single_fail env
 	unresolvableGitDir := "/tmp/g10k/modules/https-__.com_puppetlabs_puppetlabs-firewall.git"
@@ -662,7 +662,7 @@ func TestEnvFullSyncIfModuleWasTemporarilyNotAvailable(t *testing.T) {
 	// get the module to cache it
 	gm := GitModule{}
 	gm.git = "https://github.com/puppetlabs/puppetlabs-firewall.git"
-	rt.doMirrorOrUpdate(gm, "/tmp/g10k/modules/https-__github.com_puppetlabs_puppetlabs-firewall.git", 0)
+	rt.doMirrorOrUpdate(gm, "/tmp/g10k/modules/https-__github.com_puppetlabs_puppetlabs-firewall.git", "", 0)
 
 	// change the git remote url to something that does not resolve https://.com/...
 	er := rt.executeCommand("git --git-dir "+gitDir+" remote set-url origin https://.com/puppetlabs/puppetlabs-firewall.git", "", 5, false, false)
@@ -742,7 +742,7 @@ func TestConfigUseCacheFallbackFalse(t *testing.T) {
 	// get the module to cache it
 	gm := GitModule{}
 	gm.git = "https://github.com/puppetlabs/puppetlabs-firewall.git"
-	rt.doMirrorOrUpdate(gm, "/tmp/g10k/modules/https-__github.com_puppetlabs_puppetlabs-firewall.git", 0)
+	rt.doMirrorOrUpdate(gm, "/tmp/g10k/modules/https-__github.com_puppetlabs_puppetlabs-firewall.git", "", 0)
 
 	// rename the cached module dir to match the otherwise failing single_fail env
 	unresolvableGitDir := "/tmp/g10k/modules/https-__.com_puppetlabs_puppetlabs-firewall.git"
@@ -1262,7 +1262,7 @@ func TestConfigRetryGitCommands(t *testing.T) {
 	// get the module to cache it
 	gm := GitModule{}
 	gm.git = "https://github.com/puppetlabs/puppetlabs-firewall.git"
-	rt.doMirrorOrUpdate(gm, localGitRepoDir, 0)
+	rt.doMirrorOrUpdate(gm, localGitRepoDir, "", 0)
 
 	// corrupt the local git module repository
 	rt.purgeDir(filepath.Join(localGitRepoDir, "objects"), "corrupt local git repository for TestConfigRetryGitCommands")
@@ -1933,7 +1933,7 @@ func TestFailedGit(t *testing.T) {
 	gm.git = "https://github.com/puppetlabs/puppetlabs-firewall.git"
 	rt.purgeDir(gitDir, funcName)
 	rt.purgeDir("/tmp/g10k/modules/https-__.com_puppetlabs_puppetlabs-firewall.git", funcName)
-	rt.doMirrorOrUpdate(gm, gitDir, 0)
+	rt.doMirrorOrUpdate(gm, gitDir, "", 0)
 
 	// change the git remote url to something that does not resolve https://.com/...
 	er := rt.executeCommand("git --git-dir "+gitDir+" remote set-url origin https://.com/puppetlabs/puppetlabs-firewall.git", "", 5, false, false)

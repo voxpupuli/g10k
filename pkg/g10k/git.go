@@ -72,7 +72,7 @@ func (rt *Runtime) resolveGitRepositories(uniqueGitModules map[string]GitModule)
 			repoDir := strings.ReplaceAll(strings.ReplaceAll(url, "/", "_"), ":", "-")
 			workDir := filepath.Join(rt.Config.ModulesCacheDir, repoDir)
 
-			success := rt.doMirrorOrUpdate(gm, workDir, 0)
+			success := rt.doMirrorOrUpdate(gm, workDir, "", 0)
 			if !success && !rt.Config.UseCacheFallback {
 				rt.Fatalf("Fatal: Failed to clone or pull " + url + " to " + workDir)
 			}
@@ -85,7 +85,11 @@ func (rt *Runtime) resolveGitRepositories(uniqueGitModules map[string]GitModule)
 	wg.Wait()
 }
 
-func (rt *Runtime) doMirrorOrUpdate(gitModule GitModule, workDir string, retryCount int) bool {
+// doMirrorOrUpdate clones or updates the mirror in workDir. If fetchBranch is set and the mirror
+// already exists, only that branch is fetched instead of updating all refs, which avoids locking
+// and rewriting the whole ref index on every deploy. A failed branch fetch falls back to the full
+// remote update before any purge or retry takes place.
+func (rt *Runtime) doMirrorOrUpdate(gitModule GitModule, workDir string, fetchBranch string, retryCount int) bool {
 	//fmt.Printf("%+v\n", gitModule)
 	isControlRepo := strings.HasPrefix(workDir, rt.Config.EnvCacheDir)
 	isInModulesCacheDir := strings.HasPrefix(workDir, rt.Config.ModulesCacheDir)
@@ -107,9 +111,13 @@ func (rt *Runtime) doMirrorOrUpdate(gitModule GitModule, workDir string, retryCo
 		// we switch to the defined reference later
 		gitCmd = "git clone " + gitModule.git + " " + workDir
 	}
+	usedBranchFetch := false
 	if isDir(workDir) {
 		if rt.detectGitRemoteURLChange(workDir, gitModule.git) && isControlRepo {
 			rt.purgeDir(workDir, "git remote url changed")
+		} else if fetchBranch != "" {
+			usedBranchFetch = true
+			gitCmd = "git --git-dir " + workDir + " fetch --force origin +refs/heads/" + fetchBranch + ":refs/heads/" + fetchBranch
 		} else {
 			// TODO: This should be reworked to use a git library or custom code.
 			// Prefer not to shell out into cli tools we can't control/audit.
@@ -120,14 +128,23 @@ func (rt *Runtime) doMirrorOrUpdate(gitModule GitModule, workDir string, retryCo
 	// check if git URL does match NO_PROXY
 	disableHttpProxy := rt.matchGitRemoteURLNoProxy(gitModule.git)
 
-	if explicitlyLoadSSHKey {
-		sshAddCmd := "ssh-add "
-		if runtime.GOOS == "darwin" {
-			sshAddCmd = "ssh-add -K "
+	runGitCmd := func(cmd string) ExecResult {
+		if explicitlyLoadSSHKey {
+			sshAddCmd := "ssh-add "
+			if runtime.GOOS == "darwin" {
+				sshAddCmd = "ssh-add -K "
+			}
+			return rt.executeCommand("ssh-agent bash -c '"+sshAddCmd+gitModule.privateKey+"; "+cmd+"'", "", rt.Config.Timeout, gitModule.ignoreUnreachable, disableHttpProxy)
 		}
-		er = rt.executeCommand("ssh-agent bash -c '"+sshAddCmd+gitModule.privateKey+"; "+gitCmd+"'", "", rt.Config.Timeout, gitModule.ignoreUnreachable, disableHttpProxy)
-	} else {
-		er = rt.executeCommand(gitCmd, "", rt.Config.Timeout, gitModule.ignoreUnreachable, disableHttpProxy)
+		return rt.executeCommand(cmd, "", rt.Config.Timeout, gitModule.ignoreUnreachable, disableHttpProxy)
+	}
+
+	er = runGitCmd(gitCmd)
+	if er.returnCode != 0 && usedBranchFetch {
+		// the requested branch may be missing or unreachable in this source, so update all refs as before
+		rt.Debugf("fetching branch " + fetchBranch + " from " + gitModule.git + " failed, falling back to git remote update --prune")
+		gitCmd = "git --git-dir " + workDir + " remote update --prune"
+		er = runGitCmd(gitCmd)
 	}
 
 	if er.returnCode != 0 {
@@ -138,7 +155,7 @@ func (rt *Runtime) doMirrorOrUpdate(gitModule GitModule, workDir string, retryCo
 		} else if rt.Config.RetryGitCommands && retryCount > -1 {
 			rt.Warnf("WARN: git command failed: " + gitCmd + " deleting local cached repository and retrying...")
 			rt.purgeDir(workDir, "doMirrorOrUpdate, because git command failed, retrying")
-			return rt.doMirrorOrUpdate(gitModule, workDir, retryCount-1)
+			return rt.doMirrorOrUpdate(gitModule, workDir, fetchBranch, retryCount-1)
 		}
 		rt.Warnf("WARN: git repository " + gitModule.git + " does not exist or is unreachable at this moment! Error: " + er.output)
 		return false
@@ -306,7 +323,7 @@ func (rt *Runtime) syncToModuleDir(gitModule GitModule, srcDir string, targetDir
 			}
 
 		} else if rt.Config.CloneGitModules {
-			return rt.doMirrorOrUpdate(gitModule, targetDir, 0)
+			return rt.doMirrorOrUpdate(gitModule, targetDir, "", 0)
 		}
 	}
 	return true

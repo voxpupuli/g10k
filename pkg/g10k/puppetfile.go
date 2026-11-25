@@ -54,7 +54,12 @@ func (rt *Runtime) resolvePuppetEnvironment(tags bool, outputNameTag string) err
 			controlRepoGit := GitModule{}
 			controlRepoGit.git = sa.Remote
 			controlRepoGit.privateKey = sa.PrivateKey
-			if success := rt.doMirrorOrUpdate(controlRepoGit, workDir, 0); success {
+			// with a single branch and no tags, only that branch is needed, so skip updating every ref
+			fetchBranch := ""
+			if len(rt.Branch) > 0 && !tags {
+				fetchBranch = rt.Branch
+			}
+			if success := rt.doMirrorOrUpdate(controlRepoGit, workDir, fetchBranch, 0); success {
 
 				// get all branches
 				er := rt.executeCommand("git --git-dir "+workDir+" branch", "", rt.Config.Timeout, false, false)
